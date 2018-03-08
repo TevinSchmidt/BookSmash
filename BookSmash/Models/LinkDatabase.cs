@@ -95,7 +95,7 @@ namespace LinkShortener.Models.Database
     {
         private static LinkDatabase instance = null;
 
-        private const String dbname = "Links";
+        private const String dbname = "BookSmash";
         public override String databaseName { get; } = dbname;
 
         protected override Table[] tables { get; } =
@@ -104,7 +104,7 @@ namespace LinkShortener.Models.Database
             new Table
             (
                 dbname,
-                "shortenedLinks",
+                "books",
                 new Column[]
                 {
                     new Column
