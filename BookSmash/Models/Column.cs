@@ -18,12 +18,17 @@ namespace LinkShortener.Models.Database
         /// <param name="type">The data type the column contains, as well as its relevent restrictions</param>
         /// <param name="mods">Any specific modidfications to the data, i.e. UNIQUE, NOT NULL, etc</param>
         /// <param name="primaryKey">Indicates if this column is a primary key</param>
-        public Column(string name, string type, string[] mods, bool primaryKey)
+        public Column(string name, string type, string[] mods, bool primaryKey, bool foreignKey, 
+            string reference, int onUpdate, int onDelete)
         {
             this.name = name.ToLower();
             this.type = type;
             this.primaryKey = primaryKey;
             this.mods = mods;
+            this.foreignKey = foreignKey;
+            this.reference = reference;
+            this.onUpdate = onUpdate;
+            this.onDelete = onDelete;
         }
 
         /// <summary>
@@ -70,5 +75,30 @@ namespace LinkShortener.Models.Database
         /// Represents whether or not this column is a primary key.
         /// </summary>
         public bool primaryKey { get; }
+
+        /// <summary>
+        /// Represents whether or not this column is a foreign key.
+        /// </summary>
+        public bool foreignKey { get; }
+
+        /// <summary>
+        /// The name of the column the foreign key references
+        /// Must put null if none
+        /// </summary>
+        public string reference { get; }
+
+        /// <summary>
+        /// Integer to specify the action on update
+        /// 1 = CASCADE
+        /// 2 = SET NULL
+        /// </summary>
+        public int onUpdate { get;  }
+
+        /// <summary>
+        /// Integer to specify the action on delete
+        /// 1 = CASCADE
+        /// 2 = SET NULL
+        /// </summary>
+        public int onDelete { get; }
     }
 }

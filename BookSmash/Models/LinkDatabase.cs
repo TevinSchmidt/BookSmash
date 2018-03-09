@@ -104,27 +104,11 @@ namespace LinkShortener.Models.Database
             new Table
             (
                 dbname,
-                "books",
+                "TEXTBOOK", //Previously shortenedLinks
                 new Column[]
                 {
-                    new Column
-                    (
-                        "id", "INT(64)",
-                        new string[]
-                        {
-                            "NOT NULL",
-                            "UNIQUE",
-                            "AUTO_INCREMENT"
-                        }, true
-                    ),
-                    new Column
-                    (
-                        "original", "VARCHAR(300)",
-                        new string[]
-                        {
-                            "NOT NULL"
-                        }, false
-                    )
+                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("Edition", "INTEGER", new string[] {"NOT NULL"}, false, false, null, 1, 1)
                 }
             )
         };

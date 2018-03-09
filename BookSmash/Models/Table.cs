@@ -30,7 +30,7 @@ namespace LinkShortener.Models.Database
         {
             string query = "CREATE TABLE " + databaseName + "." + tableName + "(";
             List<string> primaryKeys = new List<string>();
-
+            
             foreach (Column column in columns)
             {
                 query += column.getCreateStructure() + ",";
@@ -53,6 +53,21 @@ namespace LinkShortener.Models.Database
                 }
                 query += primaryKeys[i] + ")";
             }
+            
+            foreach(Column column in columns)
+            {
+                string update;
+                string delete;
+
+                if (column.foreignKey == true && ReferenceEquals != null)
+                {
+                    update = getStatement(column.onUpdate);
+                    delete = getStatement(column.onDelete);
+                    query += ", FOREIGN KEY(" + column.name + ") REFERENCES " + column.reference.toUpper() +
+                        " (" + column.name + ") ON UPDATE " + update + " ON DELETE " + delete;
+                }
+            }
+
             query += ");";
             return query;
         }
@@ -110,6 +125,22 @@ namespace LinkShortener.Models.Database
                 }
             }
             return null;
+        }
+        /// <summary>
+        /// Gets the required option for ON UPDATE and ON DELETE
+        /// </summary>
+        /// <param name="select"></param> Integer that is specified when column created in LinkDatabase
+        /// <returns></returns>
+        public string getStatement(int select)
+        {
+            switch (select)
+            {
+                case 1:
+                    return "CASCADE";
+                case 2:
+                    return "SET NULL";
+            }
+
         }
     }
 }
