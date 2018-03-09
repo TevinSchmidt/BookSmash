@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinkShortener.Models.Debugging
+namespace BookSmash.Models
 {
     public static class Debug
     {

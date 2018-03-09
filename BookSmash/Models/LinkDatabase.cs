@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace LinkShortener.Models.Database
+namespace BookSmash.Models
 {
     public partial class LinkDatabase : AbstractDatabase
     {

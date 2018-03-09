@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LinkShortener.Models.Database
+namespace BookSmash.Models
 {
 
     /// <summary>
@@ -59,16 +59,17 @@ namespace LinkShortener.Models.Database
                 string update;
                 string delete;
 
-                if (column.foreignKey == true && ReferenceEquals != null)
+                if (column.foreignKey == true && column.reference != null)
                 {
                     update = getStatement(column.onUpdate);
                     delete = getStatement(column.onDelete);
-                    query += ", FOREIGN KEY(" + column.name + ") REFERENCES " + column.reference.toUpper() +
+                    query += ", FOREIGN KEY(" + column.name + ") REFERENCES " + column.reference.ToUpper() +
                         " (" + column.name + ") ON UPDATE " + update + " ON DELETE " + delete;
                 }
             }
 
             query += ");";
+            Debug.consoleMsg(query + "\r\n");
             return query;
         }
 
@@ -139,6 +140,8 @@ namespace LinkShortener.Models.Database
                     return "CASCADE";
                 case 2:
                     return "SET NULL";
+                default:
+                    return "FAILURE";
             }
 
         }
