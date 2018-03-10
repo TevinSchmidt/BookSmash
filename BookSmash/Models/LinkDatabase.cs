@@ -104,13 +104,75 @@ namespace BookSmash.Models
             new Table
             (
                 dbname,
-                "TEXTBOOK", //Previously shortenedLinks
+                "TEXTBOOK", 
                 new Column[]
                 {
                     new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
                     new Column("Edition", "INTEGER", new string[] {"NOT NULL"}, false, false, null, 1, 1)
                 }
-            )
+            ),
+            new Table
+            (
+                dbname,
+                "AUTHOR",
+                new Column[]
+                {
+                    new Column("Name", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1) //On update cascade??
+                }
+            ),
+            new Table
+            (
+                dbname,
+                "USED_FOR",
+                new Column[]
+                {
+                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1),
+                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("Department", "CHAR(4)" ,new string[] {"NOT NULL"}, true, false, null, 1, 1)
+                }
+            ),
+            new Table
+            (
+                dbname,
+                "COURSE",
+                new Column[]
+                {
+                    new Column("Course_Title", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, true, "USED_FOR", 1, 1)
+                  // new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, true, "USED_FOR", 1, 1),
+                   
+                }
+
+            ),
+          new Table
+            (
+                dbname,
+                "UNIVERSITY",
+                new Column[]
+                {
+                    new Column("UNI_NAME", "VARCHAR(50)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("City", "VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Prov_State", "CHAR(2)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Country", "VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1)
+
+                }
+            )/**,
+            new Table
+            (
+                dbname, 
+                "USER",
+                new Column[]
+                {
+                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("Email", "VARCHAR(50)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("UNI_NAME", "VARCHAR(50)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
+                    new Column("Fname","VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Lname","VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Password","VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                }
+            )*/
+
         };
     }
 }
