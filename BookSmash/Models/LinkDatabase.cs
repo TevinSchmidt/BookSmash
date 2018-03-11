@@ -124,27 +124,28 @@ namespace BookSmash.Models
             new Table
             (
                 dbname,
-                "USED_FOR",
-                new Column[]
-                {
-                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1),
-                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, false, null, 1, 1),
-                    new Column("Department", "CHAR(4)" ,new string[] {"NOT NULL"}, true, false, null, 1, 1)
-                }
-            ),
-            new Table
-            (
-                dbname,
                 "COURSE",
                 new Column[]
                 {
                     new Column("Course_Title", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, true, "USED_FOR", 1, 1)
-                  // new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, true, "USED_FOR", 1, 1),
+                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, false, null, 1, 1)
                    
                 }
 
             ),
+            new Table
+            (
+                dbname,
+                "USED_FOR",
+                new Column[]
+                {
+                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1),
+                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, true, "COURSE", 1, 1),
+                    new Column("Department", "CHAR(4)" ,new string[] {"NOT NULL"}, true, false, null, 1, 1)
+                }
+            ),
+
           new Table
             (
                 dbname,
@@ -157,7 +158,9 @@ namespace BookSmash.Models
                     new Column("Country", "VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1)
 
                 }
-            )/**,
+            ),
+
+                /**,
             new Table
             (
                 dbname, 
