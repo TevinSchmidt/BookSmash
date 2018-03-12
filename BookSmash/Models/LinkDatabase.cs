@@ -192,20 +192,52 @@ namespace BookSmash.Models
                 "POST",
                 new Column[]
                 {
-                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE", "AUTO_INCREMENT"}, true, false, null, 1, 1),
-                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
-                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
-                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
-                    new Column("Date", "DATE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),
-                    new Column("Condition", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("Price", "DOUBLE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("Description", "VARCHAR(400)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL" }, false, true, "TEXTBOOK", 1, 1)
+                   new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE", "AUTO_INCREMENT"}, true, false, null, 1, 1),
+                   new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
+                   new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
+                   new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
+                   new Column("Date", "DATE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                   new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),
+                   new Column("Book_Condition", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                   new Column("Price", "DOUBLE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                   new Column("Description", "VARCHAR(400)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                   new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL" }, false, true, "TEXTBOOK", 1, 1)
 
                 }
-            )
+            ),
+            new Table
+            (
+                dbname,
+                "PAID",
+                new Column[]
+                {
+                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE"}, true, true, "POST", 1, 1),
+                    new Column("Priority_Level", "INTEGER", new string[] {"NOT NULL", "UNIQUE", "AUTO_INCREMENT"}, false, false, null, 1, 1)
+                }
 
+            ),
+            new Table
+            (
+                dbname,
+                "REGULAR",
+                new Column[]
+                {
+                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE" }, true, true, "POST", 1, 1)
+                }
+              
+            ),
+            new Table
+            (
+                dbname,
+                "FAVOURITES",
+                new Column[]
+                {
+                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL", "UNIQUE"}, true, true, "USER", 1, 1),
+                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, true, true, "USER", 1, 1),
+                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE"}, true, true, "POST", 1, 1)
+                }
+
+            )
         };
     }
 }
