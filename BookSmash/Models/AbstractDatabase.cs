@@ -1,11 +1,13 @@
-﻿using LinkShortener.Models.Debugging;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using MySql.Data.MySqlClient;
-
-using System;
 using System.Threading;
 
-namespace LinkShortener.Models.Database
+//using LinkShortener.Models.Debugging;
+
+namespace BookSmash.Models
 {
     /// <summary>
     /// This class is used as a base class for the creation and deletion of a database.
@@ -33,7 +35,7 @@ namespace LinkShortener.Models.Database
             MySqlCommand command;
             commandString = "CREATE DATABASE " + databaseName + ";";
 
-            if(connection == null)
+            if (connection == null)
             {
                 connection = new MySqlConnection("SERVER=localhost;DATABASE=mysql;UID=" + UID + ";AUTO ENLIST=false;PASSWORD=" + Password);
             }
@@ -224,7 +226,7 @@ namespace LinkShortener.Models.Database
         /// <summary>
         /// This is the password used to login to the database by the connection
         /// </summary>
-        private const string Password = "abc123";
+        private const string Password = "Engineering.11";
 
         /// <summary>
         /// This is the name of the database. This property must be defined by the inheriting class
