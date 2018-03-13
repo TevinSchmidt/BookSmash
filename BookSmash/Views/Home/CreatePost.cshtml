@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "CreatePost";
+}
+
+<h2>CreatePost</h2>
+<body>
+    {
+        if (IsPost)
+        {
+            <p>
+                Your post was added<br />
+            </p>
+        }
+        else
+        {
+            <form method="post" action="">
+                BookName:<br />
+                <input type="text" name="Name" value="" /><br />
+                Course:<br />
+                <input type="text" name="Course" value="" /><br />
+                Authors:<br />
+                <input type="text" name="Authors" value="" /><br />
+                Contact Name:<br />
+                <input type="text" name="ContactName" value="" /><br /><br />
+                Select image to upload:
+                <input type="file" name="fileToUpload" id="fileToUpload">
+                <input type="submit" value="Add Post" name="submit">
+            </form>
+        }
+    }
+</body> 
