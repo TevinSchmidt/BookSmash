@@ -1,33 +1,9 @@
 ﻿
-@{
-    ViewBag.Title = "FrontPage";
-}
-
-<h2>BookSmash</h2>
-
-@{
-    var db = Database.Open("Posts");
-    var query = "SELECT * FROM Posts";
-}
 <body>
-    <h1></h1>
-    <table border="1" width="100%">
-        <tr>
-            <th>name</th>
-            <th>phone</th>
-            <th>Description</th>
-            <th>imagepath</th>
-            <th></th>
-        </tr>
-        @foreach (var row in db.Query(query))
-        {
-            <tr>
-                <td>@row.name</td>
-                <td>@row.phone</td>
-                <td>@row.Description</td>
-                <td><img src=@row.image alt="product image"></td>
-                <td style="text-align:right">@row.Price</td>
-            </tr>
-        }
-    </table>
+<div class="Search">
+<input type="text" value="search" placeholder="Search By Title..." />
+
+</div>
+
 </body>
+

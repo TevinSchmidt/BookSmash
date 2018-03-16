@@ -10,6 +10,13 @@ namespace BookSmash.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult FrontPage()
+        {
+            return View();
+        }
+
+
+
         public ActionResult Index()
         {
             LinkDatabase DB = LinkDatabase.getInstance();
