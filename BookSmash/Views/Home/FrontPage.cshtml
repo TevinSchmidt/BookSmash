@@ -1,14 +1,19 @@
 ﻿
 
-<div class="container">
-    <div class="search">
-    <input type="text" class="searchText" placeholder="Fundamentals of Calculus"/>
-    <input type="text" class="searchClass" placeholder="MATH"/>
-    <input type="text" class="searchCode" placeholder="275"/>
-   <!-- <button type="submit" class="searchButton">
-        <i class="fade fa-search"></i>
-    </button>-->
-    </div>
+<div class="container" style="display: flex;">
+    <table style="padding: 10px;">
+        <tr>
+            <td style="padding-top: 25px">Search By Title:</td>
+            <td style="padding-top: 25px">@Html.TextBox("title", "", new { @class="searchTable", @placeholder = "Fundamentals of Calculus" })</td>
+            <td style="padding-left: 5px; padding-top: 25px">Course:</td>
+            <td style="padding-top: 25px">@Html.TextBox("course", "", new { placeholder = "MATH" })</td>
+            <td style="padding-left: 5px; padding-top: 25px">Code:</td>
+            <td style="padding-top: 25px">@Html.TextBox("code", "", new { placeholder = "275" })</td>
+            <td style="padding-top: 25px">University:</td>
+
+        </tr>
+    </table>
+    <input type="button" class="mainSearch" value="Smash It!"/>
 </div>
 
 
