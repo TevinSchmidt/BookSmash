@@ -1,4 +1,33 @@
 ﻿
-.Search{
-    background-color: red;
+
+
+.search{
+    display: flex;
+    width: 500px;
+    position: relative;
+    padding: 5px;
 }
+
+.searchText {
+    float: left;
+    display: flex;
+    width: 100%;
+    border: 1px solid #383838;
+    padding: 5px;
+    height: 25px;
+    border-radius: 2px;
+    color: black;
+}
+
+.searchClass {
+    float: left;
+    display: flex;
+}
+
+.searchCode {
+    float: left;
+    display: flex;
+}
+
+
+
