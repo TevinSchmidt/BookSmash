@@ -15,10 +15,8 @@ namespace BookSmash.Controllers
             //LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
-
             var model = new UniversitiesModel();
             model.Universities = GetSelectListItems(universities);
-
 
             return View(model);
         }
@@ -41,10 +39,9 @@ namespace BookSmash.Controllers
 
         public ActionResult Done()
         {
-            // Get Sign Up information from the session
+            // Get University information from the session
             var model = Session["UniversityModel"] as UniversitiesModel;
 
-            // Display Done.html page that shows Name and selected state.
             return View(model);
         }
 
@@ -81,6 +78,10 @@ namespace BookSmash.Controllers
             return selectList;
         }
 
+        public ActionResult CreatePost()
+        {
+            return View();
+        }
         public ActionResult Index()
         {          
 
