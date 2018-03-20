@@ -65,7 +65,7 @@ namespace BookSmash.Controllers
         /// <returns></returns>
         public List<Post> getPostByAuthor(string Author)
         {
-            string query = @"SELECT* FROM " + dbname + ".POST AS P, " + dbname + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = " + Author;
+            string query = @"SELECT* FROM " + dbname + ".POST AS P, " + dbname + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = '" + Author + "'";
             return getPostCustom(query);
         }
 
@@ -76,8 +76,8 @@ namespace BookSmash.Controllers
         /// <returns></returns>
         public List<Post> getPostByCourse(string Course)
         {
-            //string query = @"SELECT* FROM " + dbname + ".POST WHERE UNI_NAME = " + Course;
-            //return getPostCustom(query);
+            string query = @"SELECT* FROM " + dbname + ".POST AS P, " + dbname + ".USED_FOR AS U, " + dbname + ".COURSE AS C WHERE C.Course_Title LIKE '" + Course + "' AND C.CourseNum = U.CourseNum AND U.Title = P.Title" ;
+            return getPostCustom(query);
         }
 
 
@@ -88,7 +88,7 @@ namespace BookSmash.Controllers
         /// <returns></returns>
         public List<Post> getPostByUniversity(string Uni)
         {
-            string query = @"SELECT* FROM " + dbname + ".POST WHERE UNI_NAME = " + Uni;
+            string query = @"SELECT* FROM " + dbname + ".POST WHERE UNI_NAME = '" + Uni + "'";
             return getPostCustom(query);
         }
 
@@ -99,7 +99,7 @@ namespace BookSmash.Controllers
         /// <returns></returns>
         public List<Post> getPostByTitle(string title)
         {
-            string query = @"SELECT* FROM " + dbname + ".POST WHERE Title = " + title;
+            string query = @"SELECT* FROM " + dbname + ".POST WHERE Title = '" + title + "'";
             return getPostCustom(query);
         }
 
@@ -159,7 +159,7 @@ namespace BookSmash.Controllers
         /// <returns></returns>
         public List<Favourites> getFavourites(int userId)
         {
-            return getFavourites(@"SELECT * FROM " + dbname + ".FAVOURITES WHERE ID = " + userId.ToString());
+            return getFavourites(@"SELECT * FROM " + dbname + ".FAVOURITES WHERE ID = '" + userId.ToString() + "'");
         }
 
         /// <summary>
