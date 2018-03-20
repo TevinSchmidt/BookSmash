@@ -8,7 +8,7 @@ namespace BookSmash.Models
     public class UniversitiesModel
     {
         [Required]
-        [Display(University="University")]
+        [Display(Name ="University")]
         public string University { get; set; }
 
         public IEnumerable<SelectListItem> Universities { get; set; }

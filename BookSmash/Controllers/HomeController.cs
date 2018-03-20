@@ -30,7 +30,7 @@ namespace BookSmash.Controllers
 
             model.Universities = GetSelectListItems(universities);
 
-            if (ModelUniversity.IsValid)
+            if (ModelState.IsValid)
             {
                 Session["UniversityModel"] = model;
                 return RedirectToAction("Done");
@@ -42,7 +42,7 @@ namespace BookSmash.Controllers
         public ActionResult Done()
         {
             // Get Sign Up information from the session
-            var model = Session["UniversityModel"] as UniversityModel;
+            var model = Session["UniversityModel"] as UniversitiesModel;
 
             // Display Done.html page that shows Name and selected state.
             return View(model);
@@ -52,9 +52,12 @@ namespace BookSmash.Controllers
         {
             return new List<string>
             {
-                "University of Calgary",
                 "University of Alberta",
                 "Univerity of British Columbia",
+                "University of Calgary",
+                "University of Saskatchewan",
+                "University of Toronto",
+                "University of Waterloo"
             };
         }
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
