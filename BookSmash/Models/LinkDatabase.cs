@@ -22,6 +22,42 @@ namespace BookSmash.Models
         }
 
         /// <summary>
+        /// Generic function to execute a command on the DB
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public MySqlDataReader executeGenericSQL(string query)
+        {
+            if (openConnection())
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                    return reader;
+                else
+                    throw new ArgumentException("query had no results");
+            }
+            else
+                throw new Exception("Could not connect to database.");
+        }
+
+        /// <summary>
+        /// Method for executing deletes and inserts or updates
+        /// </summary>
+        /// <param name="query"></param>
+        public void executeNonQueryGeneric(string query)
+        {
+
+            if (openConnection() == true)
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.ExecuteNonQuery();
+            }
+            else
+                throw new Exception("Could not connect to database.");
+        }
+
+        /// <summary>
         /// Gets a long URL based on the id of the short url
         /// </summary>
         /// <param name="id">The id of the short url</param>
