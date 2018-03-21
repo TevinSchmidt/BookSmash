@@ -152,18 +152,22 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\grabFromDB.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AbstractDatabase.cs" />
+    <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\Debug.cs" />
     <Compile Include="Models\grabFromDB.cs" />
     <Compile Include="Models\LinkDatabase.cs" />
     <Compile Include="Models\Table.cs" />
+    <Compile Include="Models\UniversitiesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Universities\Enum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -173,6 +177,8 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Authentication\AuthenticationFunctions.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -209,9 +215,19 @@
     <Content Include="Views\Home\CreatePost.cshtml" />
     <Content Include="Views\Home\MyPosts.cshtml" />
     <Content Include="Views\Home\myFavourites.cshtml" />
+    <Content Include="Views\Authentication\LogIn.cshtml" />
+    <Content Include="Views\Authentication\LogOut.cshtml" />
+    <Content Include="Views\Authentication\Index.cshtml" />
+    <Content Include="Views\Authentication\AccountCreation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Done.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Universities\" />
+    <Folder Include="Views\CreatePostModel\" />
+    <Folder Include="Views\University\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

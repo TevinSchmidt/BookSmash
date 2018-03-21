@@ -1,19 +1,27 @@
-﻿
+﻿@model BookSmash.Models.UniversitiesModel
 
-<div class="container" style="display: flex;">
-    <table style="padding: 10px;">
-        <tr>
-            <td style="padding-top: 25px">Search By Title:</td>
-            <td style="padding-top: 25px">@Html.TextBox("title", "", new { @class="searchTable", @placeholder = "Fundamentals of Calculus" })</td>
-            <td style="padding-left: 5px; padding-top: 25px">Course:</td>
-            <td style="padding-top: 25px">@Html.TextBox("course", "", new { placeholder = "MATH" })</td>
-            <td style="padding-left: 5px; padding-top: 25px">Code:</td>
-            <td style="padding-top: 25px">@Html.TextBox("code", "", new { placeholder = "275" })</td>
-            <td style="padding-top: 25px">University:</td>
+@{ ViewBag.Title = "FrontPage";}
 
-        </tr>
-    </table>
-    <input type="button" class="mainSearch" value="Smash It!"/>
+<h2>Search For Textbooks</h2>
+
+<div class="container">
+    @using (Html.BeginForm("FrontPage", "Home", FormMethod.Post, new { role = "form" })) {
+            <div class="form-group">
+                <label for="title">Title:</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Fundamentals of Calculus" })
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                @Html.TextBoxFor(model => model.Department, new { @class = "form-control", @placeholder = "MATH"})
+            </div>
+            <div class="form-group">
+                <label for="code">Code:</label>
+                @Html.TextBoxFor(model => model.Code, new { @class = "form-control", @placeholder = "275"})
+            </div>
+            <div class="form-group">            
+                @Html.DropDownListFor(model => model.University, Model.Universities, "-Please Select University-", new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-default">Smash It!</button>
+    }
 </div>
-
 
