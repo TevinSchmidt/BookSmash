@@ -71,7 +71,7 @@ namespace BookSmash.Models
         /// <returns></returns>
         public List<Post> getPostByAuthor(string Author)
         {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = '" + Author + "'";
+            string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = '" + Author + "';";
             return getPostCustom(query);
         }
 
@@ -82,7 +82,7 @@ namespace BookSmash.Models
         /// <returns></returns>
         public List<Post> getPostByCourse(string Course)
         {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".USED_FOR AS U, " + LD.databaseName + ".COURSE AS C WHERE C.Course_Title LIKE '" + Course + "' AND C.CourseNum = U.CourseNum AND U.Title = P.Title" ;
+            string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".USED_FOR AS U, " + LD.databaseName + ".COURSE AS C WHERE C.Course_Title LIKE '" + Course + "' AND C.CourseNum = U.CourseNum AND U.Title = P.Title;" ;
             return getPostCustom(query);
         }
 
@@ -94,7 +94,7 @@ namespace BookSmash.Models
         /// <returns></returns>
         public List<Post> getPostByUniversity(string Uni)
         {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE UNI_NAME = '" + Uni + "'";
+            string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE UNI_NAME = '" + Uni + "';";
             return getPostCustom(query);
         }
 
@@ -105,7 +105,7 @@ namespace BookSmash.Models
         /// <returns></returns>
         public List<Post> getPostByTitle(string title)
         {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE Title = '" + title + "'";
+            string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE Title = '" + title + "';";
             return getPostCustom(query);
         }
 
@@ -173,7 +173,7 @@ namespace BookSmash.Models
         {
             string query = @"SELECT * FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
                 @" WHERE P.Title = U.Title AND P.Title = '" + title + @" AND U.Department = '" + department + @"' AND U.CourseNum = '" 
-                + courseCode + @"' AND P.UNI_Name = '" + UniName + @"'" ;
+                + courseCode + @"' AND P.UNI_Name = '" + UniName + @"';" ;
             return getPostCustom(query);
         }
 
@@ -261,7 +261,7 @@ namespace BookSmash.Models
         /// <returns></returns>
         public List<Favourites> getFavourites(int userId)
         {
-            return getFavourites(@"SELECT * FROM " + LD.databaseName + ".FAVOURITES WHERE ID = '" + userId.ToString() + "'");
+            return getFavourites(@"SELECT * FROM " + LD.databaseName + ".FAVOURITES WHERE ID = '" + userId.ToString() + "';");
         }
 
         /// <summary>
@@ -296,21 +296,34 @@ namespace BookSmash.Models
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public List<User> getUser()
-        {
-            return getUser();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="customQuery"></param>
         /// <returns></returns>
-        public List<User> getUser(string customQuery)
+        public List<User> getUsers(string username, string password)
         {
-            List<User> outUser = new List<User>();
-            return outUser;
+            LD = LinkDatabase.getInstance();
+            List<User> users = new List<User>();
+            User temp;
+            string customQuerry = @"SELECT * FROM " + LD.databaseName + @".USER WHERE Email = '" + username + @"' AND Password = '" + password + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(customQuerry);
+                while (reader.Read())
+                {
+                    temp = new User();
+                    temp.phone = reader.GetString("Phone_Num");
+                    temp.email = reader.GetString("Email");
+                    temp.Uni = reader.GetString("UNI_NAME");
+                    temp.fname = reader.GetString("Fname");
+                    temp.lname = reader.GetString("Lname");
+                    users.Add(temp);
+                }
+            }
+            catch(Exception e)
+            {
+                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return users;
         }
 
         /// <summary>
