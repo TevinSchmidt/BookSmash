@@ -1,11 +1,11 @@
-﻿
+﻿@model BookSmash.Models.CreatePostModel
 @{
     ViewBag.Title = "CreatePost";
 }
 
 <h2>CreatePost</h2>
 
-@{ ViewBag.Title="CreatePost"}
+@{ ViewBag.Title = "CreatePost"}
 
 <h2>Create Post</h2>
 
@@ -13,8 +13,11 @@
     @using (Html.BeginForm("CreatePost", "Home", FormMethod.Post, new { role = "form" }))
     {
         <div class="form-group">
-            <label for="title">Title:</label>
+            <label for="title">Textbook Title:</label>
             @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Fundamentals of Calculus" })
+        </div>
+        <div class="form-group">
+
         </div>
     }
 </div>
