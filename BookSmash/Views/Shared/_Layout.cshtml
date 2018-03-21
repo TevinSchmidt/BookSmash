@@ -23,6 +23,16 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if(BookSmash.Models.Globals.isLoggedIn() == false)
+                    {
+                        //Add ActionLinke here for things that appear only when not logged in
+                        <li>@Html.ActionLink("Log In", "Index", "Authentication")</li>
+                    }
+                    @if (BookSmash.Models.Globals.isLoggedIn() == true)
+                     {
+                        //Add ActionLink here for things that appear when logged in
+                        <li>@Html.ActionLink("Log Out", "LogOut", "Authentication")</li>
+                     }
                 </ul>
             </div>
         </div>

@@ -150,6 +150,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AbstractDatabase.cs" />
+    <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\Debug.cs" />
     <Compile Include="Models\LinkDatabase.cs" />

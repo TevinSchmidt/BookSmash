@@ -1,8 +1,11 @@
-﻿using System;
+﻿using BookSmash.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace BookSmash.Controllers
 {
@@ -18,12 +21,28 @@ namespace BookSmash.Controllers
         //This function is called when there is a logIn request 
         public ActionResult LogIn(string Email, string Password)
         {
-            return View("Index");
+            bool VALID_LOGIN = true;
+
+
+            if (VALID_LOGIN)
+            {
+                //This is temp
+                Globals.setCurrentUser(Email);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View("Index");
+            }
+
+            
         }
 
         //This function is called when there is a LogOut request
         public ActionResult LogOut()
         {
+            //This is also temp
+            Globals.logOutCurrentUser();
             return View("LogOut");
         }
 

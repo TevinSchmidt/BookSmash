@@ -17,5 +17,10 @@ namespace BookSmash
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        public void Session_OnStart()
+        {
+            HttpContext.Current.Session.Add("user", "Not Logged In");
+        }
     }
 }
