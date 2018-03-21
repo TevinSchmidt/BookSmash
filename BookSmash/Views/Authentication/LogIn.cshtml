@@ -1,0 +1,31 @@
+﻿
+<script type="text/javascript" src="~/Scripts/Authentication/AuthenticationFunctions.js"></script>
+
+@{
+    ViewBag.Title = "LogIn";
+}
+
+<h2>ViewBag.Title</h2>
+
+@using (Html.BeginForm("LogInConfirmation", "Authentication", FormMethod.Get,
+    new { id = "credentialForm", onsubmit = "return validatecredentialForm()" }))
+{
+    <table>
+        <tr>
+            <td>Email:</td>
+            <td>@Html.TextBox("Email")</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>@Html.Password("Password")</td>
+        </tr>
+    </table>
+
+    <input type="submit" value="Log In" />
+    <br />
+    <a href="/Authentication/CreateAccount/">Create an Account?</a>
+    <br />
+    <p>@ViewBag.LoginResponse</p>
+    <br />
+
+}

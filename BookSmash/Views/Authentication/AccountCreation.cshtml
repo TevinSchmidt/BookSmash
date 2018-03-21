@@ -1,0 +1,68 @@
+﻿<script type="text/javascript" src="~/Scripts/Authentication/AuthenticationFunctions.js"></script>
+
+@{
+    ViewBag.Title = "AccountCreation";
+}
+
+<h2>Account Creation</h2>
+
+@using (Html.BeginForm("LogIn", "Authentication", FormMethod.Get,
+    new { id = "accountCreationForm", onsubmit = "return validateCreationForm()" }))
+{
+    <p>The following personal information is required to make an account:</p>
+    <br />
+    <table>
+        <tr>
+            <td>Email:</td>
+            <td>@Html.TextBox("Email")</td>
+            <td>*This will be your username on the site.</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>@Html.Password("Password")</td>
+        </tr>
+        <tr>
+            <td>Confirm Password:</td>
+            <td>@Html.Password("confirmPassword")</td>
+        </tr>
+        <tr>
+            <td>First Name:</td>
+            <td>@Html.TextBox("Fname")</td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td>@Html.TextBox("Lname")</td>
+        </tr>
+        <tr>
+            <td>Phone Number:</td>
+            <td>@Html.TextBox("Phone_Num")</td>
+        </tr>
+    </table>
+    <br />
+
+    <p>The following information about university is used to optimize searches and buyers to be able to find your textbook:</p>
+    <br />
+    <table>
+        <tr>
+            <td>University Name:</td>
+            <td>@Html.TextBox("UNI_NAME")</td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td>@Html.TextBox("CITY")</td>
+        </tr>
+        <tr>
+            <td>Province/State:</td>
+            <td>@Html.Password("Prov_State")</td>
+        </tr>
+        <tr>
+            <td>Country:</td>
+            <td>@Html.Password("confirmPassword")</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" value="Create Account" />
+    <br />
+    <p>@ViewBag.CreationMessage</p>
+    <br />
+}
