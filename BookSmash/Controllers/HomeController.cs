@@ -45,8 +45,20 @@ namespace BookSmash.Controllers
             return View(model);
         }
 
+        public ActionResult CreatePost()
+        {
+            //LinkDatabase DB = LinkDatabase.getInstance();
+
+            var universities = GetAllUniversities();
+            var model = new CreatePostModel();
+            model.Universities = GetSelectListItems(universities);
+
+            return View(model);
+        }
+
         private IEnumerable<string> GetAllUniversities()
         {
+            //This could be a call to University in Database
             return new List<string>
             {
                 "University of Alberta",
@@ -62,10 +74,6 @@ namespace BookSmash.Controllers
             // Create an empty list to hold result of the operation
             var selectList = new List<SelectListItem>();
 
-            // For each string in the 'elements' variable, create a new SelectListItem object
-            // that has both its Value and Text properties set to a particular value.
-            // This will result in MVC rendering each item as:
-            //     <option value="State Name">State Name</option>
             foreach (var element in elements)
             {
                 selectList.Add(new SelectListItem
@@ -78,10 +86,7 @@ namespace BookSmash.Controllers
             return selectList;
         }
 
-        public ActionResult CreatePost()
-        {
-            return View();
-        }
+
         public ActionResult Index()
         {          
 

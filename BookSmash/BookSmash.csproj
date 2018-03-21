@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="Models\AbstractDatabase.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\Debug.cs" />
     <Compile Include="Models\LinkDatabase.cs" />
     <Compile Include="Models\Table.cs" />
@@ -213,6 +214,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Universities\" />
+    <Folder Include="Views\CreatePostModel\" />
     <Folder Include="Views\University\" />
   </ItemGroup>
   <ItemGroup>
