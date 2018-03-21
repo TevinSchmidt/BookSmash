@@ -1,33 +1,27 @@
-﻿
-@{
-    ViewBag.Title = "FrontPage";
-}
+﻿@model BookSmash.Models.UniversitiesModel
 
-<h2>BookSmash</h2>
+@{ ViewBag.Title = "FrontPage";}
 
-@{
-    var db = Database.Open("Posts");
-    var query = "SELECT * FROM Posts";
-}
-<body>
-    <h1></h1>
-    <table border="1" width="100%">
-        <tr>
-            <th>name</th>
-            <th>phone</th>
-            <th>Description</th>
-            <th>imagepath</th>
-            <th></th>
-        </tr>
-        @foreach (var row in db.Query(query))
-        {
-            <tr>
-                <td>@row.name</td>
-                <td>@row.phone</td>
-                <td>@row.Description</td>
-                <td><img src=@row.image alt="product image"></td>
-                <td style="text-align:right">@row.Price</td>
-            </tr>
-        }
-    </table>
-</body>
+<h2>Search For Textbooks</h2>
+
+<div class="container">
+    @using (Html.BeginForm("FrontPage", "Home", FormMethod.Post, new { role = "form" })) {
+            <div class="form-group">
+                <label for="title">Title:</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Fundamentals of Calculus" })
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                @Html.TextBoxFor(model => model.Department, new { @class = "form-control", @placeholder = "MATH"})
+            </div>
+            <div class="form-group">
+                <label for="code">Code:</label>
+                @Html.TextBoxFor(model => model.Code, new { @class = "form-control", @placeholder = "275"})
+            </div>
+            <div class="form-group">            
+                @Html.DropDownListFor(model => model.University, Model.Universities, "-Please Select University-", new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-default">Smash It!</button>
+    }
+</div>
+

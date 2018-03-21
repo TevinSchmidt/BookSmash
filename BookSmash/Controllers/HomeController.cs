@@ -10,11 +10,87 @@ namespace BookSmash.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult FrontPage()
         {
-            LinkDatabase DB = LinkDatabase.getInstance();
+            //LinkDatabase DB = LinkDatabase.getInstance();
 
-            return View();
+            var universities = GetAllUniversities();
+            var model = new UniversitiesModel();
+            model.Universities = GetSelectListItems(universities);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult FrontPage(UniversitiesModel model)
+        {
+            var universities = GetAllUniversities();
+
+            model.Universities = GetSelectListItems(universities);
+
+            if (ModelState.IsValid)
+            {
+                Session["UniversityModel"] = model;
+                return RedirectToAction("Done");
+            }
+
+            return View("FrontPage", model);
+        }
+
+        public ActionResult Done()
+        {
+            // Get University information from the session
+            var model = Session["UniversityModel"] as UniversitiesModel;
+
+            return View(model);
+        }
+
+        public ActionResult CreatePost()
+        {
+            //LinkDatabase DB = LinkDatabase.getInstance();
+
+            var universities = GetAllUniversities();
+            var model = new CreatePostModel();
+            model.Universities = GetSelectListItems(universities);
+
+            return View(model);
+        }
+
+        private IEnumerable<string> GetAllUniversities()
+        {
+            //This could be a call to University in Database
+            return new List<string>
+            {
+                "University of Alberta",
+                "Univerity of British Columbia",
+                "University of Calgary",
+                "University of Saskatchewan",
+                "University of Toronto",
+                "University of Waterloo"
+            };
+        }
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        {
+            // Create an empty list to hold result of the operation
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
+        }
+
+
+        public ActionResult Index()
+        {          
+
+            return RedirectToAction("FrontPage");
         }
 
         public ActionResult About()
