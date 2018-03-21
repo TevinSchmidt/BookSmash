@@ -1,33 +1,19 @@
 ﻿
-@{
-    ViewBag.Title = "FrontPage";
-}
 
-<h2>BookSmash</h2>
-
-@{
-    var db = Database.Open("Posts");
-    var query = "SELECT * FROM Posts";
-}
-<body>
-    <h1></h1>
-    <table border="1" width="100%">
+<div class="container" style="display: flex;">
+    <table style="padding: 10px;">
         <tr>
-            <th>name</th>
-            <th>phone</th>
-            <th>Description</th>
-            <th>imagepath</th>
-            <th></th>
+            <td style="padding-top: 25px">Search By Title:</td>
+            <td style="padding-top: 25px">@Html.TextBox("title", "", new { @class="searchTable", @placeholder = "Fundamentals of Calculus" })</td>
+            <td style="padding-left: 5px; padding-top: 25px">Course:</td>
+            <td style="padding-top: 25px">@Html.TextBox("course", "", new { placeholder = "MATH" })</td>
+            <td style="padding-left: 5px; padding-top: 25px">Code:</td>
+            <td style="padding-top: 25px">@Html.TextBox("code", "", new { placeholder = "275" })</td>
+            <td style="padding-top: 25px">University:</td>
+
         </tr>
-        @foreach (var row in db.Query(query))
-        {
-            <tr>
-                <td>@row.name</td>
-                <td>@row.phone</td>
-                <td>@row.Description</td>
-                <td><img src=@row.image alt="product image"></td>
-                <td style="text-align:right">@row.Price</td>
-            </tr>
-        }
     </table>
-</body>
+    <input type="button" class="mainSearch" value="Smash It!"/>
+</div>
+
+
