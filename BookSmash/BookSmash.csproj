@@ -50,7 +50,7 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -159,6 +159,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AbstractDatabase.cs" />
+    <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\Debug.cs" />
@@ -175,6 +176,8 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Authentication\AuthenticationFunctions.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -211,6 +214,14 @@
     <Content Include="Views\Home\CreatePost.cshtml" />
     <Content Include="Views\Home\MyPosts.cshtml" />
     <Content Include="Views\Home\myFavourites.cshtml" />
+    <Content Include="Views\Authentication\LogIn.cshtml" />
+    <Content Include="Views\Authentication\LogOut.cshtml" />
+    <Content Include="Views\Authentication\Index.cshtml" />
+    <Content Include="Views\Authentication\AccountCreation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+
     <Content Include="Views\Home\Done.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -219,7 +230,6 @@
     <Folder Include="Views\CreatePostModel\" />
     <Folder Include="Views\University\" />
     <Folder Include="Views\Authentication\" />
-
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

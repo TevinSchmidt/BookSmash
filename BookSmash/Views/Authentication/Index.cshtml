@@ -1,0 +1,72 @@
+﻿<script type="text/javascript" src="~/Scripts/Authentication/AuthenticationFunctions.js"></script>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<style>
+    *{
+        box-sizing: border-box;
+    }
+
+    .left {
+        float: left;
+        width: 40%;
+        padding: 20px;
+        margin-top: 10px;
+        text-align: center;
+        background-color: lightgrey;
+    }
+
+    .mid {
+        float: left;
+        width: 10%;
+        background-color: white;
+    }
+
+    .right {
+        float: left;
+        width: 40%;
+        padding: 20px;
+        margin-top: 10px;
+        text-align: center;
+        background-color: lightgrey;
+    }
+</style>
+
+<div style="overflow:auto">
+
+    <div class="left">
+    <h2 style="text-align:left">Login</h2>
+        <br />
+        @using (Html.BeginForm("LogIn", "Authentication", FormMethod.Get,
+        new { id = "credentialForm", onsubmit = "return validatecredentialForm()" }))
+        {
+                <table>
+                    <tr>
+                        <td>Email:</td>
+                        <td>@Html.TextBox("Email")</td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td>@Html.Password("Password")</td>
+                    </tr>
+                </table>
+
+                <br />
+
+                <input type="submit" value="LogIn"/>
+                <br />
+        }
+    </div>
+    <div class="mid">
+        <p> </p>
+    </div>
+    <div class="right">
+        <h2 style="text-align:left">Create Account</h2>
+        <br />
+        <p>Create new acount in a few simple steps below.</p>
+        <a href="~/Authentication/AccountCreation/">Create Account</a>
+        <br />
+    </div>
+</div>
