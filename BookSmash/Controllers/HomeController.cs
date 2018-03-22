@@ -31,7 +31,7 @@ namespace BookSmash.Controllers
             if (ModelState.IsValid)
             {
                 Session["UniversityModel"] = model;
-                return RedirectToAction("Done");
+                return RedirectToAction("Results");
             }
 
             return View("FrontPage", model);
@@ -60,7 +60,6 @@ namespace BookSmash.Controllers
         public ActionResult CreatPost(UniversitiesModel model)
         {
             var universities = GetAllUniversities();
-
             model.Universities = GetSelectListItems(universities);
 
             if (ModelState.IsValid)
@@ -68,8 +67,16 @@ namespace BookSmash.Controllers
                 Session["UniversityModel"] = model;
                 return RedirectToAction("Done");
             }
-
             return View("FrontPage", model);
+        }
+
+        public ActionResult Results()
+        {
+            var model = Session["UniversityModel"] as UniversitiesModel;
+            grabFromDB grabFromDB = new grabFromDB();
+            List<Post> posts = grabFromDB.getPost(model.Department, model.Title, Int32.Parse(model.Code), model.University);
+
+            return View();
         }
 
         private IEnumerable<string> GetAllUniversities()

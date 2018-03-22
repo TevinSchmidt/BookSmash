@@ -98,6 +98,12 @@ namespace BookSmash.Models
             return getPostCustom(query);
         }
 
+        public List<string> getSearchTitles(string search)
+        {
+            string query = @"SELECT TITLE FROM " + LD.databaseName + ".POST WHERE TITLE  '" + search + "';";
+            return 
+        }
+
         /// <summary>
         /// Method to get all Posts by title
         /// </summary>
@@ -214,6 +220,27 @@ namespace BookSmash.Models
             return outPost;
         }
 
+        public List<string> getSearch(string query)
+        {
+            LD = LinkDatabase.getInstance();
+            List<string> searchResults = new List<string>();
+            string temp;
+
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                while (reader.Read())
+                {
+
+
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in getSearch: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return searchResults;
+        }    
         /// <summary>
         /// Method to insert a new post into the db
         /// </summary>
