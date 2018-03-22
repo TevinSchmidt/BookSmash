@@ -59,15 +59,17 @@ namespace BookSmash.Controllers
         private IEnumerable<string> GetAllUniversities()
         {
             //This could be a call to University in Database
-            return new List<string>
+            grabFromDB grabFromDB = new grabFromDB();
+            List<UniData> uni = grabFromDB.getUniversities();
+            List<string> output = new List<string>();
+            string temp;
+            grabFromDB.close();
+            foreach(UniData data in uni)
             {
-                "University of Alberta",
-                "Univerity of British Columbia",
-                "University of Calgary",
-                "University of Saskatchewan",
-                "University of Toronto",
-                "University of Waterloo"
-            };
+                temp = data.name;
+                output.Add(temp);
+            }
+            return output;
         }
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
         {
