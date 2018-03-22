@@ -42,6 +42,14 @@ namespace BookSmash.Models
         }
 
         /// <summary>
+        /// Method to close connection from outside
+        /// </summary>
+        public void doClose()
+        {
+            closeConnection();
+        }
+
+        /// <summary>
         /// Method for executing deletes and inserts or updates
         /// </summary>
         /// <param name="query"></param>
@@ -52,6 +60,7 @@ namespace BookSmash.Models
             {
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.ExecuteNonQuery();
+                closeConnection();
             }
             else
                 throw new Exception("Could not connect to database.");
