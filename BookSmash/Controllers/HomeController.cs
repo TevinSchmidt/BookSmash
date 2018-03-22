@@ -12,7 +12,7 @@ namespace BookSmash.Controllers
     {
         public ActionResult FrontPage()
         {
-            LinkDatabase DB = LinkDatabase.getInstance();
+           // LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
             var model = new UniversitiesModel();
@@ -47,7 +47,7 @@ namespace BookSmash.Controllers
 
         public ActionResult CreatePost()
         {
-            LinkDatabase DB = LinkDatabase.getInstance();
+           // LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
             var model = new UniversitiesModel();
@@ -74,9 +74,12 @@ namespace BookSmash.Controllers
         {
             var model = Session["UniversityModel"] as UniversitiesModel;
             grabFromDB grabFromDB = new grabFromDB();
-            List<Post> posts = grabFromDB.getPost(model.Department, model.Title, Int32.Parse(model.Code), model.University);
+            List<string> results = new List<string>();
+            results = grabFromDB.getSearchTitles(model.Title);
 
-            return View();
+            ViewBag.Textbooklist = results;
+
+            return View("Results");
         }
 
         private IEnumerable<string> GetAllUniversities()

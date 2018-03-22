@@ -100,8 +100,8 @@ namespace BookSmash.Models
 
         public List<string> getSearchTitles(string search)
         {
-            string query = @"SELECT TITLE FROM " + LD.databaseName + ".POST WHERE TITLE  '" + search + "';";
-            return 
+            string query = @"SELECT TITLE FROM " + LD.databaseName + ".POST WHERE TITLE = '" + search + "';";
+            return getSearch(query);
         }
 
         /// <summary>
@@ -224,14 +224,14 @@ namespace BookSmash.Models
         {
             LD = LinkDatabase.getInstance();
             List<string> searchResults = new List<string>();
-            string temp;
+
 
             try
             {
                 MySqlDataReader reader = LD.executeGenericSQL(query);
                 while (reader.Read())
                 {
-
+                    searchResults.Add(reader.GetString("TITLE"));
 
                 }
             } catch (Exception e)
