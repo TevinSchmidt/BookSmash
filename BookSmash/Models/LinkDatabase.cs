@@ -66,12 +66,30 @@ namespace BookSmash.Models
                 throw new Exception("Could not connect to database.");
         }
 
-        /// <summary>
-        /// Gets a long URL based on the id of the short url
-        /// </summary>
-        /// <param name="id">The id of the short url</param>
-        /// <throws type="ArgumentException">Throws an argument exception if the short url id does not refer to anything in the database</throws>
-        /// <returns>The long url the given short url refers to</returns>
+        public List<string> getSearchTitles(string search)
+        {
+            string query = @"SELECT TITLE FROM " + dbname + ".POST WHERE TITLE = '" + search + "';";
+            List<string> searchResults = new List<string>();
+            if (openConnection() == true)
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                
+
+                while(reader.Read() == true)
+                {
+                    searchResults.Add(reader.GetString("TITLE")); ;
+                }
+                closeConnection();
+            }
+            else
+            {
+                throw new Exception("Could not connect to database.");
+
+            }
+            return searchResults;
+
+        }
         public string getLongUrl(string id)
         {
             string query = @"SELECT * FROM " + dbname + ".shortenedLinks "

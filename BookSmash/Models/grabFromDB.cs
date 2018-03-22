@@ -98,11 +98,7 @@ namespace BookSmash.Models
             return getPostCustom(query);
         }
 
-        public List<string> getSearchTitles(string search)
-        {
-            string query = @"SELECT TITLE FROM " + LD.databaseName + ".POST WHERE TITLE = '" + search + "';";
-            return getSearch(query);
-        }
+
 
         /// <summary>
         /// Method to get all Posts by title
@@ -231,7 +227,7 @@ namespace BookSmash.Models
                 MySqlDataReader reader = LD.executeGenericSQL(query);
                 while (reader.Read())
                 {
-                    searchResults.Add(reader.GetString("TITLE"));
+                    s
 
                 }
             } catch (Exception e)

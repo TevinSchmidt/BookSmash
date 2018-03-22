@@ -12,7 +12,7 @@ namespace BookSmash.Controllers
     {
         public ActionResult FrontPage()
         {
-           // LinkDatabase DB = LinkDatabase.getInstance();
+           LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
             var model = new UniversitiesModel();
