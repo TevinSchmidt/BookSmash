@@ -218,6 +218,7 @@
     <Content Include="Views\Authentication\LogOut.cshtml" />
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Authentication\AccountCreation.cshtml" />
+    <Content Include="Views\Home\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />

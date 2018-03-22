@@ -55,7 +55,7 @@ namespace BookSmash.Models
         LinkDatabase LD;
         public grabFromDB()
         {
-            string path = "Log.txt";
+            string path = @"C:\BookSmash\Log.txt";
             if (!File.Exists(path))
             {
                 // Create a file to write to.
@@ -355,6 +355,7 @@ namespace BookSmash.Models
         /// </summary>
         public void close()
         {
+            if(sw != null)
             sw.Close();
         }
     }

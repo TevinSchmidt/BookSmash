@@ -12,7 +12,7 @@ namespace BookSmash.Controllers
     {
         public ActionResult FrontPage()
         {
-            //LinkDatabase DB = LinkDatabase.getInstance();
+            LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
             var model = new UniversitiesModel();
@@ -47,13 +47,29 @@ namespace BookSmash.Controllers
 
         public ActionResult CreatePost()
         {
-            //LinkDatabase DB = LinkDatabase.getInstance();
+            LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
-            var model = new CreatePostModel();
+            var model = new UniversitiesModel();
             model.Universities = GetSelectListItems(universities);
 
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreatPost(UniversitiesModel model)
+        {
+            var universities = GetAllUniversities();
+
+            model.Universities = GetSelectListItems(universities);
+
+            if (ModelState.IsValid)
+            {
+                Session["UniversityModel"] = model;
+                return RedirectToAction("Done");
+            }
+
+            return View("FrontPage", model);
         }
 
         private IEnumerable<string> GetAllUniversities()

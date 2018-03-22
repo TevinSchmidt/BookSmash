@@ -32,9 +32,13 @@ namespace BookSmash.Models
         [Display(Name = "University")]
         public string University { get; set; }
 
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
         [Required]
         [Display(Name ="Price")]
         public string Price { get; set; }
+
 
         public IEnumerable<SelectListItem> Universities { get; set; }
 
