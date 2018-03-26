@@ -12,7 +12,6 @@ namespace BookSmash.Controllers
     {
         public ActionResult FrontPage()
         {
-           //LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
             var model = new UniversitiesModel();
@@ -73,10 +72,9 @@ namespace BookSmash.Controllers
         public ActionResult Results()
         {
             var model = Session["UniversityModel"] as UniversitiesModel;
-            // grabFromDB grabFromDB = new grabFromDB();
-            LinkDatabase database = LinkDatabase.getInstance();
-            List<string> results = new List<string>();
-            results = database.getSearchTitles(model.Title);
+            grabFromDB grabFromDB = new grabFromDB();
+
+            List<string> results = grabFromDB.getSearchTitles(model.Department, model.Title, model.Code, model.University);
 
             ViewBag.Textbooklist = results;
 

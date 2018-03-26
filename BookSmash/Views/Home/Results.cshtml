@@ -16,7 +16,7 @@
         <p style="font-size:larger">Results:</p> <br />
         foreach (string item in ViewBag.Texbooklist)
         {
-            @Html.ActionLink(item, "DisplayCompany/" + item, "CompanyListings")
+            @Html.ActionLink(item, "DisplayTextbook/" + item, "PostController")
             <br />
         }
     }

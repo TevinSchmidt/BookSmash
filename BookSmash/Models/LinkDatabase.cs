@@ -32,6 +32,7 @@ namespace BookSmash.Models
             {
                 MySqlCommand command = new MySqlCommand(query, connection);
                 MySqlDataReader reader = command.ExecuteReader();
+               // closeConnection();
                 if (reader.Read())
                     return reader;
                 else
@@ -72,7 +73,7 @@ namespace BookSmash.Models
                             @" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
                             + code + @"' AND P.UNI_Name = '" + university + @"';";
 
-            string query = @"SELECT TITLE FROM " + dbname + ".POST WHERE TITLE LIKE '%" + title + @"%' AND ;";
+          //  string query = @"SELECT TITLE FROM " + dbname + ".POST WHERE TITLE LIKE '%" + title + @"%' AND ;";
             List<string> searchResults = new List<string>();
             if (openConnection() == true)
             {

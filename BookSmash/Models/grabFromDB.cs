@@ -69,7 +69,7 @@ namespace BookSmash.Models
         /// </summary>
         /// <param name="Author"></param>
         /// <returns></returns>
-        public List<Post> getPostByAuthor(string Author)
+      /**  public List<Post> getPostByAuthor(string Author)
         {
             string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = '" + Author + "';";
             return getPostCustom(query);
@@ -109,7 +109,7 @@ namespace BookSmash.Models
         {
             string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE Title = '" + title + "';";
             return getPostCustom(query);
-        }
+        }*/
 
 
         /// <summary>
@@ -164,29 +164,47 @@ namespace BookSmash.Models
             }
         }
 
-        /// <summary>
-        /// Main method used to get posts from front page search
-        /// </summary>
-        /// <param name="courseName"></param>
-        /// <param name="title"></param>
-        /// <param name="courseCode"></param>
-        /// <param name="UniName"></param>
-        public List<Post> getPost(string department, string title, int courseCode, string UniName)
+        public List<string> getSearchTitles(string title, string department, string code, string university)
         {
+            LD = LinkDatabase.getInstance();
+            string query = @"Select P.TITLE FROM " + LD.databaseName + @".POST AS P WHERE P.TITLE LIKE '%" + title +
+                 @"%';";
+            // string query = @"SELECT P.TITLE FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
+                            //@" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
+                            //+ code + @"' AND P.UNI_Name = '" + university + @"';";
+            List<string> search = new List<string>();
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                while (reader.Read())
+                {
+                    search.Add(reader.GetString("Title"));
+                }
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return search;
+
+
+        }
+
+            /// <summary>
+            /// Main method used to get posts from front page search
+            /// </summary>
+            /// <param name="courseName"></param>
+            /// <param name="title"></param>
+            /// <param name="courseCode"></param>
+            /// <param name="UniName"></param>
+            public List<Post> getPost(string department, string title, string courseCode, string UniName)
+        {
+            LD = LinkDatabase.getInstance();
             string query = @"SELECT * FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
                 @" WHERE P.Title = U.Title AND P.Title = '" + title + @" AND U.Department = '" + department + @"' AND U.CourseNum = '" 
                 + courseCode + @"' AND P.UNI_Name = '" + UniName + @"';" ;
-            return getPostCustom(query);
-        }
 
-        /// <summary>
-        /// Method that will do the generic request. 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public List<Post> getPostCustom(string query)
-        {
-            LD = LinkDatabase.getInstance();
             List<Post> outPost = new List<Post>();
             Post temp;
             try
@@ -216,27 +234,7 @@ namespace BookSmash.Models
             return outPost;
         }
 
-        public List<string> getSearch(string query)
-        {
-            LD = LinkDatabase.getInstance();
-            List<string> searchResults = new List<string>();
-
-
-            try
-            {
-                MySqlDataReader reader = LD.executeGenericSQL(query);
-                while (reader.Read())
-                {
-                    s
-
-                }
-            } catch (Exception e)
-            {
-                sw.Write("Failure in getSearch: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-            }
-            LD.doClose();
-            return searchResults;
-        }    
+  
         /// <summary>
         /// Method to insert a new post into the db
         /// </summary>
