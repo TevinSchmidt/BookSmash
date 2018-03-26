@@ -66,9 +66,13 @@ namespace BookSmash.Models
                 throw new Exception("Could not connect to database.");
         }
 
-        public List<string> getSearchTitles(string search)
+        public List<string> getSearchTitles(string title, string department, string code, string university)
         {
-            string query = @"SELECT TITLE FROM " + dbname + ".POST WHERE TITLE = '" + search + "';";
+            string query = @"SELECT * FROM " + dbname + @".POST AS P, " + dbname + @".USED_FOR AS U" +
+                            @" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
+                            + code + @"' AND P.UNI_Name = '" + university + @"';";
+
+            string query = @"SELECT TITLE FROM " + dbname + ".POST WHERE TITLE LIKE '%" + title + @"%' AND ;";
             List<string> searchResults = new List<string>();
             if (openConnection() == true)
             {
@@ -90,68 +94,7 @@ namespace BookSmash.Models
             return searchResults;
 
         }
-        public string getLongUrl(string id)
-        {
-            string query = @"SELECT * FROM " + dbname + ".shortenedLinks "
-                + "WHERE id=" + id + ";";
 
-            if(openConnection() == true)
-            {
-                MySqlCommand command = new MySqlCommand(query, connection);
-                MySqlDataReader reader = command.ExecuteReader();
-
-                if(reader.Read() == true)
-                {
-                    return reader.GetString("original");
-                }
-                else
-                {
-                    //Throw an exception indicating no result was found
-                    throw new ArgumentException("No url in the database matches that id.");
-                }
-            }
-            else
-            {
-                throw new Exception("Could not connect to database.");
-            }
-        }
-
-        /// <summary>
-        /// Saves the longURL to the database to be accessed later via the id that is returned.
-        /// </summary>
-        /// <param name="longURL">The longURL to be saved</param>
-        /// <returns>The id of the url</returns>
-        public string saveLongURL(string longURL)
-        {
-            string query = @"INSERT INTO " + dbname + ".shortenedLinks(original) "
-                + @"VALUES('" + longURL + @"');";
-
-            if(openConnection() == true)
-            {
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.ExecuteNonQuery();
-
-                command.CommandText = "SELECT * FROM " + dbname + ".shortenedLinks WHERE id = LAST_INSERT_ID();";
-
-                MySqlDataReader reader = command.ExecuteReader();
-
-                if(reader.Read() == true)
-                {
-                    string result = reader.GetInt64("id").ToString();
-                    closeConnection();
-                    return result.ToString();
-                }
-                else
-                {
-                    closeConnection();
-                    throw new Exception("Error: LAST_INSERT_ID() did not work as intended.");
-                }
-            }
-            else
-            {
-                throw new Exception("Could not connect to database");
-            }
-        }
     }
 
     public partial class LinkDatabase : AbstractDatabase
@@ -191,7 +134,7 @@ namespace BookSmash.Models
                 new Column[]
                 {
                     new Column("Course_Title", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("CourseNum", "VARCHAR(15)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
                     new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, false, null, 1, 1)
                    
                 }
@@ -204,7 +147,7 @@ namespace BookSmash.Models
                 new Column[]
                 {
                     new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1),
-                    new Column("CourseNum", "INTEGER", new string[] {"NOT NULL"}, true, true, "COURSE", 1, 1),
+                    new Column("CourseNum", "VARCHAR(15)", new string[] {"NOT NULL"}, true, true, "COURSE", 1, 1),
                     new Column("Department", "CHAR(4)" ,new string[] {"NOT NULL"}, true, false, null, 1, 1)
                 }
             ),
@@ -260,34 +203,13 @@ namespace BookSmash.Models
                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
                    new Column("Date", "DATE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                   new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),
+                   //new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),
                    new Column("Book_Condition", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    new Column("Price", "DOUBLE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    new Column("Description", "VARCHAR(400)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL" }, false, true, "TEXTBOOK", 1, 1)
 
                 }
-            ),
-            new Table
-            (
-                dbname,
-                "PAID",
-                new Column[]
-                {
-                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE"}, true, true, "POST", 1, 1),
-                    new Column("Priority_Level", "INTEGER", new string[] {"NOT NULL", "UNIQUE", "AUTO_INCREMENT"}, false, false, null, 1, 1)
-                }
-
-            ),
-            new Table
-            (
-                dbname,
-                "REGULAR",
-                new Column[]
-                {
-                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE" }, true, true, "POST", 1, 1)
-                }
-              
             ),
             new Table
             (
