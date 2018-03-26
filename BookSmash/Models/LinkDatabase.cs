@@ -28,20 +28,14 @@ namespace BookSmash.Models
         /// <returns></returns>
         public MySqlDataReader executeGenericSQL(string query)
         {
-            if (openConnection())
+            if (!openConnection())
             {
-                MySqlCommand command = new MySqlCommand(query, connection);
-                MySqlDataReader reader = command.ExecuteReader();
-               // closeConnection();
-                if (reader.Read())
-                    return reader;
-                else
-                    throw new ArgumentException("query had no results");
-            }
-            else
                 throw new Exception("Could not connect to database.");
+            }  
+            MySqlCommand command = new MySqlCommand(query, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            return reader;
         }
-
         /// <summary>
         /// Method to close connection from outside
         /// </summary>
@@ -57,44 +51,16 @@ namespace BookSmash.Models
         public void executeNonQueryGeneric(string query)
         {
 
-            if (openConnection() == true)
+            if (!openConnection())
             {
+                throw new Exception("Could not connect to database.");
+            }
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.ExecuteNonQuery();
-                closeConnection();
-            }
-            else
-                throw new Exception("Could not connect to database.");
+                closeConnection();                
         }
 
-        public List<string> getSearchTitles(string title, string department, string code, string university)
-        {
-            string query = @"SELECT * FROM " + dbname + @".POST AS P, " + dbname + @".USED_FOR AS U" +
-                            @" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
-                            + code + @"' AND P.UNI_Name = '" + university + @"';";
 
-          //  string query = @"SELECT TITLE FROM " + dbname + ".POST WHERE TITLE LIKE '%" + title + @"%' AND ;";
-            List<string> searchResults = new List<string>();
-            if (openConnection() == true)
-            {
-                MySqlCommand command = new MySqlCommand(query, connection);
-                MySqlDataReader reader = command.ExecuteReader();
-                
-
-                while(reader.Read() == true)
-                {
-                    searchResults.Add(reader.GetString("TITLE")); ;
-                }
-                closeConnection();
-            }
-            else
-            {
-                throw new Exception("Could not connect to database.");
-
-            }
-            return searchResults;
-
-        }
 
     }
 
@@ -125,7 +91,7 @@ namespace BookSmash.Models
                 new Column[]
                 {
                     new Column("Name", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
-                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1) //On update cascade??
+                    new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1) 
                 }
             ),
             new Table
@@ -200,8 +166,8 @@ namespace BookSmash.Models
                 new Column[]
                 {
                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE", "AUTO_INCREMENT"}, true, false, null, 1, 1),
-                   new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
-                   new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
+                   new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
+                   new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
                    new Column("Date", "DATE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    //new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),

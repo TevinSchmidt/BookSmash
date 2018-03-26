@@ -167,11 +167,10 @@ namespace BookSmash.Models
         public List<string> getSearchTitles(string title, string department, string code, string university)
         {
             LD = LinkDatabase.getInstance();
-            string query = @"Select P.TITLE FROM " + LD.databaseName + @".POST AS P WHERE P.TITLE LIKE '%" + title +
-                 @"%';";
-            // string query = @"SELECT P.TITLE FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
-                            //@" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
-                            //+ code + @"' AND P.UNI_Name = '" + university + @"';";
+            string query = @"SELECT TITLE FROM POST WHERE TITLE = '" + title +  @"';";
+           // string query = @"SELECT P.TITLE FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
+                          //  @" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
+                           // + code + @"' AND P.UNI_Name = '" + university + @"';";
             List<string> search = new List<string>();
             try
             {
@@ -180,6 +179,9 @@ namespace BookSmash.Models
                 {
                     search.Add(reader.GetString("Title"));
                 }
+            } catch (MySqlException d)
+            {
+                sw.Write("Sql Error:" + d.Message);
             }
             catch (Exception e)
             {

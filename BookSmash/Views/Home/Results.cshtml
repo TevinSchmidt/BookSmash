@@ -7,16 +7,17 @@
 
 @if (ViewBag.Textbooklist != null)
 {
-    if (ViewBag.Textbooklist.companyNames.Length == 0)
+    if (ViewBag.Textbooklist.Count == 0)
     {
         <p>Your search did not retrun any results. Please try again.</p>
     }
     else
     {
         <p style="font-size:larger">Results:</p> <br />
-        foreach (string item in ViewBag.Texbooklist)
+        foreach (string item in ViewBag.Textbooklist)
         {
-            @Html.ActionLink(item, "DisplayTextbook/" + item, "PostController")
+            @Html.ActionLink(item, "Textbook/" + item, "PostController")
+            <p>@item</p>
             <br />
         }
     }

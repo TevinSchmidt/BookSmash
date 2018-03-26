@@ -8,7 +8,13 @@ using System.Web.Mvc;
 
 namespace BookSmash.Controllers
 {
-    public class HomeController : Controller
+    public class ResultsList
+    { 
+            public List<string> resultsList;
+    }
+
+
+public class HomeController : Controller
     {
         public ActionResult FrontPage()
         {
@@ -71,11 +77,14 @@ namespace BookSmash.Controllers
 
         public ActionResult Results()
         {
+
+
+
             var model = Session["UniversityModel"] as UniversitiesModel;
             grabFromDB grabFromDB = new grabFromDB();
 
-            List<string> results = grabFromDB.getSearchTitles(model.Department, model.Title, model.Code, model.University);
-
+            List<string> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
+            
             ViewBag.Textbooklist = results;
 
             return View("Results");
@@ -112,6 +121,8 @@ namespace BookSmash.Controllers
 
             return selectList;
         }
+
+
 
 
         public ActionResult Index()
