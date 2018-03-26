@@ -28,7 +28,7 @@ namespace BookSmash.Controllers
             {
                 //This is temp
                 Globals.setCurrentUser(Email);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Authentication");
             }
             else
             {
@@ -50,6 +50,37 @@ namespace BookSmash.Controllers
         public ActionResult AccountCreation()
         {
             return View("AccountCreation");
+        }
+
+        //This function creates a new user
+        public ActionResult CreationSubmittion(string Email, string Password, string Fname, string Lname,string Phone_num, string UNI_NAME)
+        {
+            grabFromDB DB = new grabFromDB();
+
+
+
+            //must check to see if user already exists
+            if (DB.getUserListByEmail(Email) != null)
+            {
+                ViewBag.UsernameTaken = "Email already used. Try a different one.";
+          
+                return View("AccountCreation");
+            }
+
+            if (DB.getUserListByPhone(Phone_num) != null)
+            {
+                ViewBag.PhoneNumTaken = "This phone number is already linked to an account. Please enter different one.";
+                
+                return View("AccountCreation");
+            }
+
+            
+            DB.insertUser(Phone_num, Email, UNI_NAME, Fname, Lname, Password);
+
+            ViewBag.SuccessfullyCreated = "Your account was successfully created. Thanks for joining! Please sign in to continue.";
+
+            return View("LogIn");
+           
         }
     }
 }

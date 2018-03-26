@@ -6,16 +6,17 @@
 
 <h2>Account Creation</h2>
 
-@using (Html.BeginForm("LogIn", "Authentication", FormMethod.Get,
+@using (Html.BeginForm("CreationSubmittion", "Authentication", FormMethod.Get,
     new { id = "accountCreationForm", onsubmit = "return validateCreationForm()" }))
 {
-    <p>The following personal information is required to make an account:</p>
+    <p>The following personal information is required to make an account. Your email address will act as your
+    username on BookSmash:</p>
     <br />
     <table>
         <tr>
             <td>Email:</td>
             <td>@Html.TextBox("Email")</td>
-            <td>*This will be your username on the site.</td>
+            <td style="color:red">@ViewBag.UsernameTaken</td>
         </tr>
         <tr>
             <td>Password:</td>
@@ -36,6 +37,7 @@
         <tr>
             <td>Phone Number:</td>
             <td>@Html.TextBox("Phone_Num")</td>
+            <td style="color:red">@ViewBag.PhoneNumTaken</td>
         </tr>
     </table>
     <br />
@@ -46,18 +48,6 @@
         <tr>
             <td>University Name:</td>
             <td>@Html.TextBox("UNI_NAME")</td>
-        </tr>
-        <tr>
-            <td>City:</td>
-            <td>@Html.TextBox("CITY")</td>
-        </tr>
-        <tr>
-            <td>Province/State:</td>
-            <td>@Html.Password("Prov_State")</td>
-        </tr>
-        <tr>
-            <td>Country:</td>
-            <td>@Html.Password("confirmPassword")</td>
         </tr>
     </table>
     <br />
