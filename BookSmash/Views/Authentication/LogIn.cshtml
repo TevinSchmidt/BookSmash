@@ -5,10 +5,14 @@
     ViewBag.Title = "LogIn";
 }
 
-<h2>ViewBag.Title</h2>
+<br />
+@ViewBag.SuccessfullyCreated
+<p> </p>
+<p> </p>
+<br />
 
-@using (Html.BeginForm("LogInConfirmation", "Authentication", FormMethod.Get,
-    new { id = "credentialForm", onsubmit = "return validatecredentialForm()" }))
+@using (Html.BeginForm("LogIn", "Authentication", FormMethod.Get,
+    new { id = "credentialForm"}))
 {
     <table>
         <tr>
@@ -20,12 +24,11 @@
             <td>@Html.Password("Password")</td>
         </tr>
     </table>
-
+    <br />
+    <p style="color:red">@ViewBag.LogInError</p>
+    <br />
     <input type="submit" value="Log In" />
     <br />
-    <a href="/Authentication/CreateAccount/">Create an Account?</a>
-    <br />
-    <p>@ViewBag.LoginResponse</p>
-    <br />
+
 
 }

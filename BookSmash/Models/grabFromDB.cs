@@ -55,7 +55,9 @@ namespace BookSmash.Models
         LinkDatabase LD;
         public grabFromDB()
         {
-            string path = @"C:\BookSmash\Log.txt";
+
+            string path = Directory.GetCurrentDirectory() + "\\logs\\Log.txt";
+
             if (!File.Exists(path))
             {
                 // Create a file to write to.
@@ -341,7 +343,92 @@ namespace BookSmash.Models
                     users.Add(temp);
                 }
             }
-            catch(Exception e)
+            catch (ArgumentException e)
+            {
+                LD.doClose();
+                return null;
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return users;
+        }
+
+        /// <summary>
+        /// This is design to check if a username is already taken, should return empty if username is taken already.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public List<User> getUserListByEmail(string username)
+        {
+            LD = LinkDatabase.getInstance();
+            List<User> users = new List<User>();
+            User temp;
+            string customQuerry = @"SELECT * FROM " + LD.databaseName + @".USER WHERE Email = '" + username + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(customQuerry);
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+
+
+                        temp = new User();
+                        temp.phone = reader.GetString("Phone_Num");
+                        temp.email = reader.GetString("Email");
+                        temp.Uni = reader.GetString("UNI_NAME");
+                        temp.fname = reader.GetString("Fname");
+                        temp.lname = reader.GetString("Lname");
+                        users.Add(temp);
+                    }
+                }
+            }catch(ArgumentException e)
+            {
+                LD.doClose();
+                return null;
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return users;
+        }
+
+        public List<User> getUserListByPhone(string Phone_Num)
+        {
+            LD = LinkDatabase.getInstance();
+            List<User> users = new List<User>();
+            User temp;
+            string customQuerry = @"SELECT * FROM " + LD.databaseName + @".USER WHERE Phone_Num = '" + Phone_Num + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(customQuerry);
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+
+
+                        temp = new User();
+                        temp.phone = reader.GetString("Phone_Num");
+                        temp.email = reader.GetString("Email");
+                        temp.Uni = reader.GetString("UNI_NAME");
+                        temp.fname = reader.GetString("Fname");
+                        temp.lname = reader.GetString("Lname");
+                        users.Add(temp);
+                    }
+                }
+            }
+            catch (ArgumentException e)
+            {
+                LD.doClose();
+                return null;
+            }
+            catch (Exception e)
             {
                 sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
@@ -371,6 +458,8 @@ namespace BookSmash.Models
             {
                 sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
+
+           
         }
 
         /// <summary>

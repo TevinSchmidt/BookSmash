@@ -19,11 +19,12 @@ public class HomeController : Controller
         public ActionResult FrontPage()
         {
 
-            var universities = GetAllUniversities();
-            var model = new UniversitiesModel();
-            model.Universities = GetSelectListItems(universities);
+            // var universities = GetAllUniversities();
+            // var model = new UniversitiesModel();
+            // model.Universities = GetSelectListItems(universities);
 
-            return View(model);
+            //return View(model);
+            return View("FrontPage");
         }
 
         [HttpPost]
