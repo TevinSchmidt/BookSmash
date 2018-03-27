@@ -12,7 +12,7 @@
 <br />
 
 @using (Html.BeginForm("LogIn", "Authentication", FormMethod.Get,
-    new { id = "credentialForm", onsubmit = "return validatecredentialForm()" }))
+    new { id = "credentialForm"}))
 {
     <table>
         <tr>
@@ -24,7 +24,9 @@
             <td>@Html.Password("Password")</td>
         </tr>
     </table>
-
+    <br />
+    <p style="color:red">@ViewBag.LogInError</p>
+    <br />
     <input type="submit" value="Log In" />
     <br />
 

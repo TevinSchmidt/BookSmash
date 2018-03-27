@@ -318,7 +318,12 @@ namespace BookSmash.Models
                     users.Add(temp);
                 }
             }
-            catch(Exception e)
+            catch (ArgumentException e)
+            {
+                LD.doClose();
+                return null;
+            }
+            catch (Exception e)
             {
                 sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
@@ -364,7 +369,7 @@ namespace BookSmash.Models
             {
                 sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
-           
+            LD.doClose();
             return users;
         }
 
@@ -402,7 +407,7 @@ namespace BookSmash.Models
             {
                 sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
-
+            LD.doClose();
             return users;
         }
 
