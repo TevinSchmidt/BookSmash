@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookSmash.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,13 @@ namespace BookSmash.Controllers
 {
     public class PostController : Controller
     {
-        // GET: Post
-        public ActionResult Index()
+        public ActionResult Textbook(string id)
         {
-            return View();
+            grabFromDB grab = new grabFromDB();
+            Post post = grab.getPost(id);
+            ViewBag.Post = post;
+
+            return View("Textbook");
         }
     }
 }

@@ -48,11 +48,17 @@ namespace BookSmash.Models
         public string email;
         public string Uni;
         public DateTime date;
-        public string bookType;
+       // public string bookType;
         public string condition;
         public double price;
         public string description;
         public string Title;
+    }
+
+    public class Result
+    {
+        public string ID;
+        public string title;
     }
 
     public class grabFromDB
@@ -208,20 +214,24 @@ namespace BookSmash.Models
             }
         }
 
-        public List<string> getSearchTitles(string title, string department, string code, string university)
+        public List<Result> getSearchTitles(string title, string department, string code, string university)
         {
             LD = LinkDatabase.getInstance();
-            string query = @"SELECT TITLE FROM POST WHERE TITLE = '" + title +  @"';";
-           // string query = @"SELECT P.TITLE FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
-                          //  @" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
-                           // + code + @"' AND P.UNI_Name = '" + university + @"';";
-            List<string> search = new List<string>();
+            //string query = @"SELECT TITLE FROM POST WHERE TITLE = '" + title +  @"';";
+           string query = @"SELECT P.TITLE, P.ID FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
+                            @" WHERE P.Title = U.Title AND P.Title LIKE '%" + title + @"%' AND U.Department = '" + department + @"' AND U.CourseNum = '"
+                            + code + @"' AND P.UNI_Name = '" + university + @"';";
+            List<Result> search = new List<Result>();
             try
             {
+                Result temp;
                 MySqlDataReader reader = LD.executeGenericSQL(query);
                 while (reader.Read())
                 {
-                    search.Add(reader.GetString("Title"));
+                    temp = new Result();
+                    temp.ID = reader.GetInt32("ID").ToString();
+                    temp.title = reader.GetString("Title");
+                    search.Add(temp);
                 }
             } catch (MySqlException d)
             {
@@ -244,32 +254,35 @@ namespace BookSmash.Models
             /// <param name="title"></param>
             /// <param name="courseCode"></param>
             /// <param name="UniName"></param>
-            public List<Post> getPost(string department, string title, string courseCode, string UniName)
+            //public List<Post> getPost(string department, string title, string courseCode, string UniName)
+            public Post getPost(string id)
         {
             LD = LinkDatabase.getInstance();
-            string query = @"SELECT * FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
-                @" WHERE P.Title = U.Title AND P.Title = '" + title + @" AND U.Department = '" + department + @"' AND U.CourseNum = '" 
-                + courseCode + @"' AND P.UNI_Name = '" + UniName + @"';" ;
 
-            List<Post> outPost = new List<Post>();
-            Post temp;
+            string query = @"SELECT * FROM " + LD.databaseName + @".POST WHERE ID = '" + id + @"';";
+            //string query = @"SELECT * FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
+               // @" WHERE P.Title = U.Title AND P.Title = '" + title + @" AND U.Department = '" + department + @"' AND U.CourseNum = '" 
+                //+ courseCode + @"' AND P.UNI_Name = '" + UniName + @"';" ;
+
+            //List<Post> outPost = new List<Post>();
+            Post temp = new Post();
             try
             {
                 MySqlDataReader reader = LD.executeGenericSQL(query);
-                while (reader.Read())
+                if (reader.Read())
                 {
-                    temp = new Post();
+                    
                     temp.ID = reader.GetInt32("ID");
                     temp.Phone = reader.GetString("Phone_Num");
                     temp.email = reader.GetString("Email");
                     temp.Uni = reader.GetString("UNI_NAME");
                     temp.date = reader.GetDateTime("Date");
-                    temp.bookType = reader.GetString("BookType");
+                   // temp.bookType = reader.GetString("BookType");
                     temp.condition = reader.GetString("Book_Condition");
                     temp.price = reader.GetDouble("Price");
                     temp.description = reader.GetString("Description");
                     temp.Title = reader.GetString("Title");
-                    outPost.Add(temp);
+                   // outPost.Add(temp);
                 }
             }
             catch (Exception e)
@@ -277,7 +290,7 @@ namespace BookSmash.Models
                 sw.Write("Failure in getPost: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
-            return outPost;
+            return temp;
         }
 
   
@@ -289,7 +302,7 @@ namespace BookSmash.Models
         {
             LD = LinkDatabase.getInstance();
             string query = @"INSERT INTO " + LD.databaseName + @".POST(Phone_Num, Email, UNI_NAME, Date, BookType, Book_Condition, Price, Description, Title)" + 
-                @"VALUES('" + post.Phone + @"','" + post.email + @"','" + post.Uni + @"','" + post.date + @"','" + post.bookType + @"','" + post.condition + @"','" + post.price + @"','" + post.description + 
+                @"VALUES('" + post.Phone + @"','" + post.email + @"','" + post.Uni + @"','" + post.date + @"','" + post.condition + @"','" + post.price + @"','" + post.description + 
                 @"','" + post.Title +  @"');";
             try
             {

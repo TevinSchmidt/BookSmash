@@ -234,6 +234,7 @@
     <Content Include="Views\Authentication\AccountCreation.cshtml" />
     <Content Include="Views\Home\Results.cshtml" />
     <Content Include="Views\Authentication\AdminPage.cshtml" />
+    <Content Include="Views\Post\Textbook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />
@@ -243,7 +244,6 @@
     <Folder Include="Class\" />
     <Folder Include="Universities\" />
     <Folder Include="Views\CreatePostModel\" />
-    <Folder Include="Views\Post\" />
     <Folder Include="Views\University\" />
   </ItemGroup>
   <ItemGroup>
