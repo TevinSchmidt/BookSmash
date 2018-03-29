@@ -143,8 +143,18 @@ namespace BookSmash.Models
                     new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
                     new Column("Fname","VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                     new Column("Lname","VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("Password","VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Password","VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1)
                 }
+            ),
+            new Table
+            (
+                dbname,
+                "ADMIN",
+                new Column[]
+                {
+                    new Column ("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, true, true, "USER", 1, 1),
+                    new Column ("Role", "VARCHAR(200)", new string[] {}, false, false, null, 1, 1)
+                }       
             ),
             new Table
             (

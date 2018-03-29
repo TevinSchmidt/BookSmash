@@ -33,8 +33,24 @@
                     @if (BookSmash.Models.Globals.isLoggedIn() == true)
                      {
                         //Add ActionLink here for things that appear when logged in
-                        <li>@Html.ActionLink("Log Out", "LogOut", "Authentication")</li>
+                        
+                        <li>@Html.ActionLink("Favourites", "myFavourites", "Home")</li>
+                        <li>@Html.ActionLink("MyPosts", "MyPosts", "Home")</li>
+
+
                      }
+                    @if (BookSmash.Models.Globals.isAdmin() == true)
+                    {
+                        //Add ActionLink here for things that appear when admin is logged in
+                        <li>@Html.ActionLink("Admin Page", "AdminPage", "Authentication")</li>
+                    }
+
+                    
+                    @if (BookSmash.Models.Globals.isLoggedIn() == true)
+                    {
+                        //this one is here so that it always appears at the end of the list
+                        <li>@Html.ActionLink("Log Out", "LogOut", "Authentication")</li>
+                    }
                 </ul>
             </div>
         </div>
