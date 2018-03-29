@@ -81,7 +81,7 @@ namespace BookSmash.Models
                 new Column[]
                 {
                     new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
-                    new Column("Edition", "INTEGER", new string[] {"NOT NULL"}, false, false, null, 1, 1)
+                    new Column("Edition", "INTEGER", new string[] {"NOT NULL"}, true, false, null, 1, 1)
                 }
             ),
             new Table
@@ -152,8 +152,8 @@ namespace BookSmash.Models
                 "REVIEW",
                 new Column[]
                 {
-                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL", "UNIQUE"}, false, true, "USER", 1, 1),
-                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, true, true, "USER", 1, 1),
+                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
+                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
                     new Column("Reviewer_Email", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                     new Column("Description", "VARCHAR(400)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                     new Column("Rating", "INTEGER", new string[] {"NOT NULL"}, false, false, null, 1, 1)
