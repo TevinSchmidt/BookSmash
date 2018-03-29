@@ -26,4 +26,7 @@ namespace BookSmash.Models
         public IEnumerable<SelectListItem> Universities { get; set; }
         
     }
+
+
+
 }

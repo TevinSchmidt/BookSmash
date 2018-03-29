@@ -27,6 +27,12 @@ namespace BookSmash.Models
         public string Uni;
     }
 
+    public class Admin
+    {
+        public string email;
+        public string role;
+    }
+
     public class UniData
     {
         public string name;
@@ -122,6 +128,42 @@ namespace BookSmash.Models
         {
             LD = LinkDatabase.getInstance();
             string query = @"SELECT* FROM " + LD.databaseName + ".UNIVERSITY";
+            List<UniData> output = new List<UniData>();
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                UniData temp;
+                while (reader.Read())
+                {
+                    temp = new UniData();
+                    temp.name = reader.GetString("UNI_NAME");
+                    temp.city = reader.GetString("City");
+                    temp.prov_state = reader.GetString("Prov_State");
+                    temp.country = reader.GetString("Country");
+                    output.Add(temp);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                LD.doClose();
+                return null;
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return output;
+        }
+
+        /// <summary>
+        /// Method to get all the universites in a list
+        /// </summary>
+        /// <returns></returns>
+        public List<UniData> getUniversitiesByName(string UNI_NAME)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT * FROM " + LD.databaseName + @".UNIVERSITY WHERE UNI_NAME = '" + UNI_NAME + @"';";
             List<UniData> output = new List<UniData>();
             try
             {
@@ -385,10 +427,6 @@ namespace BookSmash.Models
                         users.Add(temp);
                     }
                 }
-            }catch(ArgumentException e)
-            {
-                LD.doClose();
-                return null;
             }
             catch (Exception e)
             {
@@ -423,11 +461,6 @@ namespace BookSmash.Models
                     }
                 }
             }
-            catch (ArgumentException e)
-            {
-                LD.doClose();
-                return null;
-            }
             catch (Exception e)
             {
                 sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
@@ -460,6 +493,67 @@ namespace BookSmash.Models
             }
 
            
+        }
+
+        /// <summary>
+        /// This retrieves an admin by its email address
+        /// </summary>
+        /// <param name="Phone_Num"></param>
+        /// <returns></returns>
+        public List<Admin> getAdminByEmail(string Email)
+        {
+            LD = LinkDatabase.getInstance();
+            List<Admin> users = new List<Admin>();
+            Admin temp;
+            string customQuerry = @"SELECT * FROM " + LD.databaseName + @".ADMIN WHERE Email = '" + Email + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(customQuerry);
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+                        temp = new Admin();
+                     
+                        temp.email = reader.GetString("Email");
+                        temp.role = reader.GetString("Role");
+
+                        users.Add(temp);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return users;
+        }
+
+        /// <summary>
+        /// This function inserts an admin into the database
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="email"></param>
+        /// <param name="uni"></param>
+        /// <param name="fname"></param>
+        /// <param name="lname"></param>
+        /// <param name="PW"></param>
+        public void insertAdmin(string email, string role)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"INSERT INTO " + LD.databaseName + ".ADMIN(Email, Role)" +
+                @"VALUES('" + email + "','"  + role + "');";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+
+
         }
 
         /// <summary>
