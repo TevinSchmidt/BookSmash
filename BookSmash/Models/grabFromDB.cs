@@ -62,7 +62,7 @@ namespace BookSmash.Models
         public grabFromDB()
         {
 
-            string path = Directory.GetCurrentDirectory() + "\\logs\\Log.txt";
+            string path = @"C:\BookSmash\Log.txt";
 
             if (!File.Exists(path))
             {
