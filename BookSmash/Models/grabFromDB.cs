@@ -63,10 +63,15 @@ namespace BookSmash.Models
         {
 
             string path = @"C:\BookSmash\Log.txt";
+            string directory = @"C:\BookSmash";
 
             if (!File.Exists(path))
             {
                 // Create a file to write to.
+                if (!Directory.Exists(directory))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(directory);
+                }
                 sw = File.CreateText(path);
             }
             
