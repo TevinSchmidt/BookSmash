@@ -8,11 +8,16 @@ using System.Web.Mvc;
 
 namespace BookSmash.Controllers
 {
-    public class HomeController : Controller
+    public class ResultsList
+    { 
+            public List<string> resultsList;
+    }
+
+
+public class HomeController : Controller
     {
         public ActionResult FrontPage()
         {
-            //LinkDatabase DB = LinkDatabase.getInstance();
 
             // var universities = GetAllUniversities();
             // var model = new UniversitiesModel();
@@ -32,7 +37,7 @@ namespace BookSmash.Controllers
             if (ModelState.IsValid)
             {
                 Session["UniversityModel"] = model;
-                return RedirectToAction("Done");
+                return RedirectToAction("Results");
             }
 
             return View("FrontPage", model);
@@ -48,13 +53,42 @@ namespace BookSmash.Controllers
 
         public ActionResult CreatePost()
         {
-            //LinkDatabase DB = LinkDatabase.getInstance();
+           // LinkDatabase DB = LinkDatabase.getInstance();
 
             var universities = GetAllUniversities();
-            var model = new CreatePostModel();
+            var model = new UniversitiesModel();
             model.Universities = GetSelectListItems(universities);
 
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreatPost(UniversitiesModel model)
+        {
+            var universities = GetAllUniversities();
+            model.Universities = GetSelectListItems(universities);
+
+            if (ModelState.IsValid)
+            {
+                Session["UniversityModel"] = model;
+                return RedirectToAction("Done");
+            }
+            return View("FrontPage", model);
+        }
+
+        public ActionResult Results()
+        {
+
+
+
+            var model = Session["UniversityModel"] as UniversitiesModel;
+            grabFromDB grabFromDB = new grabFromDB();
+
+            List<string> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
+            
+            ViewBag.Textbooklist = results;
+
+            return View("Results");
         }
 
         private IEnumerable<string> GetAllUniversities()
@@ -88,6 +122,8 @@ namespace BookSmash.Controllers
 
             return selectList;
         }
+
+
 
 
         public ActionResult Index()
