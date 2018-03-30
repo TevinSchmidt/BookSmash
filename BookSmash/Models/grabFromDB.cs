@@ -53,6 +53,8 @@ namespace BookSmash.Models
         public double price;
         public string description;
         public string Title;
+        public string department;
+        public string code; 
     }
 
     public class Result
@@ -259,7 +261,9 @@ namespace BookSmash.Models
         {
             LD = LinkDatabase.getInstance();
 
-            string query = @"SELECT * FROM " + LD.databaseName + @".POST WHERE ID = '" + id + @"';";
+            string query = @"SELECT * FROM " + LD.databaseName + @".POST NATURAL JOIN " + LD.databaseName +
+                @".USED_FOR WHERE " + LD.databaseName + @".POST.ID = '" + id + @"';";
+            //string query = @"SELECT * FROM " + LD.databaseName + @".POST WHERE ID = '" + id + @"';";
             //string query = @"SELECT * FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
                // @" WHERE P.Title = U.Title AND P.Title = '" + title + @" AND U.Department = '" + department + @"' AND U.CourseNum = '" 
                 //+ courseCode + @"' AND P.UNI_Name = '" + UniName + @"';" ;
@@ -282,6 +286,10 @@ namespace BookSmash.Models
                     temp.price = reader.GetDouble("Price");
                     temp.description = reader.GetString("Description");
                     temp.Title = reader.GetString("Title");
+                    temp.department = reader.GetString("Department");
+                    temp.code = reader.GetString("CourseNum");
+
+
                    // outPost.Add(temp);
                 }
             }

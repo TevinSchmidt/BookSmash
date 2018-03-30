@@ -243,7 +243,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Class\" />
     <Folder Include="Universities\" />
-    <Folder Include="Views\CreatePostModel\" />
     <Folder Include="Views\University\" />
   </ItemGroup>
   <ItemGroup>
