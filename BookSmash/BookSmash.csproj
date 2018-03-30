@@ -162,12 +162,14 @@
     </Compile>
     <Compile Include="Models\AbstractDatabase.cs" />
     <Compile Include="Models\AccountCreation.cs" />
+    <Compile Include="Models\AdminModel.cs" />
     <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\Debug.cs" />
     <Compile Include="Models\grabFromDB.cs" />
     <Compile Include="Models\LinkDatabase.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\UniversitiesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -273,7 +275,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52673</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -1,4 +1,7 @@
 ﻿<script type="text/javascript" src="~/Scripts/Authentication/AuthenticationFunctions.js"></script>
+
+@model BookSmash.Models.LoginModel
+
 @{
     ViewBag.Title = "Index";
 }
@@ -15,7 +18,7 @@
         padding: 20px;
         margin-top: 10px;
         text-align: center;
-        background-color: lightgrey;
+        background-color: aliceblue;
     }
 
     .mid {
@@ -30,7 +33,7 @@
         padding: 20px;
         margin-top: 10px;
         text-align: center;
-        background-color: lightgrey;
+        background-color: aliceblue;
     }
 </style>
 
@@ -39,24 +42,23 @@
     <div class="left">
         <h2 style="text-align:left">Login</h2>
         <br />
-        @using (Html.BeginForm("LogIn", "Authentication", FormMethod.Get,
-    new { id = "credentialForm"}))
-    {
+        @using (Html.BeginForm("LogIn", "Authentication", FormMethod.Post, new { role = "form" }))
+        {
         <table>
             <tr>
                 <td>Email:</td>
-                <td>@Html.TextBox("Email")</td>
+                <td>@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })</td>
             </tr>
             <tr>
                 <td>Password:</td>
-                <td>@Html.Password("Password")</td>
+                <td>@Html.TextBoxFor(model => model.Password, new { @class = "form-control" })</td>
             </tr>
         </table>
         <br />
         <p style="color:red">@ViewBag.LogInError</p>
-        <input type="submit" value="LogIn" />
+        <input type="submit" class="btn btn-default" value="LogIn" />
         <br />
-}
+        }
     </div>
     <div class="mid">
         <p> </p>

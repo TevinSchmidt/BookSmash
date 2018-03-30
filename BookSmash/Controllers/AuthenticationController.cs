@@ -22,16 +22,17 @@ namespace BookSmash.Controllers
 
 
         //This function is called when there is a logIn request 
-        public ActionResult LogIn(string Email, string Password)
+        [HttpPost]
+        public ActionResult LogIn(LoginModel m)
         {
-            if(Email == "" || Password == "")
+            if(m.Email == "" || m.Password == "")
             {
                 ViewBag.LogInError = "Username or password incorrect. Try again.";
             }
 
             grabFromDB DB = new grabFromDB();
 
-            List<User> list = DB.getUsers(Email, Password);
+            List<User> list = DB.getUsers(m.Email, m.Password);
 
             if(list.Count == 0)
             {
@@ -40,8 +41,8 @@ namespace BookSmash.Controllers
             }
             else
             {
-                Globals.setCurrentUser(Email);
-                return RedirectToAction("Index", "Authentication");
+                Globals.setCurrentUser(m.Email);
+                return RedirectToAction("FrontPage", "Home");
             }
 
             
@@ -75,24 +76,14 @@ namespace BookSmash.Controllers
             if (m.Email == "" || m.Password == "" || m.confirmPassword == "" || m.Fname == "" || m.Lname == "" || m.Phone_Num == "")
             {
                 ViewBag.EmptyFields = "Must not leave any blank. Try again.";
-                return View("AccountCreation");
+                return View("AccountCreation", m);
             }
-
-            //check for invalid uni, this is temporary
-            /*
-            if(UNI_NAME == "")
-            {
-                ViewBag.InvalidUNI = "Please select a University from the drop down.";
-                return View("AccountCreation");
-            }*/
-
-          
 
             //check for matching passwords
             if (!m.Password.Equals(m.confirmPassword))
             {
                 ViewBag.PasswordDontMatch = "Passwords did not match. Try again.";
-                return View("AccountCreation");
+                return View("AccountCreation", m);
             }
 
             //Check for invalid email
@@ -103,7 +94,7 @@ namespace BookSmash.Controllers
             catch (FormatException)
             {
                 ViewBag.InvalidEmail = "This is not a valid email address. Try again.";
-                return View("AccountCreation");
+                return View("AccountCreation", m);
             }
 
             //Check for invalid phone_num - TODO need to fix to make areacode manditory 
@@ -111,6 +102,7 @@ namespace BookSmash.Controllers
             if (!rg.IsMatch(m.Phone_Num))
             {
                 ViewBag.InvalidPhone = "This is not a valid phone number. Try again.";
+                return View("AccountCreation", m);
             }
 
             grabFromDB DB = new grabFromDB();
@@ -121,14 +113,14 @@ namespace BookSmash.Controllers
             {
                 ViewBag.InvalidEmail = "Email already used. Try a different one.";
           
-                return View("AccountCreation");
+                return View("AccountCreation", m);
             }
 
             if (DB.getUserListByPhone(m.Phone_Num).Count != 0)
             {
                 ViewBag.InvalidPhone = "This phone number is already linked to an account. Please enter different one.";
                 
-                return View("AccountCreation");
+                return View("AccountCreation", m);
             }
 
             
@@ -136,70 +128,77 @@ namespace BookSmash.Controllers
 
             ViewBag.SuccessfullyCreated = "Your account was successfully created. Thanks for joining! Please sign in to continue.";
 
-            return View("LogIn");
+            LoginModel model = new LoginModel();
+
+            return View("LogIn", model);
            
         }
 
         public ActionResult AdminPage()
         {
+            AdminModel model = new AdminModel();
 
-            return View("AdminPage");
+            return View("AdminPage", model);
         }
 
-        public ActionResult AdminEntry(string UserEmail, string Role)
+        [HttpPost]
+        public ActionResult AdminEntry(AdminModel m)
         {
             //check for blank entries
-            if(UserEmail == "" || Role == "")
+            if(m.UserEmail == "" || m.Role == "")
             {
                 ViewBag.EmptyFielsAdnminEntry = "Must not leave any Admin entry fields blank. Try again.";
-                return View("AdminPage");
+                return View("AdminPage", m);
             }
 
             grabFromDB DB = new grabFromDB();
 
             //check if valid user
-            if(DB.getUserListByEmail(UserEmail).Count == 0)
+            if(DB.getUserListByEmail(m.UserEmail).Count == 0)
             {
                 ViewBag.UserDoesNotExist = "This email is not associated with a current account. Try again.";
-                return View("AdminPage");
+                return View("AdminPage",m);
             }
             else
             {
-                DB.insertAdmin(UserEmail, Role);
+                DB.insertAdmin(m.UserEmail, m.Role);
                 ViewBag.AdminSubmitMessage = "Admin successfully added.";
-                return View("AdminPage");
+                AdminModel model = new AdminModel();
+                return View("AdminPage", model);
             }
         }
 
-        public ActionResult UniEntry(string UNI_NAME, string City, string Prov_State, string Country)
+        [HttpPost]
+        public ActionResult UniEntry(AdminModel m)
         {
 
             //check for blank entries
-            if (UNI_NAME == "" || City == "" || Prov_State == "" || Country == "" )
+            if (m.UNI_NAME == "" || m.City == "" || m.Prov_State == "" || m.Country == "" )
             {
                 ViewBag.EmptyFields = "Must not leave any University entry fields blank. Try again.";
-                return View("AdminPage");
+                return View("AdminPage", m);
             }
 
             //check for two letter province
-            if(Prov_State.Length != 2)
+            if(m.Prov_State.Length != 2)
             {
                 ViewBag.IncorectProv = "Province must be two letters. AB, BC, ect. Try Again.";
-                return View("AdminPage");
+                return View("AdminPage", m);
             }
 
             grabFromDB DB = new grabFromDB();
 
-            if (DB.getUniversitiesByName(UNI_NAME).Count != 0)
+            if (DB.getUniversitiesByName(m.UNI_NAME).Count != 0)
             {
                 ViewBag.InvalidUni = "This university has already been entered. Try again.";
-                return View("AdminPage");
+                return View("AdminPage", m);
             }
             else
             {
-                DB.insertUniversity(UNI_NAME, City, Prov_State, Country);
+                DB.insertUniversity(m.UNI_NAME, m.City, m.Prov_State, m.Country);
                 ViewBag.UniSubmitMessage = "University successfully added.";
-                return View("AdminPage");
+                AdminModel model = new AdminModel();
+                return View("AdminPage", model);
             }
 
         }
