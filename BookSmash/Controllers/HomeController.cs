@@ -31,7 +31,6 @@ public class HomeController : Controller
         public ActionResult FrontPage(UniversitiesModel model)
         {
             var universities = GetAllUniversities();
-
             model.Universities = GetSelectListItems(universities);
 
             if (ModelState.IsValid)
@@ -77,13 +76,10 @@ public class HomeController : Controller
 
         public ActionResult Results()
         {
-
-
-
             var model = Session["UniversityModel"] as UniversitiesModel;
             grabFromDB grabFromDB = new grabFromDB();
 
-            List<string> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
+            List<Result> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
             
             ViewBag.Textbooklist = results;
 

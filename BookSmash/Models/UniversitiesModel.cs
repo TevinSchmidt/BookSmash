@@ -7,7 +7,7 @@ namespace BookSmash.Models
 {
     public class UniversitiesModel
     {
-        [Required]
+        
         [Display(Name ="Title")]
         public string Title { get; set; }
 
