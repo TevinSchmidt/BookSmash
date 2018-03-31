@@ -170,6 +170,7 @@
     <Compile Include="Models\grabFromDB.cs" />
     <Compile Include="Models\LinkDatabase.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\UniversitiesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -224,8 +225,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\ChangePW.cshtml" />
     <Content Include="Views\Home\FrontPage.cshtml" />
     <Content Include="Views\Home\CreatePost.cshtml" />
     <Content Include="Views\Home\MyPosts.cshtml" />
@@ -237,6 +236,7 @@
     <Content Include="Views\Home\Results.cshtml" />
     <Content Include="Views\Authentication\AdminPage.cshtml" />
     <Content Include="Views\Post\Textbook.cshtml" />
+    <Content Include="Views\Post\ReviewUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />

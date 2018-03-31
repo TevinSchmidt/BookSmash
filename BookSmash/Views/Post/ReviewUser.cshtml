@@ -1,0 +1,43 @@
+﻿
+@model BookSmash.Models.ReviewModel
+
+@{
+    ViewBag.Title = "ReviewUser";
+}
+
+
+
+@using (Html.BeginForm("ReviewSubmition", "Post", FormMethod.Post, new { role = "form" }))
+{
+    <br />
+    <p>
+
+        As admin you may enter a university. Please fill out the required form below:
+    </p>
+    <p style="color:red">@ViewBag.EmptyFields</p>
+    <br />
+    <table>
+        <tr>
+            <td>Your Email:</td>
+            <td>@Html.TextBoxFor(model => model.Reviewer_Email, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidEmail</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>@Html.TextBoxFor(model => model.Description, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.DescriptionLengthError</td>
+        </tr>
+        <tr>
+            <td>Rating:</td>
+            <td>@Html.DropDownListFor(model => model.Rating, Model.ratings, "-Please Select A Rating-", new { @class = "form-control" })</td>
+            <td>(1-lowest and 5-best</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" class="btn btn-default" value="Submit Review" />
+    <br />
+    <p>@ViewBag.UniSubmitMessage</p>
+    <br />
+}
+
+<br />
