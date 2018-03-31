@@ -30,6 +30,7 @@ namespace BookSmash.Controllers
                 ViewBag.LogInError = "Username or password incorrect. Try again.";
             }
 
+
             grabFromDB DB = new grabFromDB();
 
             List<User> list = DB.getUsers(m.Email, m.Password);
@@ -79,10 +80,40 @@ namespace BookSmash.Controllers
                 return View("AccountCreation", m);
             }
 
+            //Check lengths
+            if (m.Phone_Num.Length > 14)
+            {
+                ViewBag.InvalidPhone = "Phone number too long. Try again.";
+                return View("AccountCreation", m);
+            }
+
+            if (m.Email.Length > 100)
+            {
+                ViewBag.InvalidEmail = "Email too long. Try again.";
+                return View("AccountCreation", m);
+            }
+
+            if (m.Fname.Length > 100)
+            {
+                ViewBag.InvalidFname = "First name too long. Try again.";
+                return View("AccountCreation", m);
+            }
+
+            if (m.Lname.Length > 100)
+            {
+                ViewBag.InvalidLname = "Last name too long. Try again.";
+                return View("AccountCreation", m);
+            }
+
+            if (m.Password.Length > 100)
+            {
+                ViewBag.InvalidPassword = "Password too long. Try again.";
+            }
+
             //check for matching passwords
             if (!m.Password.Equals(m.confirmPassword))
             {
-                ViewBag.PasswordDontMatch = "Passwords did not match. Try again.";
+                ViewBag.InvalidPassword = "Passwords did not match. Try again.";
                 return View("AccountCreation", m);
             }
 
@@ -151,12 +182,24 @@ namespace BookSmash.Controllers
                 return View("AdminPage", m);
             }
 
+            if (m.UserEmail.Length > 100)
+            {
+                ViewBag.InvalidEmail = "Email too long. Try again.";
+                return View("AdminPage", m);
+            }
+
+            if (m.Role.Length > 200)
+            {
+                ViewBag.InvalidRole = "Role too long. Try again.";
+                return View("AdminPage", m);
+            }
+
             grabFromDB DB = new grabFromDB();
 
             //check if valid user
             if(DB.getUserListByEmail(m.UserEmail).Count == 0)
             {
-                ViewBag.UserDoesNotExist = "This email is not associated with a current account. Try again.";
+                ViewBag.InvalidEmail = "This email is not associated with a current account. Try again.";
                 return View("AdminPage",m);
             }
             else
@@ -179,10 +222,28 @@ namespace BookSmash.Controllers
                 return View("AdminPage", m);
             }
 
+            if (m.UNI_NAME.Length > 100)
+            {
+                ViewBag.InvalidUni = "University name too long. Try again.";
+                return View("AdminPage", m);
+            }
+
+            if (m.City.Length > 100)
+            {
+                ViewBag.InvalidCity = "City name too long. Try again.";
+                return View("AdminPage", m);
+            }
+
             //check for two letter province
             if(m.Prov_State.Length != 2)
             {
                 ViewBag.IncorectProv = "Province must be two letters. AB, BC, ect. Try Again.";
+                return View("AdminPage", m);
+            }
+
+            if(m.Country.Length > 100)
+            {
+                ViewBag.IncorrectCountry = "Country name too long.";
                 return View("AdminPage", m);
             }
 

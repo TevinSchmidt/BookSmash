@@ -24,6 +24,7 @@
         <tr>
             <td>City:</td>
             <td>@Html.TextBoxFor(model => model.City, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidCity</td>
         </tr>
         <tr>
             <td>Province/State:</td>
@@ -33,6 +34,7 @@
         <tr>
             <td>Country:</td>
             <td>@Html.TextBoxFor(model => model.Country, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidCountry</td>
         </tr>
     </table>
     <br />
@@ -57,12 +59,13 @@
         <tr>
             <td>User Email:</td>
             <td>@Html.TextBoxFor(model => model.UserEmail, new { @class = "form-control" })</td>
-            <td style="color:red">@ViewBag.UserDoesNotExist</td>
+            <td style="color:red">@ViewBag.InvalidEmail</td>
         </tr>
         <tr>
             <td>Role:</td>
             <td>@Html.TextBoxFor(model => model.Role, new { @class = "form-control" })</td>
             <td>*(Admin, CEO, ect.)</td>
+            <td style="color:red">@ViewBag.InvalidRole</td>
         </tr>
     </table>
     <br />
