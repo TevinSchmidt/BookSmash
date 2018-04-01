@@ -1,0 +1,49 @@
+﻿@model BookSmash.Models.AdminModel
+
+@{
+    /**/
+
+    ViewBag.Title = "AdminPage";
+}
+
+<h1>Admin Dashboard</h1>
+<p>This is were you can modify data in the database directly from your webbrowser!</p>
+<br />
+
+@using (Html.BeginForm("AddUni", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <p>To add a University to the database click here.</p>
+    <input type="submit" class="btn btn-default" value="Add University" />
+}
+
+<br />
+
+@using (Html.BeginForm("AddAdmin", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <p>To promote a user to admin click here.</p>
+    <input type="submit" class="btn btn-default" value="Promote User" />
+}
+
+<br />
+
+@using (Html.BeginForm("DeleteAdmin", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <p>To demote user from admin click here.</p>
+    <input type="submit" class="btn btn-default" value="Demote User" />
+}
+
+<br />
+
+@using (Html.BeginForm("DeleteUni", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <p>To delete a university click here.</p>
+    <input type="submit" class="btn btn-default" value="Delete University" />
+}
+
+<br />
+
+@using (Html.BeginForm("SearchUsers", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <p>To modify existing user data click here.</p>
+    <input type="submit" class="btn btn-default" value="Modify User" />
+}

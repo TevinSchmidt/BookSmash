@@ -1,0 +1,29 @@
+﻿@model BookSmash.Models.UniModel
+
+@{
+    ViewBag.Title = "DeleteUni";
+}
+
+@using (Html.BeginForm("RemoveUni", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <br />
+    <p>
+
+        As admin you may delete a university from the database. Please fill out the required form below:
+    </p>
+    <p style="color:red">@ViewBag.EmptyFields</p>
+    <br />
+    <table>
+        <tr>
+            <td>University Name:</td>
+            <td>@Html.TextBoxFor(model => model.UNI_NAME, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidUni</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" class="btn btn-default" value="Remove University" />
+    <br />
+    <p>@ViewBag.UniSubmitMessage</p>
+    <br />
+}
+

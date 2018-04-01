@@ -154,6 +154,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
@@ -234,11 +235,16 @@
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Authentication\AccountCreation.cshtml" />
     <Content Include="Views\Home\Results.cshtml" />
-    <Content Include="Views\Authentication\AdminPage.cshtml" />
+    <Content Include="Views\Admin\AdminPage.cshtml" />
     <Content Include="Views\Post\Textbook.cshtml" />
     <Content Include="Views\Post\Error.cshtml" />
     <Content Include="Views\Post\Success.cshtml" />
     <Content Include="Views\Post\ReviewUser.cshtml" />
+    <Content Include="Views\Admin\DeleteAdmin.cshtml" />
+    <Content Include="Views\Admin\AddAdmin.cshtml" />
+    <Content Include="Views\Admin\AddUni.cshtml" />
+    <Content Include="Views\Admin\DeleteUni.cshtml" />
+    <Content Include="Views\Admin\SearchUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />

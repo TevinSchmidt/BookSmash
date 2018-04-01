@@ -236,6 +236,24 @@ namespace BookSmash.Models
             }
         }
 
+        /// <summary>
+        /// This method removes a university by the given name
+        /// </summary>
+        /// <param name="Uni_Name"></param>
+        public void removeUniversityByName(String Uni_Name)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"DELETE FROM " + LD.databaseName + @".UNIVERSITY WHERE UNI_NAME = '" + Uni_Name + @"';";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
         public UserInfo getUserInfo(string username)
         {
             LD = LinkDatabase.getInstance();
@@ -680,6 +698,24 @@ namespace BookSmash.Models
             }
 
 
+        }
+
+        /// <summary>
+        /// This function removes an Admin given its email.
+        /// </summary>
+        /// <param name="email"></param>
+        public void removeAdminByEmail(String email)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"DELETE FROM " + LD.databaseName + @".ADMIN WHERE Email = '" + email + @"';";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
         }
 
         /// <summary>
