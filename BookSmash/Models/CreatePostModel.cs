@@ -14,6 +14,9 @@ namespace BookSmash.Models
         [Display(Name ="Author")]
         public string Author { get; set; }
 
+        [Display(Name ="Edition")]
+        public int Edition { get; set; }
+
         [Display(Name ="Condition")]
         public string Condition { get; set; }
 
@@ -37,7 +40,7 @@ namespace BookSmash.Models
 
         [Required]
         [Display(Name ="Price")]
-        public string Price { get; set; }
+        public double Price { get; set; }
 
 
         public IEnumerable<SelectListItem> Universities { get; set; }

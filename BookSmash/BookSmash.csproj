@@ -235,6 +235,8 @@
     <Content Include="Views\Home\Results.cshtml" />
     <Content Include="Views\Authentication\AdminPage.cshtml" />
     <Content Include="Views\Post\Textbook.cshtml" />
+    <Content Include="Views\Post\Error.cshtml" />
+    <Content Include="Views\Post\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />
@@ -243,7 +245,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Class\" />
     <Folder Include="Universities\" />
-    <Folder Include="Views\University\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -48,13 +48,13 @@ namespace BookSmash.Models
         public string email;
         public string Uni;
         public DateTime date;
-       // public string bookType;
         public string condition;
         public double price;
         public string description;
         public string Title;
         public string department;
-        public string code; 
+        public string code;
+        public int edition;
     }
 
     public class Result
