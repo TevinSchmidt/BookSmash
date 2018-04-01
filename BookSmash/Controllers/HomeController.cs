@@ -42,12 +42,16 @@ public class HomeController : Controller
             return View("FrontPage", model);
         }
 
-        public ActionResult Done()
+        public ActionResult Results()
         {
-            // Get University information from the session
             var model = Session["UniversityModel"] as UniversitiesModel;
+            grabFromDB grabFromDB = new grabFromDB();
 
-            return View(model);
+            List<Result> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
+
+            ViewBag.Textbooklist = results;
+
+            return View("Results");
         }
 
         public ActionResult CreatePost()
@@ -61,10 +65,10 @@ public class HomeController : Controller
         }
 
         [HttpPost]
-        public ActionResult CreatPost(UniversitiesModel model)
+        public ActionResult CreatePost(CreatePostModel model)
         {
-            var universities = GetAllUniversities();
-            model.Universities = GetSelectListItems(universities);
+            //var universities = GetAllUniversities();
+           // model.Universities = GetSelectListItems(universities);
 
             if (ModelState.IsValid)
             {
@@ -74,43 +78,34 @@ public class HomeController : Controller
             return View("Error");
         }
 
-        public ActionResult Results()
-        {
-            var model = Session["UniversityModel"] as UniversitiesModel;
-            grabFromDB grabFromDB = new grabFromDB();
-
-            List<Result> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
-            
-            ViewBag.Textbooklist = results;
-
-            return View("Results");
-        }
-
         public ActionResult Post()
         {
             var model = Session["CreatePostModel"] as CreatePostModel;
             grabFromDB grab = new grabFromDB();
             UserInfo temp = grab.getUserInfo(Globals.getCurrentUserEmail());
             //string date = DateTime.Now.ToString("MM/dd/yyyy h:mm tt");
-            Post post = new Post
-            {
-                code = model.Code,
-                condition = model.Condition,
-                date = DateTime.Now,
-                department = model.Department,
-                description = model.Description,
-                edition = model.Edition,
-                email = Globals.getCurrentUserEmail(),
-                Phone = temp.phone,
-                price = model.Price,
-                Title = model.Title,
-                Uni = temp.university,
-                author = model.Author
-            };
+            Post post = new Post();
+            post.code = model.Code;
+            post.condition = model.Condition;
+            post.date = DateTime.Now;
+            post.department = model.Department;
+            post.description = model.Description;
+            post.edition = model.Edition;
+            post.email = Globals.getCurrentUserEmail();
+            post.Phone = temp.phone;
+            post.price = model.Price;
+            post.Title = model.Title;
+            post.Uni = temp.university;
+            post.author = model.Author;            
 
             ViewBag.Success = grab.insertPost(post);           
 
             return View("Success");
+        }
+
+        public ActionResult Success()
+        {
+            return View();
         }
 
         private IEnumerable<string> GetAllUniversities()

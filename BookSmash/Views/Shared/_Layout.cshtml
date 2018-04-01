@@ -22,7 +22,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Search", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     @if(BookSmash.Models.Globals.isLoggedIn() == false)
@@ -36,6 +36,7 @@
                         
                         <li>@Html.ActionLink("Favourites", "myFavourites", "Home")</li>
                         <li>@Html.ActionLink("MyPosts", "MyPosts", "Home")</li>
+                        <li>@Html.ActionLink("Create a Post", "CreatePost", "Home")</li>
 
 
                      }

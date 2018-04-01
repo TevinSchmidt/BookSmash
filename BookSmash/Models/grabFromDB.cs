@@ -240,7 +240,7 @@ namespace BookSmash.Models
         {
             LD = LinkDatabase.getInstance();
 
-            string query = @"SELECT UNI_NAME, PHONENUMBER FROM " + LD.databaseName + @".USER WHERE EMAIL = '" +
+            string query = @"SELECT UNI_NAME, PHONE_NUM FROM " + LD.databaseName + @".USER WHERE EMAIL = '" +
                 username + @"';";
 
 
@@ -350,80 +350,146 @@ namespace BookSmash.Models
         /// <param name="post"></param>
         public string insertPost(Post post)
         {
-            LD = LinkDatabase.getInstance();
-            string textbook = @"SELECT TITLE, EDITION FROM " + LD.databaseName + @".TEXTBOOK WHERE TITLE = '" +
-                post.Title + @"' AND EDITION = '" + post.edition + @"';";
-            string author = @"SELECT NAME, TITLE FROM " + LD.databaseName + @".AUTHOR WHERE NAME = '" +
-                post.author + "' AND TITLE = '" + post.Title + @"';";
             string query1 = @"INSERT INTO " + LD.databaseName + @".POST(Phone_Num, Email, UNI_NAME, Date, BookType, Book_Condition, Price, Description, Title)" + 
                 @"VALUES('" + post.Phone + @"','" + post.email + @"','" + post.Uni + @"','" + post.date + @"','" + post.condition + @"','" + post.price + @"','" + post.description + 
                 @"','" + post.Title +  @"');";
-            string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
-                post.author + @"', " + post.Title + @"');";
-            string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
-                post.Title + @"', " + post.edition + @"');";
 
-            try
+            if (checkTextbook(post.Title, post.edition))
             {
-                MySqlDataReader reader = LD.executeGenericSQL(textbook);
-                MySqlDataReader reader2 = LD.executeGenericSQL(author);
-                if (reader.Read())
+                if (checkAuthor(post.author, post.Title))
                 {
+                    //Title and Author both in data base, just insert post (Best Case)
                     try
-                    {                        
-                        if (reader2.Read())
-                        {
-                            //Title and Author both in data base, just insert post (Best Case)
-                            LD.executeGenericSQL(query1);
-                        } else
-                        {
-                            //Textbook exists but not author, insert post and author (highly unlikely)
-
-                            LD.executeGenericSQL(query2); //Insert author
-                            LD.executeGenericSQL(query1); //Insert post
-
-                        }
+                    {
+                        LD = LinkDatabase.getInstance();
+                        LD.executeGenericSQL(query1);
                     } catch (Exception e)
                     {
-                        sw.Write("Failure in insertPost author and post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                        return "ERROR: Sorry, try again";
-                    }
-                } else if (reader2.Read())
-                {
-                    //Textbook does not exist but author does(highly unlikely)
 
+                    } finally
+                    {
+                        LD.doClose();
+                    }
+                } else
+                {
+                    //Textbook exists but not author, insert post and author (highly unlikely)
+                    string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
+                        post.author + @"', " + post.Title + @"');";
                     try
                     {
+                        LD = LinkDatabase.getInstance();
+                        LD.executeGenericSQL(query2); //Insert author
+                        LD.executeGenericSQL(query1); //Insert post
+                    } catch (Exception e)
+                    {
+
+                    } finally
+                    {
+                        LD.doClose();
+                    }
+
+                }
+            } else if(checkAuthor(post.author, post.Title))
+            {
+
+                string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
+                    post.Title + @"', " + post.edition + @"');";
+                //Textbook does not exist but author does(highly unlikely)
+                try
+                    {
+                        LD = LinkDatabase.getInstance();
                         LD.executeGenericSQL(query3); //Insert textbook
                         LD.executeGenericSQL(query1); //Insert post
 
                     } catch (Exception e)
                     {
                         sw.Write("Failure in insertPost textbook and post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                        return "ERROR: Sorry, try again";
+                    } finally
+                    {
+                        LD.doClose();
                     }
                 } else
                 {
-                    try
+                    string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
+                        post.author + @"', '" + post.Title + @"');";
+                    string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
+                        post.Title + @"', " + post.edition + @"');";
+                try
                     {
-                        //Both text book and author do not , insert all
-                        LD.executeNonQueryGeneric(query3); //Insert textbook
+                    //Both text book and author do not , insert all
+                        LD = LinkDatabase.getInstance();
+                        LD.executeGenericSQL(query3); //Insert textbook
                         LD.executeGenericSQL(query2); //Insert author
                         LD.executeGenericSQL(query1); //Insert post
                     } catch (Exception e)
                     {
                         sw.Write("Failure in insertPost, post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                        return "ERROR: Sorry, try again";
+                    } finally
+                    {
+                        LD.doClose();
                     }
+                }
+            return "You have successfully created a post";
 
+        }
+
+        public bool checkTextbook(string textbook, int edition)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT TITLE, EDITION FROM " + LD.databaseName + @".TEXTBOOK WHERE TITLE = '" +
+                textbook + @"' AND EDITION = '" + edition + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+
+                if (reader.Read())
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
                 }
             } catch (Exception e)
             {
                 sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                return "ERROR: Sorry, try again";
+            } finally
+            {
+                LD.doClose();
             }
-            LD.doClose();
-            return "You have successfully created a post";
+            return result;
+        }
+
+        public bool checkAuthor(string author, string title)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT NAME, TITLE FROM " + LD.databaseName + @".AUTHOR WHERE NAME = '" +
+                author + "' AND TITLE = '" + title + @"';";
+
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+
+                if (reader.Read())
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            finally
+            {
+                LD.doClose();
+            }
+            return result;
 
         }
 
