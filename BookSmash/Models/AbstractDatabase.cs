@@ -85,8 +85,31 @@ namespace BookSmash.Models
                     }
                 }
 
+                //make sure there is an admin in database when first stated
+                string userString = @"INSERT INTO " + databaseName + ".USER(Phone_Num, Email, UNI_NAME, Fname, Lname, Password)" +
+                    @"VALUES('" + AdminPhone + "','" + AdminEmail + "','" + AdminUni + "','" + AdminFname + "','" + AdminLname + "','" + AdminPW + "');";
+
+                string uniString = @"INSERT INTO " + databaseName + ".UNIVERSITY(UNI_NAME, City, Prov_State, Country)" + 
+                    @"VALUES('" + UniName + "','" + UniCity + "','" + UniProv + "','" + UniCountry + "');";
+
+                string adminString = @"INSERT INTO " + databaseName + ".ADMIN(Email, Role)" +
+                @"VALUES('" + AdminEmail + "','Admin');";
+
+                command = new MySqlCommand(uniString, connection);
+                command.ExecuteNonQuery();
+                Debug.consoleMsg("Successfully created uni");
+
+                command = new MySqlCommand(userString, connection);
+                command.ExecuteNonQuery();
+                Debug.consoleMsg("Successfully created user");
+
+                command = new MySqlCommand(adminString, connection);
+                command.ExecuteNonQuery();
+                Debug.consoleMsg("Successfully created admin");
+
                 closeConnection();
                 connection = new MySqlConnection("SERVER=localhost;DATABASE=" + databaseName + ";UID=" + UID + ";AUTO ENLIST=false;PASSWORD=" + Password);
+
             }
         }
 
@@ -226,7 +249,19 @@ namespace BookSmash.Models
         /// <summary>
         /// This is the password used to login to the database by the connection
         /// </summary>
-        private const string Password = "Engineering.11";
+        private const string Password = "Security4";
+
+        private const string AdminPhone = "111-111-1111";
+        private const string AdminEmail = "Admin@admin.admin";
+        private const string AdminUni = "University of Calgary";
+        private const string AdminFname = "Jim";
+        private const string AdminLname = "Jim";
+        private const string AdminPW = "1234Admin1234";
+
+        private const string UniName = "University of Calgary";
+        private const string UniCity = "Calgary";
+        private const string UniProv = "AB";
+        private const string UniCountry = "Canada";
 
         /// <summary>
         /// This is the name of the database. This property must be defined by the inheriting class

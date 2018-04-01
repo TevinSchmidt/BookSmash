@@ -14,10 +14,9 @@
     else
     {
         <p style="font-size:larger">Results:</p> <br />
-        foreach (string item in ViewBag.Textbooklist)
+        foreach (var item in ViewBag.Textbooklist)
         {
-            @Html.ActionLink(item, "Textbook/" + item, "PostController")
-            <p>@item</p>
+            @Html.ActionLink((string)@item.title, "Textbook/" + (string)@item.ID, "Post")            
             <br />
         }
     }

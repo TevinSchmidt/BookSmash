@@ -31,7 +31,6 @@ public class HomeController : Controller
         public ActionResult FrontPage(UniversitiesModel model)
         {
             var universities = GetAllUniversities();
-
             model.Universities = GetSelectListItems(universities);
 
             if (ModelState.IsValid)
@@ -55,7 +54,7 @@ public class HomeController : Controller
         {
            
             var universities = GetAllUniversities();
-            var model = new UniversitiesModel();
+            var model = new CreatePostModel();
             model.Universities = GetSelectListItems(universities);
 
             return View(model);
@@ -69,25 +68,44 @@ public class HomeController : Controller
 
             if (ModelState.IsValid)
             {
-                Session["UniversityModel"] = model;
-                return RedirectToAction("Done");
+                Session["CreatePostModel"] = model;
+                return RedirectToAction("Post");
             }
-            return View("FrontPage", model);
+            return View("Error");
         }
 
         public ActionResult Results()
         {
-
-
-
             var model = Session["UniversityModel"] as UniversitiesModel;
             grabFromDB grabFromDB = new grabFromDB();
 
-            List<string> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
+            List<Result> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
             
             ViewBag.Textbooklist = results;
 
             return View("Results");
+        }
+
+        public ActionResult Post()
+        {
+            var model = Session["CreatePostModel"] as CreatePostModel;
+            grabFromDB grab = new grabFromDB();
+            Post post = new Post();
+            post.code = model.Code;
+            post.condition = model.Condition;
+            post.date = DateTime.Now.ToShortDateString();
+            post.department = model.Department;
+            post.description = model.Description;
+            post.edition = model.Edition;
+            post.email = Globals.getCurrentUserEmail();
+            post.Phone = Globals.getCurrentUserPhone();
+            post.price = model.Price;
+            post.Title = model.Title;
+            post.Uni = Globals.getCurrentUserUni();
+            
+            grab.insertPost(post);
+
+            return View("Success");
         }
 
         private IEnumerable<string> GetAllUniversities()
@@ -123,7 +141,7 @@ public class HomeController : Controller
         }
 
 
-
+        #region default
 
         public ActionResult Index()
         {          
@@ -144,5 +162,7 @@ public class HomeController : Controller
 
             return View();
         }
+
+        #endregion
     }
 }

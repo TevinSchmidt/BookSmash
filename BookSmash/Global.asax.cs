@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookSmash.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,6 +21,9 @@ namespace BookSmash
 
         public void Session_OnStart()
         {
+
+            LinkDatabase LD = LinkDatabase.getInstance();
+
             HttpContext.Current.Session.Add("user", "Not Logged In");
         }
     }

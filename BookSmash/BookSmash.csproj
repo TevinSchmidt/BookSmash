@@ -162,12 +162,15 @@
     </Compile>
     <Compile Include="Models\AbstractDatabase.cs" />
     <Compile Include="Models\AccountCreation.cs" />
+    <Compile Include="Models\AdminModel.cs" />
     <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\Debug.cs" />
     <Compile Include="Models\grabFromDB.cs" />
     <Compile Include="Models\LinkDatabase.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\UniversitiesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -222,8 +225,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\ChangePW.cshtml" />
     <Content Include="Views\Home\FrontPage.cshtml" />
     <Content Include="Views\Home\CreatePost.cshtml" />
     <Content Include="Views\Home\MyPosts.cshtml" />
@@ -234,6 +235,10 @@
     <Content Include="Views\Authentication\AccountCreation.cshtml" />
     <Content Include="Views\Home\Results.cshtml" />
     <Content Include="Views\Authentication\AdminPage.cshtml" />
+    <Content Include="Views\Post\Textbook.cshtml" />
+    <Content Include="Views\Post\Error.cshtml" />
+    <Content Include="Views\Post\Success.cshtml" />
+    <Content Include="Views\Post\ReviewUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />
@@ -242,9 +247,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Class\" />
     <Folder Include="Universities\" />
-    <Folder Include="Views\CreatePostModel\" />
-    <Folder Include="Views\Post\" />
-    <Folder Include="Views\University\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -273,7 +275,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52673</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

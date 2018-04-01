@@ -1,0 +1,54 @@
+﻿
+
+
+<br />
+<h3><strong>@ViewBag.Post.Title</strong></h3>
+<br />
+<p><strong>Course:</strong>@ViewBag.Post.department @ViewBag.Post.code</p>
+<p><strong>Condition:</strong> @ViewBag.Post.condition</p>
+<p><strong>Description:</strong></p>
+<p>@ViewBag.Post.description</p>
+<p><strong>Price:</strong>$@ViewBag.Post.price.ToString()</p>
+<p><strong>Contact Info</strong></p>
+<p><strong>Email:</strong> @ViewBag.Post.email</p>
+<p><strong>Phone Number:</strong> @ViewBag.Post.Phone</p>
+<p><strong>Location:</strong> @ViewBag.Post.Uni</p>
+<br />
+
+
+
+<br />
+<h3><strong>Reviews of Seller:</strong></h3>
+@if (ViewBag.ReviewList != null)
+{
+    if (ViewBag.ReviewList.Count == 0)
+    {
+        <p>There is no reviews for this user.</p>
+    }
+    else
+    {
+        foreach (var item in ViewBag.ReviewList)
+        {
+            <br />
+            <p>Reviewer_Email:</p>
+            <p>@ViewBag.ReviewList.Reviewer_Email</p>
+            <p>Description:</p>
+            <p>@ViewBag.ReviewList.Description</p>
+            <p>Rating:</p>
+            <p>@ViewBag.ReviewList.Rating</p>
+        }
+    }
+}
+
+<br />
+<h3><strong>Want to leave a Review?</strong></h3>
+@using (Html.BeginForm("ReviewUser", "Post", FormMethod.Post, new { role = "form" }))
+{
+    
+    <input type="submit" class="btn btn-default" value="Create Review" />
+
+
+}
+
+
+
