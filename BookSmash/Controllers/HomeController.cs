@@ -91,9 +91,10 @@ public class HomeController : Controller
             var model = Session["CreatePostModel"] as CreatePostModel;
             grabFromDB grab = new grabFromDB();
             Post post = new Post();
+            //string date = DateTime.Now.ToString("MM/dd/yyyy h:mm tt");
             post.code = model.Code;
             post.condition = model.Condition;
-            post.date = DateTime.Now.ToShortDateString();
+            post.date = DateTime.Now;
             post.department = model.Department;
             post.description = model.Description;
             post.edition = model.Edition;
