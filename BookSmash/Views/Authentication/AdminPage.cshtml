@@ -1,12 +1,12 @@
-﻿
+﻿@model BookSmash.Models.AdminModel
+
 @{
     ViewBag.Title = "AdminPage";
 }
 
 <br />
 
-@using (Html.BeginForm("UniEntry", "Authentication", FormMethod.Get,
-    new { id = "accountCreationForm" }))
+@using (Html.BeginForm("UniEntry", "Authentication", FormMethod.Post, new { role = "form" }))
 {
     <br />
     <p>
@@ -18,25 +18,27 @@
     <table>
         <tr>
             <td>University Name:</td>
-            <td>@Html.TextBox("UNI_NAME")</td>
+            <td>@Html.TextBoxFor(model => model.UNI_NAME, new { @class = "form-control" })</td>
             <td style="color:red">@ViewBag.InvalidUni</td>
         </tr>
         <tr>
             <td>City:</td>
-            <td>@Html.TextBox("City")</td>
+            <td>@Html.TextBoxFor(model => model.City, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidCity</td>
         </tr>
         <tr>
             <td>Province/State:</td>
-            <td>@Html.TextBox("Prov_State")</td>
+            <td>@Html.TextBoxFor(model => model.Prov_State, new { @class = "form-control" })</td>
             <td style="color:red">@ViewBag.InvalidProv</td>
         </tr>
         <tr>
             <td>Country:</td>
-            <td>@Html.TextBox("Country")</td>
+            <td>@Html.TextBoxFor(model => model.Country, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidCountry</td>
         </tr>
     </table>
     <br />
-    <input type="submit" value="Create University" />
+    <input type="submit" class="btn btn-default" value="Create University" />
     <br />
     <p>@ViewBag.UniSubmitMessage</p>
     <br />
@@ -44,8 +46,7 @@
 
 <br />
 
-@using (Html.BeginForm("AdminEntry", "Authentication", FormMethod.Get,
-    new { id = "accountCreationForm" }))
+@using (Html.BeginForm("AdminEntry", "Authentication", FormMethod.Post, new { role = "form" }))
 {
     <br />
     <p>
@@ -57,17 +58,18 @@
     <table>
         <tr>
             <td>User Email:</td>
-            <td>@Html.TextBox("UserEmail")</td>
-            <td style="color:red">@ViewBag.UserDoesNotExist</td>
+            <td>@Html.TextBoxFor(model => model.UserEmail, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidEmail</td>
         </tr>
         <tr>
             <td>Role:</td>
-            <td>@Html.TextBox("Role")</td>
+            <td>@Html.TextBoxFor(model => model.Role, new { @class = "form-control" })</td>
             <td>*(Admin, CEO, ect.)</td>
+            <td style="color:red">@ViewBag.InvalidRole</td>
         </tr>
     </table>
     <br />
-    <input type="submit" value="Create Admin" />
+    <input type="submit" class="btn btn-default" value="Create Admin" />
     <br />
     <p>@ViewBag.AdminSubmitMessage</p>
     <br />

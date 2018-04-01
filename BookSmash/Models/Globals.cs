@@ -25,6 +25,39 @@ namespace BookSmash.Models
             return false;
         }
 
+        public static void setCurrentPostEmail(string email)
+        {
+            HttpContext.Current.Session.Remove("currentPostEmail");
+
+            HttpContext.Current.Session.Add("currentPostEmail", email);
+        }
+
+        public static string getCurrentPostEmail()
+        {
+            return (string)HttpContext.Current.Session["currentPostEmail"];
+        }
+
+        public static void removeCurrentPostEmail()
+        {
+            HttpContext.Current.Session.Remove("currentPostEmail");
+        }
+
+        public static void setCurrentPostId(int id)
+        {
+            HttpContext.Current.Session.Remove("currentPostId");
+            HttpContext.Current.Session.Add("currentPostId", id);
+        }
+
+        public static int getCurrentPostId()
+        {
+            return (int)HttpContext.Current.Session["currentPostId"];
+        }
+
+        public static void removeCurrentPostId()
+        {
+            HttpContext.Current.Session.Remove("currentPostId");
+        }
+
         public static void setCurrentUser(string email)
         {
             HttpContext.Current.Session.Remove("userStatus");

@@ -63,6 +63,13 @@ namespace BookSmash.Models
         public string title;
     }
 
+    public class ReviewResults
+    {
+        public string Reviewer_Email;
+        public string Description;
+        public Int32 Rating;
+    }
+
     public class grabFromDB
     {
         StreamWriter sw;
@@ -71,10 +78,15 @@ namespace BookSmash.Models
         {
 
             string path = @"C:\BookSmash\Log.txt";
+            string directory = @"C:\BookSmash";
 
             if (!File.Exists(path))
             {
                 // Create a file to write to.
+                if (!Directory.Exists(directory))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(directory);
+                }
                 sw = File.CreateText(path);
             }
             
@@ -576,6 +588,65 @@ namespace BookSmash.Models
 
 
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="role"></param>
+        public void insertReview(string Phone_Num, string Email,  string Reviewer_Email, string Description, int Rating)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"INSERT INTO " + LD.databaseName + ".REVIEW(Phone_Num, Email, Reviewer_Email, Description, Rating)" +
+                @"VALUES('" + Phone_Num + "','" + Email + "','" + Reviewer_Email + "','" + Description + "','"  + Rating + "');";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
+        public List<ReviewResults> getReviewByEmail(string Email)
+        {
+            LD = LinkDatabase.getInstance();
+            List<ReviewResults> reviews = new List<ReviewResults>();
+            ReviewResults temp;
+            string customQuerry = @"SELECT * FROM " + LD.databaseName + @".REVIEW WHERE Email = '" + Email + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(customQuerry);
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+                        temp = new ReviewResults();
+
+                        temp.Reviewer_Email = reader.GetString("Reviewer_Email");
+                        temp.Description = reader.GetString("Description");
+                        temp.Rating = reader.GetInt32("Rating");
+
+                        reviews.Add(temp);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return reviews;
+        }
+
 
         /// <summary>
         /// 
