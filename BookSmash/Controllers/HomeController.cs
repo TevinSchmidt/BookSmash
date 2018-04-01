@@ -90,21 +90,25 @@ public class HomeController : Controller
         {
             var model = Session["CreatePostModel"] as CreatePostModel;
             grabFromDB grab = new grabFromDB();
-            Post post = new Post();
+            UserInfo temp = grab.getUserInfo(Globals.getCurrentUserEmail());
             //string date = DateTime.Now.ToString("MM/dd/yyyy h:mm tt");
-            post.code = model.Code;
-            post.condition = model.Condition;
-            post.date = DateTime.Now;
-            post.department = model.Department;
-            post.description = model.Description;
-            post.edition = model.Edition;
-            post.email = Globals.getCurrentUserEmail();
-            post.Phone = Globals.getCurrentUserPhone();
-            post.price = model.Price;
-            post.Title = model.Title;
-            post.Uni = Globals.getCurrentUserUni();
-            
-            grab.insertPost(post);
+            Post post = new Post
+            {
+                code = model.Code,
+                condition = model.Condition,
+                date = DateTime.Now,
+                department = model.Department,
+                description = model.Description,
+                edition = model.Edition,
+                email = Globals.getCurrentUserEmail(),
+                Phone = temp.phone,
+                price = model.Price,
+                Title = model.Title,
+                Uni = temp.university,
+                author = model.Author
+            };
+
+            ViewBag.Success = grab.insertPost(post);           
 
             return View("Success");
         }
