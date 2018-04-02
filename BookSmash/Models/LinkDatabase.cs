@@ -102,7 +102,8 @@ namespace BookSmash.Models
                 {
                     new Column("Course_Title", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                     new Column("CourseNum", "VARCHAR(15)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
-                    new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, false, null, 1, 1)
+                    new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1)
                    
                 }
 

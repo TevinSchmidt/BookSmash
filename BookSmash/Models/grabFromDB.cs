@@ -433,6 +433,30 @@ namespace BookSmash.Models
 
         }
 
+        public bool checkUsedFor(string title, string course, string department)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT TITLE, COURSE, DEPARTMENT FROM " + LD.databaseName + @".USED_FOR WHERE TITLE = '" +
+                title + @"' AND COURSE = '" + course + @"' AND DEPARTMENT = '" + department + @"';"; 
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+
+                if (reader.Read())
+                {
+                    result = true;
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+
         public bool checkTextbook(string textbook, int edition)
         {
             bool result = false;
@@ -446,10 +470,6 @@ namespace BookSmash.Models
                 if (reader.Read())
                 {
                     result = true;
-                }
-                else
-                {
-                    result = false;
                 }
             } catch (Exception e)
             {
