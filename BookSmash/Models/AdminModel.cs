@@ -38,4 +38,39 @@ namespace BookSmash.Models
         [Display(Name = "Role")]
         public string Role { get; set; }
     }
+
+    public class AdminSearchUserModel
+    {
+        [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+    }
+
+    public class AdminUserResultModel
+    {
+        
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Display(Name = "confirmPassword")]
+        public string confirmPassword { get; set; }
+       
+        [Display(Name = "Fname")]
+        public string Fname { get; set; }
+        
+        [Display(Name = "Lname")]
+        public string Lname { get; set; }
+
+        [Display(Name = "Phone_Num")]
+        public string Phone_Num { get; set; }
+
+        [Display(Name = "University")]
+        public string University { get; set; }
+
+        public IEnumerable<SelectListItem> Universities { get; set; }
+    }
 }

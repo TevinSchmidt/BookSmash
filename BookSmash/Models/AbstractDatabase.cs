@@ -252,7 +252,7 @@ namespace BookSmash.Models
         private const string Password = "Security4";
 
         private const string AdminPhone = "111-111-1111";
-        private const string AdminEmail = "Admin@admin.admin";
+        public const string AdminEmail = "Admin@admin.admin";
         private const string AdminUni = "University of Calgary";
         private const string AdminFname = "Jim";
         private const string AdminLname = "Jim";

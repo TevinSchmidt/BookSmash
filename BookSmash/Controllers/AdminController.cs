@@ -30,7 +30,7 @@ namespace BookSmash.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminEnrty(AdminModel m)
+        public ActionResult AdminEntry(AdminModel m)
         {
             //check for blank entries
             if (m.UserEmail == "" || m.Role == "")
@@ -68,9 +68,8 @@ namespace BookSmash.Controllers
             else
             {
                 DB.insertAdmin(m.UserEmail, m.Role);
-                ViewBag.AdminSubmitMessage = "Admin successfully added.";
-                AdminModel model = new AdminModel();
-                return View("AdminPage", model);
+                ViewBag.ReturnValue = "Admin successfully added.";
+                return View("AdminPage");
             }
         }
 
@@ -80,6 +79,12 @@ namespace BookSmash.Controllers
             if (m.UserEmail == "")
             {
                 ViewBag.EmptyFielsAdnminEntry = "Must not leave any Admin entry fields blank. Try again.";
+                return View("DeleteAdmin", m);
+            }
+
+            if (m.UserEmail == AbstractDatabase.AdminEmail)
+            {
+                ViewBag.InvalidEmail = "Cannot remove that admin. Try again.";
                 return View("DeleteAdmin", m);
             }
 
@@ -101,7 +106,7 @@ namespace BookSmash.Controllers
             {
                 
                 DB.removeAdminByEmail(m.UserEmail);
-                ViewBag.AdminSubmitMessage = "Admin successfully removed.";           
+                ViewBag.ReturnValue = "Admin successfully removed.";           
                 return View("AdminPage");
             }
 
@@ -170,9 +175,9 @@ namespace BookSmash.Controllers
             else
             {
                 DB.insertUniversity(m.UNI_NAME, m.City, m.Prov_State, m.Country);
-                ViewBag.UniSubmitMessage = "University successfully added.";
+                ViewBag.ReturnValue = "University successfully added.";
                 
-                return View("AddUni");
+                return View("AdminPage");
             }
         }
 
@@ -182,7 +187,7 @@ namespace BookSmash.Controllers
             if (m.UNI_NAME == "")
             {
                 ViewBag.EmptyFields = "Must not leave any University entry fields blank. Try again.";
-                return View("RemoveUni", m);
+                return View("DeleteUni", m);
             }
 
             grabFromDB DB = new grabFromDB();
@@ -190,19 +195,19 @@ namespace BookSmash.Controllers
             if(DB.getUniversities().Count == 1)
             {
                 ViewBag.InvalidUni = "Cannot delete the last university in the database. Try Again.";
-                return View("RemoveUni", m);
+                return View("DeleteUni", m);
             }
 
             if(DB.getUniversitiesByName(m.UNI_NAME).Count != 1)
             {
                 ViewBag.InvalidUni = "This university does not exist in the database. Try Again.";
-                return View("RemoveUni", m);
+                return View("DeleteUni", m);
             }
             else
             {
-                
 
-                ViewBag.AdminSubmitMessage = "Admin successfully removed.";
+                DB.removeUniversityByName(m.UNI_NAME);
+                ViewBag.ReturnValue = "University successfully removed.";
                 return View("AdminPage");
             }
 
@@ -217,9 +222,85 @@ namespace BookSmash.Controllers
 
         public ActionResult SearchUsers()
         {
-            return View("SearchUsers");
+            AdminSearchUserModel model = new AdminSearchUserModel();
+            return View("SearchUsers", model);
         }
 
+        [HttpPost]
+        public ActionResult PerformSearch(AdminSearchUserModel m)
+        {
+            if(m.Email == "")
+            {
+                ViewBag.InvalidEmail = "Please do not leave blank. Try Again.";
+                return View("SearchUsers", m);
+            }
+
+            if(m.Email.Length > 100)
+            {
+                ViewBag.InvalidEmail = "Email too long. Try Again.";
+            }
+
+            grabFromDB DB = new grabFromDB();
+
+            if(DB.getUserListByEmail(m.Email).Count != 1)
+            {
+                ViewBag.InvalidEmail = "That user does not exist. Try Again.";
+                return View("SearchUsers", m);
+            }
+            else
+            {
+                User user = new User();
+                user = DB.getUserListByEmail(m.Email)[0];
+
+                ViewBag.User = user;
+
+                AdminUserResultModel model = new AdminUserResultModel();
+                var universities = GetAllUniversities();
+                model.Universities = GetSelectListItems(universities);
+
+                return View("UserEdit", model);
+            }
+
+            
+        }
+
+        public ActionResult ModifyUser(AdminUserResultModel m)
+        {
+            ViewBag.ReturnValue = "Functionallity not implemented yet";
+            return View("AdminPage");
+        }
         #endregion
+
+        private IEnumerable<string> GetAllUniversities()
+        {
+            //This could be a call to University in Database
+            grabFromDB grabFromDB = new grabFromDB();
+            List<UniData> uni = grabFromDB.getUniversities();
+            List<string> output = new List<string>();
+            string temp;
+            grabFromDB.close();
+            foreach (UniData data in uni)
+            {
+                temp = data.name;
+                output.Add(temp);
+            }
+            return output;
+        }
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        {
+            // Create an empty list to hold result of the operation
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
+        }
     }
 }

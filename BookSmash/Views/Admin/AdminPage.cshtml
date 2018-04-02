@@ -7,7 +7,11 @@
 }
 
 <h1>Admin Dashboard</h1>
-<p>This is were you can modify data in the database directly from your webbrowser!</p>
+<p>This is were you can modify data in the database directly from your web browser!</p>
+<br />
+
+<p>@ViewBag.ReturnValue</p>
+
 <br />
 
 @using (Html.BeginForm("AddUni", "Admin", FormMethod.Post, new { role = "form" }))

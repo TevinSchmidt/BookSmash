@@ -245,6 +245,7 @@
     <Content Include="Views\Admin\AddUni.cshtml" />
     <Content Include="Views\Admin\DeleteUni.cshtml" />
     <Content Include="Views\Admin\SearchUsers.cshtml" />
+    <Content Include="Views\Admin\UserEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />

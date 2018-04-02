@@ -504,6 +504,7 @@ namespace BookSmash.Models
             return Favs;
         }
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -542,6 +543,7 @@ namespace BookSmash.Models
             return users;
         }
 
+
         /// <summary>
         /// This is design to check if a username is already taken, should return empty if username is taken already.
         /// </summary>
@@ -565,6 +567,7 @@ namespace BookSmash.Models
                         temp = new User();
                         temp.phone = reader.GetString("Phone_Num");
                         temp.email = reader.GetString("Email");
+                        temp.pw = reader.GetString("Password");
                         temp.Uni = reader.GetString("UNI_NAME");
                         temp.fname = reader.GetString("Fname");
                         temp.lname = reader.GetString("Lname");
