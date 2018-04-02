@@ -63,6 +63,7 @@ namespace BookSmash.Models
         public string code;
         public int edition;
         public string author;
+        public string coursename;
     }
 
     public class Result
@@ -343,6 +344,39 @@ namespace BookSmash.Models
             return temp;
         }
 
+        public List<Result> getUserPosts(string username)
+        {
+            string query = @"SELECT TITLE, ID FROM " + LD.databaseName + @".POST WHERE EMAIL = '" + username +
+                @"';";
+            List<Result> search = new List<Result>();
+            try
+            {
+                Result temp;
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                while (reader.Read())
+                {
+                    temp = new Result();
+                    temp.ID = reader.GetInt32("ID").ToString();
+                    temp.title = reader.GetString("Title");
+                    search.Add(temp);
+                }
+            }
+            catch (MySqlException d)
+            {
+                sw.Write("Sql Error:" + d.Message);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            finally
+            {
+                LD.doClose();
+            }
+            return search;
+
+        }
+
   
         /// <summary>
         /// Method to insert a new post into the db
@@ -398,6 +432,19 @@ namespace BookSmash.Models
                 try
                     {
                         LD = LinkDatabase.getInstance();
+                        if(checkUsedFor(post.Title, post.code, post.department))
+                        {
+                        string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                        post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+
+                        LD.executeGenericSQL(query4); //Insert used_for
+                        }
+                        if(checkCourse(post.code, post.department, post.Uni))
+                        {
+                        string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, university)VALUES('" +
+                            post.coursename + @"', '" + post.code + @"', " + post.department + @"', '" + post.Uni + @"');";
+                        LD.executeGenericSQL(query5); //Insert course
+                        }
                         LD.executeGenericSQL(query3); //Insert textbook
                         LD.executeGenericSQL(query1); //Insert post
 
@@ -432,12 +479,33 @@ namespace BookSmash.Models
             return "You have successfully created a post";
 
         }
-
+        public bool checkCourse(string code, string department, string university)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT COURSENUM, DEPARTMENT, UNIVERSITY FROM " + LD.databaseName + @".COURSE WHERE COURSENUM = '" +
+                code + @"' AND DEPARTMENT = '" + department + @"' AND UNIVERSITY = '" + university + "';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                if (reader.Read())
+                {
+                    result = true;
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
         public bool checkUsedFor(string title, string course, string department)
         {
             bool result = false;
             LD = LinkDatabase.getInstance();
-            string query = @"SELECT TITLE, COURSE, DEPARTMENT FROM " + LD.databaseName + @".USED_FOR WHERE TITLE = '" +
+            string query = @"SELECT TITLE, COURSENUM, DEPARTMENT FROM " + LD.databaseName + @".USED_FOR WHERE TITLE = '" +
                 title + @"' AND COURSE = '" + course + @"' AND DEPARTMENT = '" + department + @"';"; 
             try
             {
@@ -496,10 +564,6 @@ namespace BookSmash.Models
                 {
                     result = true;
                 }
-                else
-                {
-                    result = false;
-                }
             }
             catch (Exception e)
             {
@@ -510,7 +574,6 @@ namespace BookSmash.Models
                 LD.doClose();
             }
             return result;
-
         }
 
         /// <summary>

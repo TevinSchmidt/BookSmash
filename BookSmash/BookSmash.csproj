@@ -239,6 +239,7 @@
     <Content Include="Views\Post\Error.cshtml" />
     <Content Include="Views\Post\Success.cshtml" />
     <Content Include="Views\Post\ReviewUser.cshtml" />
+    <Content Include="Views\Post\MyPosts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Done.cshtml" />

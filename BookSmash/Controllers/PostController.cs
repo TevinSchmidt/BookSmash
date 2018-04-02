@@ -24,6 +24,16 @@ namespace BookSmash.Controllers
             return View("Textbook");
         }
 
+        public ActionResult MyPosts(string id)
+        {
+            grabFromDB grab = new grabFromDB();
+            List <Result> results = grab.getUserPosts(Globals.getCurrentUserEmail());
+            ViewBag.PostList = results;
+
+            return View("MyPosts");
+
+        }
+
         [HttpPost]
         public ActionResult ReviewUser()
         {

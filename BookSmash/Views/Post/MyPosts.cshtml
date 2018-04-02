@@ -1,0 +1,20 @@
+﻿
+
+
+
+@if (ViewBag.Postlist != null)
+{
+    if (ViewBag.Postlist.Count == 0)
+    {
+        <p>Your search did not retrun any results. Please try again.</p>
+    }
+    else
+    {
+        <p style="font-size:larger">My Posts:</p> <br />
+        foreach (var item in ViewBag.Postlist)
+        {
+            @Html.ActionLink((string)@item.title, "Textbook/" + (string)@item.ID, "Post")
+            <br />
+        }
+    }
+}

@@ -87,6 +87,7 @@ public class HomeController : Controller
             Post post = new Post();
             post.code = model.Code;
             post.condition = model.Condition;
+            post.coursename = model.CourseName;
             post.date = DateTime.Now;
             post.department = model.Department;
             post.description = model.Description;
