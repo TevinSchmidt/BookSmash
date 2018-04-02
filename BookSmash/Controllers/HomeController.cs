@@ -83,12 +83,12 @@ public class HomeController : Controller
             var model = Session["CreatePostModel"] as CreatePostModel;
             grabFromDB grab = new grabFromDB();
             UserInfo temp = grab.getUserInfo(Globals.getCurrentUserEmail());
-            //string date = DateTime.Now.ToString("MM/dd/yyyy h:mm tt");
+            //string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             Post post = new Post();
             post.code = model.Code;
             post.condition = model.Condition;
             post.coursename = model.CourseName;
-            post.date = DateTime.Now;
+            post.date = DateTime.Now.ToString();
             post.department = model.Department;
             post.description = model.Description;
             post.edition = model.Edition;

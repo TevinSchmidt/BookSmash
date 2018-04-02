@@ -54,7 +54,7 @@ namespace BookSmash.Models
         public string Phone;
         public string email;
         public string Uni;
-        public DateTime date;
+        public string date;
         public string condition;
         public double price;
         public string description;
@@ -305,7 +305,7 @@ namespace BookSmash.Models
             /// <param name="courseCode"></param>
             /// <param name="UniName"></param>
             //public List<Post> getPost(string department, string title, string courseCode, string UniName)
-            public Post getPost(string id)
+        public Post getPost(string id)
         {
             LD = LinkDatabase.getInstance();
 
@@ -323,7 +323,7 @@ namespace BookSmash.Models
                     temp.Phone = reader.GetString("Phone_Num");
                     temp.email = reader.GetString("Email");
                     temp.Uni = reader.GetString("UNI_NAME");
-                    temp.date = reader.GetDateTime("Date");
+                    temp.date = reader.GetString("Date");
                    // temp.bookType = reader.GetString("BookType");
                     temp.condition = reader.GetString("Book_Condition");
                     temp.price = reader.GetDouble("Price");
@@ -346,6 +346,7 @@ namespace BookSmash.Models
 
         public List<Result> getUserPosts(string username)
         {
+            LD = LinkDatabase.getInstance();
             string query = @"SELECT TITLE, ID FROM " + LD.databaseName + @".POST WHERE EMAIL = '" + username +
                 @"';";
             List<Result> search = new List<Result>();
@@ -384,7 +385,7 @@ namespace BookSmash.Models
         /// <param name="post"></param>
         public string insertPost(Post post)
         {
-            string query1 = @"INSERT INTO " + LD.databaseName + @".POST(Phone_Num, Email, UNI_NAME, Date, BookType, Book_Condition, Price, Description, Title)" + 
+            string query1 = @"INSERT INTO " + LD.databaseName + @".POST(Phone_Num, Email, UNI_NAME, Date, Book_Condition, Price, Description, Title)" + 
                 @"VALUES('" + post.Phone + @"','" + post.email + @"','" + post.Uni + @"','" + post.date + @"','" + post.condition + @"','" + post.price + @"','" + post.description + 
                 @"','" + post.Title +  @"');";
 
@@ -394,88 +395,131 @@ namespace BookSmash.Models
                 {
                     //Title and Author both in data base, just insert post (Best Case)
                     try
-                    {
+                    {                        
+                        if (!checkCourse(post.code, post.department, post.Uni))
+                        {
+                            string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                                post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query5); //Insert course
+                        }
+                        if (!checkUsedFor(post.Title, post.code, post.department))
+                        {
+                            string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                                post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query4); //Insert used_for
+                        }
                         LD = LinkDatabase.getInstance();
-                        LD.executeGenericSQL(query1);
-                    } catch (Exception e)
+                        LD.executeNonQueryGeneric(query1); //Insert Post
+                    }
+                    catch (Exception e)
                     {
 
-                    } finally
-                    {
-                        LD.doClose();
                     }
-                } else
+                }
+                else
                 {
                     //Textbook exists but not author, insert post and author (highly unlikely)
                     string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
-                        post.author + @"', " + post.Title + @"');";
+                        post.author + @"', '" + post.Title + @"');";
                     try
                     {
                         LD = LinkDatabase.getInstance();
-                        LD.executeGenericSQL(query2); //Insert author
-                        LD.executeGenericSQL(query1); //Insert post
-                    } catch (Exception e)
-                    {
-
-                    } finally
-                    {
-                        LD.doClose();
+                        LD.executeNonQueryGeneric(query2); //Insert author
+                        if (!checkCourse(post.code, post.department, post.Uni))
+                        {
+                            string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                                post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query5); //Insert course
+                        }
+                        if (!checkUsedFor(post.Title, post.code, post.department))
+                        {
+                            string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                                post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query4); //Insert used_for
+                        }
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query1); //Insert post
                     }
+                    catch (Exception e)
+                    {
 
+                    }
                 }
-            } else if(checkAuthor(post.author, post.Title))
+            }
+            else if (checkAuthor(post.author, post.Title))
             {
 
                 string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
-                    post.Title + @"', " + post.edition + @"');";
+                    post.Title + @"', '" + post.edition + @"');";
                 //Textbook does not exist but author does(highly unlikely)
                 try
-                    {
-                        LD = LinkDatabase.getInstance();
-                        if(checkUsedFor(post.Title, post.code, post.department))
-                        {
-                        string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
-                        post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
-
-                        LD.executeGenericSQL(query4); //Insert used_for
-                        }
-                        if(checkCourse(post.code, post.department, post.Uni))
-                        {
-                        string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, university)VALUES('" +
-                            post.coursename + @"', '" + post.code + @"', " + post.department + @"', '" + post.Uni + @"');";
-                        LD.executeGenericSQL(query5); //Insert course
-                        }
-                        LD.executeGenericSQL(query3); //Insert textbook
-                        LD.executeGenericSQL(query1); //Insert post
-
-                    } catch (Exception e)
-                    {
-                        sw.Write("Failure in insertPost textbook and post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                    } finally
-                    {
-                        LD.doClose();
-                    }
-                } else
                 {
-                    string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
-                        post.author + @"', '" + post.Title + @"');";
-                    string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
-                        post.Title + @"', " + post.edition + @"');";
-                try
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query3); //Insert textbook
+                    if (!checkCourse(post.code, post.department, post.Uni))
                     {
-                    //Both text book and author do not , insert all
+                        string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                            post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
                         LD = LinkDatabase.getInstance();
-                        LD.executeGenericSQL(query3); //Insert textbook
-                        LD.executeGenericSQL(query2); //Insert author
-                        LD.executeGenericSQL(query1); //Insert post
-                    } catch (Exception e)
-                    {
-                        sw.Write("Failure in insertPost, post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                    } finally
-                    {
-                        LD.doClose();
+                        LD.executeNonQueryGeneric(query5); //Insert course
                     }
+                    if (!checkUsedFor(post.Title, post.code, post.department))
+                    {
+                        string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                            post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query4); //Insert used_for
+                    }
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query1); //Insert post
+
                 }
+                catch (Exception e)
+                {
+                    sw.Write("Failure in insertPost textbook and post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
+            }
+            else
+            {
+                string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
+                    post.author + @"', '" + post.Title + @"');";
+                string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
+                    post.Title + @"', '" + post.edition + @"');";
+                try
+                {
+                    //Both text book and author do not , insert all
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query3); //Insert textbook
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query2); //Insert author
+                    if (!checkCourse(post.code, post.department, post.Uni))
+                    {
+                        LD = LinkDatabase.getInstance();
+                        string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                            post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                        
+                        LD.executeNonQueryGeneric(query5); //Insert course
+                    }
+                    if (!checkUsedFor(post.Title, post.code, post.department))
+                    {
+                        LD = LinkDatabase.getInstance();
+                        string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                            post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                        
+                        LD.executeNonQueryGeneric(query4); //Insert used_for
+                    }
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query1); //Insert post
+                }
+                catch (Exception e)
+                {
+                    sw.Write("Failure in insertPost, post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
+            }
             return "You have successfully created a post";
 
         }
@@ -483,8 +527,8 @@ namespace BookSmash.Models
         {
             bool result = false;
             LD = LinkDatabase.getInstance();
-            string query = @"SELECT COURSENUM, DEPARTMENT, UNIVERSITY FROM " + LD.databaseName + @".COURSE WHERE COURSENUM = '" +
-                code + @"' AND DEPARTMENT = '" + department + @"' AND UNIVERSITY = '" + university + "';";
+            string query = @"SELECT COURSENUM, DEPARTMENT, UNI_NAME FROM " + LD.databaseName + @".COURSE WHERE COURSENUM = '" +
+                code + @"' AND DEPARTMENT = '" + department + @"' AND UNI_NAME = '" + university + @"';";
             try
             {
                 MySqlDataReader reader = LD.executeGenericSQL(query);
@@ -506,7 +550,7 @@ namespace BookSmash.Models
             bool result = false;
             LD = LinkDatabase.getInstance();
             string query = @"SELECT TITLE, COURSENUM, DEPARTMENT FROM " + LD.databaseName + @".USED_FOR WHERE TITLE = '" +
-                title + @"' AND COURSE = '" + course + @"' AND DEPARTMENT = '" + department + @"';"; 
+                title + @"' AND COURSENUM = '" + course + @"' AND DEPARTMENT = '" + department + @"';"; 
             try
             {
                 MySqlDataReader reader = LD.executeGenericSQL(query);
