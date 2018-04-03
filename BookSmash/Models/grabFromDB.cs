@@ -133,32 +133,33 @@ namespace BookSmash.Models
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public List<Result> getFavouriteTitles(string email)
+        public List<Result> getFavourites(string email)
         {
             LD = LinkDatabase.getInstance();
-            string query = @"SELECT ID FROM " + LD.databaseName + ".FAVOURITES WHERE EMAIL = '" + email + "';";
+            //string query = @"SELECT ID FROM " + LD.databaseName + ".FAVOURITES WHERE EMAIL = '" + email + "';";
+            string query = @"SELECT ID, TITLE FROM " + LD.databaseName + @".POST AS P NATURAL JOIN " + LD.databaseName +
+                @".FAVOURITES AS F WHERE F.EMAIL = '" + email + @"' AND F.ID = P.ID;";
             List<Result> Favs = new List<Result>();
-            List<string> id = new List<string>();
-            string temp = "";
             try
             {
+                Result temp;
                 MySqlDataReader reader = LD.executeGenericSQL(query);
                 while (reader.Read())
                 {
-                    temp = reader.GetInt32("ID").ToString();
-                    id.Add(temp);//////HHHHEEERRRRREEEEE
+                    temp = new Result();
+                    temp.ID = reader.GetInt32("ID").ToString();
+                    temp.title = reader.GetString("Title");
+                    Favs.Add(temp);
                 }
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
-                sw.Write("Failure in getFavourites: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-            }
-            finally
+                sw.Write(e.Message);
+            } finally
             {
                 LD.doClose();
             }
-           
-            return Favs;
+
+                return Favs;
         }
 
 
