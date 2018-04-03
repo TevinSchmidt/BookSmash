@@ -8,17 +8,10 @@ using System.IO;
 
 namespace BookSmash.Models
 {
-    public class Favourites
-    {
-        public string phoneNumber;
-        public string email;
-        public int relatedID;
-    }
 
     public class User
     {
         public int ID;
-        public int Proirity;
         public string pw;
         public string phone;
         public string email;
@@ -101,40 +94,6 @@ namespace BookSmash.Models
             
         }
 
-        /// <summary>
-        /// Method to get all Posts by Author
-        /// </summary>
-        /// <param name="Author"></param>
-        /// <returns></returns>
-      /**  public List<Post> getPostByAuthor(string Author)
-        {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = '" + Author + "';";
-            return getPostCustom(query);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Course"></param>
-        /// <returns></returns>
-        public List<Post> getPostByCourse(string Course)
-        {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".USED_FOR AS U, " + LD.databaseName + ".COURSE AS C WHERE C.Course_Title LIKE '" + Course + "' AND C.CourseNum = U.CourseNum AND U.Title = P.Title;" ;
-            return getPostCustom(query);
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Uni"></param>
-        /// <returns></returns>
-        public List<Post> getPostByUniversity(string Uni)
-        {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE UNI_NAME = '" + Uni + "';";
-            return getPostCustom(query);
-        }
-
 
 
         /// <summary>
@@ -142,11 +101,96 @@ namespace BookSmash.Models
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public List<Post> getPostByTitle(string title)
+        public List<Result> getFavourites(string email)
         {
-            string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE Title = '" + title + "';";
-            return getPostCustom(query);
-        }*/
+            LD = LinkDatabase.getInstance();
+            //string query = @"SELECT ID FROM " + LD.databaseName + ".FAVOURITES WHERE EMAIL = '" + email + "';";
+            string query = @"SELECT ID, TITLE FROM " + LD.databaseName + @".POST AS P NATURAL JOIN " + LD.databaseName +
+                @".FAVOURITES AS F WHERE F.EMAIL = '" + email + @"' AND F.ID = P.ID;";
+            List<Result> Favs = new List<Result>();
+            try
+            {
+                Result temp;
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                while (reader.Read())
+                {
+                    temp = new Result();
+                    temp.ID = reader.GetInt32("ID").ToString();
+                    temp.title = reader.GetString("Title");
+                    Favs.Add(temp);
+                }
+            } catch (Exception e)
+            {
+                sw.Write(e.Message);
+            } finally
+            {
+                LD.doClose();
+            }
+
+                return Favs;
+        }
+
+
+        public string getUserPhone(string email)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT PHONE_NUM FROM " + LD.databaseName + @".USER WHERE EMAIL = '" + email + @"';";
+            string result = "";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                if (reader.Read())
+                {
+                    result = reader.GetString("Phone_num");
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in getPhone: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+        public bool favouriteExists(string phone, string email, string id)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT * FROM " + LD.databaseName + @".FAVOURITES WHERE PHONE_NUM = '" + phone +
+                @"' AND EMAIL = '" + email + @"' AND ID = '" + id + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                if (reader.Read())
+                {
+                    result = true;
+                }
+            } catch (Exception e)
+            {
+                sw.Write(e.Message);
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+        public void saveFavourite(string phone, string email, string id)
+        {
+            if (!favouriteExists(phone, email, id))
+            {
+                string query = @"INSERT INTO " + LD.databaseName + @".FAVOURITES(phone_num, email, id)VALUES('" + phone +
+                    @"', '" + email + @"', '" + id + @"');";
+                try
+                {
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query);
+                }
+                catch (Exception e)
+                {
+                    sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
+            }
+        }
 
 
         /// <summary>
@@ -215,8 +259,10 @@ namespace BookSmash.Models
             catch (Exception e)
             {
                 sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally {
+                LD.doClose();
             }
-            LD.doClose();
+            
             return output;
         }
 
@@ -680,46 +726,6 @@ namespace BookSmash.Models
                 sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="customQuerry"></param>
-        /// <returns></returns>
-        public List<Favourites> getFavourites(int userId)
-        {
-            return getFavourites(@"SELECT * FROM " + LD.databaseName + ".FAVOURITES WHERE ID = '" + userId.ToString() + "';");
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public List<Favourites> getFavourites(string customQuerry)
-        {
-            LD = LinkDatabase.getInstance();
-            List<Favourites> Favs = new List<Favourites>();
-            Favourites temp;
-            try
-            {
-                MySqlDataReader reader = LD.executeGenericSQL(customQuerry);
-                while (reader.Read())
-                {
-                    temp = new Favourites();
-                    temp.phoneNumber = reader.GetString("Phone_Num");
-                    temp.email = reader.GetString("Email");
-                    temp.relatedID = reader.GetInt32("ID");
-                    Favs.Add(temp);
-                }
-            }
-            catch( Exception e)
-            {
-                sw.Write("Failure in getFavourites: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-            }
-            LD.doClose();
-            return Favs;
-        }
-
 
         /// <summary>
         /// 

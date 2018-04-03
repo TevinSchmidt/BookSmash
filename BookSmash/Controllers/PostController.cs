@@ -34,6 +34,24 @@ namespace BookSmash.Controllers
 
         }
 
+
+        public ActionResult Favourites()
+        {
+            grabFromDB grab = new grabFromDB();
+            
+            List<Result> results = grab.getFavourites(Globals.getCurrentUserEmail());
+            ViewBag.FavouriteList = results;
+
+            return View("Favourites");
+        }
+        public ActionResult Save(string id)
+        {
+            grabFromDB grab = new grabFromDB();
+            string phone = grab.getUserPhone(Globals.getCurrentUserEmail());
+            grab.saveFavourite(phone, Globals.getCurrentUserEmail(), id);
+
+            return RedirectToAction("Favourites");
+
         /// <summary>
         /// Method to delete a specific post
         /// </summary>
@@ -47,6 +65,7 @@ namespace BookSmash.Controllers
                 DB.deletePost(PM.ID);
             }
             return MyPosts("");
+
         }
 
         [HttpPost]
