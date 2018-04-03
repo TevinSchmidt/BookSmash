@@ -249,7 +249,7 @@ namespace BookSmash.Models
         /// <summary>
         /// This is the password used to login to the database by the connection
         /// </summary>
-        private const string Password = "Security4";
+        private const string Password = "Engineering.11";
 
         private const string AdminPhone = "111-111-1111";
         public const string AdminEmail = "Admin@admin.admin";

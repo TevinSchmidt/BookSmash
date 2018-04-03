@@ -238,8 +238,9 @@
     <Content Include="Views\Admin\AdminPage.cshtml" />
     <Content Include="Views\Post\Textbook.cshtml" />
     <Content Include="Views\Post\Error.cshtml" />
-    <Content Include="Views\Post\Success.cshtml" />
+    <Content Include="Views\Home\Success.cshtml" />
     <Content Include="Views\Post\ReviewUser.cshtml" />
+    <Content Include="Views\Post\MyPosts.cshtml" />
     <Content Include="Views\Admin\DeleteAdmin.cshtml" />
     <Content Include="Views\Admin\AddAdmin.cshtml" />
     <Content Include="Views\Admin\AddUni.cshtml" />
