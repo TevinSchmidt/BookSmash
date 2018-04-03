@@ -27,6 +27,13 @@ namespace BookSmash.Models
         public string Uni;
     }
 
+    public class UserInfo
+    {
+        public string phone;
+        public string university;
+    }
+
+
     public class Admin
     {
         public string email;
@@ -47,7 +54,7 @@ namespace BookSmash.Models
         public string Phone;
         public string email;
         public string Uni;
-        public DateTime date;
+        public string date;
         public string condition;
         public double price;
         public string description;
@@ -55,6 +62,8 @@ namespace BookSmash.Models
         public string department;
         public string code;
         public int edition;
+        public string author;
+        public string coursename;
     }
 
     public class Result
@@ -228,6 +237,51 @@ namespace BookSmash.Models
             }
         }
 
+        /// <summary>
+        /// This method removes a university by the given name
+        /// </summary>
+        /// <param name="Uni_Name"></param>
+        public void removeUniversityByName(String Uni_Name)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"DELETE FROM " + LD.databaseName + @".UNIVERSITY WHERE UNI_NAME = '" + Uni_Name + @"';";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        public UserInfo getUserInfo(string username)
+        {
+            LD = LinkDatabase.getInstance();
+
+            string query = @"SELECT UNI_NAME, PHONE_NUM FROM " + LD.databaseName + @".USER WHERE EMAIL = '" +
+                username + @"';";
+
+
+            UserInfo info = new UserInfo();
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                if (reader.Read())
+                {
+                    info.phone = reader.GetString("PHONE_NUM");
+                    info.university = reader.GetString("UNI_NAME");
+                }
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getPost: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            LD.doClose();
+            return info;
+
+        }
+
         public List<Result> getSearchTitles(string title, string department, string code, string university)
         {
             LD = LinkDatabase.getInstance();
@@ -269,18 +323,13 @@ namespace BookSmash.Models
             /// <param name="courseCode"></param>
             /// <param name="UniName"></param>
             //public List<Post> getPost(string department, string title, string courseCode, string UniName)
-            public Post getPost(string id)
+        public Post getPost(string id)
         {
             LD = LinkDatabase.getInstance();
 
             string query = @"SELECT * FROM " + LD.databaseName + @".POST NATURAL JOIN " + LD.databaseName +
                 @".USED_FOR WHERE " + LD.databaseName + @".POST.ID = '" + id + @"';";
-            //string query = @"SELECT * FROM " + LD.databaseName + @".POST WHERE ID = '" + id + @"';";
-            //string query = @"SELECT * FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName + @".USED_FOR AS U" +
-               // @" WHERE P.Title = U.Title AND P.Title = '" + title + @" AND U.Department = '" + department + @"' AND U.CourseNum = '" 
-                //+ courseCode + @"' AND P.UNI_Name = '" + UniName + @"';" ;
 
-            //List<Post> outPost = new List<Post>();
             Post temp = new Post();
             try
             {
@@ -292,7 +341,7 @@ namespace BookSmash.Models
                     temp.Phone = reader.GetString("Phone_Num");
                     temp.email = reader.GetString("Email");
                     temp.Uni = reader.GetString("UNI_NAME");
-                    temp.date = reader.GetDateTime("Date");
+                    temp.date = reader.GetString("Date");
                    // temp.bookType = reader.GetString("BookType");
                     temp.condition = reader.GetString("Book_Condition");
                     temp.price = reader.GetDouble("Price");
@@ -313,25 +362,280 @@ namespace BookSmash.Models
             return temp;
         }
 
+        public List<Result> getUserPosts(string username)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT TITLE, ID FROM " + LD.databaseName + @".POST WHERE EMAIL = '" + username +
+                @"';";
+            List<Result> search = new List<Result>();
+            try
+            {
+                Result temp;
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                while (reader.Read())
+                {
+                    temp = new Result();
+                    temp.ID = reader.GetInt32("ID").ToString();
+                    temp.title = reader.GetString("Title");
+                    search.Add(temp);
+                }
+            }
+            catch (MySqlException d)
+            {
+                sw.Write("Sql Error:" + d.Message);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            finally
+            {
+                LD.doClose();
+            }
+            return search;
+
+        }
+
   
         /// <summary>
         /// Method to insert a new post into the db
         /// </summary>
         /// <param name="post"></param>
-        public void insertPost(Post post)
+        public string insertPost(Post post)
         {
-            LD = LinkDatabase.getInstance();
-            string query = @"INSERT INTO " + LD.databaseName + @".POST(Phone_Num, Email, UNI_NAME, Date, BookType, Book_Condition, Price, Description, Title)" + 
+            string query1 = @"INSERT INTO " + LD.databaseName + @".POST(Phone_Num, Email, UNI_NAME, Date, Book_Condition, Price, Description, Title)" + 
                 @"VALUES('" + post.Phone + @"','" + post.email + @"','" + post.Uni + @"','" + post.date + @"','" + post.condition + @"','" + post.price + @"','" + post.description + 
                 @"','" + post.Title +  @"');";
+
+            if (checkTextbook(post.Title, post.edition))
+            {
+                if (checkAuthor(post.author, post.Title))
+                {
+                    //Title and Author both in data base, just insert post (Best Case)
+                    try
+                    {                        
+                        if (!checkCourse(post.code, post.department, post.Uni))
+                        {
+                            string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                                post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query5); //Insert course
+                        }
+                        if (!checkUsedFor(post.Title, post.code, post.department))
+                        {
+                            string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                                post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query4); //Insert used_for
+                        }
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query1); //Insert Post
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+                else
+                {
+                    //Textbook exists but not author, insert post and author (highly unlikely)
+                    string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
+                        post.author + @"', '" + post.Title + @"');";
+                    try
+                    {
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query2); //Insert author
+                        if (!checkCourse(post.code, post.department, post.Uni))
+                        {
+                            string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                                post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query5); //Insert course
+                        }
+                        if (!checkUsedFor(post.Title, post.code, post.department))
+                        {
+                            string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                                post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                            LD = LinkDatabase.getInstance();
+                            LD.executeNonQueryGeneric(query4); //Insert used_for
+                        }
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query1); //Insert post
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+            else if (checkAuthor(post.author, post.Title))
+            {
+
+                string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
+                    post.Title + @"', '" + post.edition + @"');";
+                //Textbook does not exist but author does(highly unlikely)
+                try
+                {
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query3); //Insert textbook
+                    if (!checkCourse(post.code, post.department, post.Uni))
+                    {
+                        string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                            post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query5); //Insert course
+                    }
+                    if (!checkUsedFor(post.Title, post.code, post.department))
+                    {
+                        string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                            post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                        LD = LinkDatabase.getInstance();
+                        LD.executeNonQueryGeneric(query4); //Insert used_for
+                    }
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query1); //Insert post
+
+                }
+                catch (Exception e)
+                {
+                    sw.Write("Failure in insertPost textbook and post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
+            }
+            else
+            {
+                string query2 = @"INSERT INTO " + LD.databaseName + @".AUTHOR(name, title)VALUES('" +
+                    post.author + @"', '" + post.Title + @"');";
+                string query3 = @"INSERT INTO " + LD.databaseName + @".TEXTBOOK(title, edition)VALUES('" +
+                    post.Title + @"', '" + post.edition + @"');";
+                try
+                {
+                    //Both text book and author do not , insert all
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query3); //Insert textbook
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query2); //Insert author
+                    if (!checkCourse(post.code, post.department, post.Uni))
+                    {
+                        LD = LinkDatabase.getInstance();
+                        string query5 = @"INSERT INTO " + LD.databaseName + @".COURSE(course_title, coursenum, department, uni_name)VALUES('" +
+                            post.coursename + @"', '" + post.code + @"', '" + post.department + @"', '" + post.Uni + @"');";
+                        
+                        LD.executeNonQueryGeneric(query5); //Insert course
+                    }
+                    if (!checkUsedFor(post.Title, post.code, post.department))
+                    {
+                        LD = LinkDatabase.getInstance();
+                        string query4 = @"INSERT INTO " + LD.databaseName + @".USED_FOR(title, coursenum, department)VALUES('" +
+                            post.Title + @"', '" + post.code + @"', '" + post.department + @"');";
+                        
+                        LD.executeNonQueryGeneric(query4); //Insert used_for
+                    }
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query1); //Insert post
+                }
+                catch (Exception e)
+                {
+                    sw.Write("Failure in insertPost, post: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
+            }
+            return "You have successfully created a post";
+
+        }
+        public bool checkCourse(string code, string department, string university)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT COURSENUM, DEPARTMENT, UNI_NAME FROM " + LD.databaseName + @".COURSE WHERE COURSENUM = '" +
+                code + @"' AND DEPARTMENT = '" + department + @"' AND UNI_NAME = '" + university + @"';";
             try
             {
-                LD.executeNonQueryGeneric(query);
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                if (reader.Read())
+                {
+                    result = true;
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+        public bool checkUsedFor(string title, string course, string department)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT TITLE, COURSENUM, DEPARTMENT FROM " + LD.databaseName + @".USED_FOR WHERE TITLE = '" +
+                title + @"' AND COURSENUM = '" + course + @"' AND DEPARTMENT = '" + department + @"';"; 
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+
+                if (reader.Read())
+                {
+                    result = true;
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+
+        public bool checkTextbook(string textbook, int edition)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT TITLE, EDITION FROM " + LD.databaseName + @".TEXTBOOK WHERE TITLE = '" +
+                textbook + @"' AND EDITION = '" + edition + @"';";
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+
+                if (reader.Read())
+                {
+                    result = true;
+                }
+            } catch (Exception e)
+            {
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+
+        public bool checkAuthor(string author, string title)
+        {
+            bool result = false;
+            LD = LinkDatabase.getInstance();
+            string query = @"SELECT NAME, TITLE FROM " + LD.databaseName + @".AUTHOR WHERE NAME = '" +
+                author + "' AND TITLE = '" + title + @"';";
+
+            try
+            {
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+
+                if (reader.Read())
+                {
+                    result = true;
+                }
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
+            finally
+            {
+                LD.doClose();
+            }
+            return result;
         }
 
         /// <summary>
@@ -393,6 +697,7 @@ namespace BookSmash.Models
             return Favs;
         }
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -431,6 +736,7 @@ namespace BookSmash.Models
             return users;
         }
 
+
         /// <summary>
         /// This is design to check if a username is already taken, should return empty if username is taken already.
         /// </summary>
@@ -454,6 +760,7 @@ namespace BookSmash.Models
                         temp = new User();
                         temp.phone = reader.GetString("Phone_Num");
                         temp.email = reader.GetString("Email");
+                        temp.pw = reader.GetString("Password");
                         temp.Uni = reader.GetString("UNI_NAME");
                         temp.fname = reader.GetString("Fname");
                         temp.lname = reader.GetString("Lname");
@@ -529,6 +836,120 @@ namespace BookSmash.Models
         }
 
         /// <summary>
+        /// This function modifies a users email 
+        /// </summary>
+        /// <param name="newEmail"></param>
+        /// <param name="oldEmail"></param>
+        public void modifyUserEmail(string newEmail, string oldEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Email = '" + newEmail + @"' WHERE Email = '" + oldEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+
+
+        }
+
+        /// <summary>
+        /// This function modifies a users password
+        /// </summary>
+        /// <param name="newPassword"></param>
+        /// <param name="oldPassword"></param>
+        public void modifyUserPassword(string newPassword, string oldPassword, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Password = '" + newPassword + @"' WHERE Password = '" + oldPassword+ @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
+        /// This function changes a users Fname
+        /// </summary>
+        /// <param name="newFname"></param>
+        /// <param name="oldFname"></param>
+        /// <param name="userEmail"></param>
+        public void modifyUserFname(string newFname, string oldFname, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Fname = '" + newFname + @"' WHERE Fname = '" + oldFname + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
+        /// This function changes a users Lname
+        /// </summary>
+        /// <param name="newLname"></param>
+        /// <param name="oldLname"></param>
+        /// <param name="userEmail"></param>
+        public void modifyUserLname(string newLname, string oldLname, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Lname = '" + newLname + @"' WHERE Lname = '" + oldLname + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
+        /// This function changes a users phone number
+        /// </summary>
+        /// <param name="newPhone"></param>
+        /// <param name="oldPhone"></param>
+        /// <param name="userEmail"></param>
+        public void modifyUserPhone(string newPhone, string oldPhone, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Phone_Num = '" + newPhone + @"' WHERE Phone_Num = '" + oldPhone + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        public void modifyUserUniversity(string newUni, string oldUni, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET UNI_NAME = '" + newUni + @"' WHERE UNI_NAME = '" + oldUni + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
         /// This retrieves an admin by its email address
         /// </summary>
         /// <param name="Phone_Num"></param>
@@ -587,6 +1008,24 @@ namespace BookSmash.Models
             }
 
 
+        }
+
+        /// <summary>
+        /// This function removes an Admin given its email.
+        /// </summary>
+        /// <param name="email"></param>
+        public void removeAdminByEmail(String email)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"DELETE FROM " + LD.databaseName + @".ADMIN WHERE Email = '" + email + @"';";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
         }
 
         /// <summary>

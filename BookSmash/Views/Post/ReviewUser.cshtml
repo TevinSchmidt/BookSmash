@@ -5,14 +5,15 @@
     ViewBag.Title = "ReviewUser";
 }
 
+@using BookSmash.Models
 
-
-@using (Html.BeginForm("ReviewSubmition", "Post", FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("AddReview", "Post", FormMethod.Post, new { role = "form" }))
 {
     <br />
     <p>
 
-        As admin you may enter a university. Please fill out the required form below:
+       You can leave a review of the poster here. It is important to note that this is a review of the seller and not 
+        the books content. 
     </p>
     <p style="color:red">@ViewBag.EmptyFields</p>
     <br />
@@ -24,13 +25,13 @@
         </tr>
         <tr>
             <td>Description:</td>
-            <td>@Html.TextBoxFor(model => model.Description, new { @class = "form-control" })</td>
+            <td>@Html.TextAreaFor(model => model.Description, new { @class = "form-control" })</td>
             <td style="color:red">@ViewBag.DescriptionLengthError</td>
         </tr>
         <tr>
             <td>Rating:</td>
-            <td>@Html.DropDownListFor(model => model.Rating, Model.ratings, "-Please Select A Rating-", new { @class = "form-control" })</td>
-            <td>(1-lowest and 5-best</td>
+            <td>@Html.DropDownListFor(model => model.Rating, new SelectList(Enum.GetValues(typeof(ratings))), "-Please Select A Rating-", new { @class = "form-control" })</td>
+            <td>(1-lowest and 5-best)</td>
         </tr>
     </table>
     <br />

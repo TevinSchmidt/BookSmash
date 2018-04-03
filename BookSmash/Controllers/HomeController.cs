@@ -42,17 +42,21 @@ public class HomeController : Controller
             return View("FrontPage", model);
         }
 
-        public ActionResult Done()
+        public ActionResult Results()
         {
-            // Get University information from the session
             var model = Session["UniversityModel"] as UniversitiesModel;
+            grabFromDB grabFromDB = new grabFromDB();
 
-            return View(model);
+            List<Result> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
+
+            ViewBag.Textbooklist = results;
+
+            return View("Results");
         }
 
         public ActionResult CreatePost()
         {
-           
+         
             var universities = GetAllUniversities();
             var model = new CreatePostModel();
             model.Universities = GetSelectListItems(universities);
@@ -61,51 +65,49 @@ public class HomeController : Controller
         }
 
         [HttpPost]
-        public ActionResult CreatPost(UniversitiesModel model)
+        public ActionResult CreatePost(CreatePostModel model)
         {
-            var universities = GetAllUniversities();
-            model.Universities = GetSelectListItems(universities);
+            //var universities = GetAllUniversities();
+           // model.Universities = GetSelectListItems(universities);
 
             if (ModelState.IsValid)
             {
+                DateTime date = DateTime.Now;
                 Session["CreatePostModel"] = model;
                 return RedirectToAction("Post");
             }
             return View("Error");
         }
 
-        public ActionResult Results()
-        {
-            var model = Session["UniversityModel"] as UniversitiesModel;
-            grabFromDB grabFromDB = new grabFromDB();
-
-            List<Result> results = grabFromDB.getSearchTitles(model.Title, model.Department, model.Code, model.University);
-            
-            ViewBag.Textbooklist = results;
-
-            return View("Results");
-        }
-
         public ActionResult Post()
         {
             var model = Session["CreatePostModel"] as CreatePostModel;
             grabFromDB grab = new grabFromDB();
+            UserInfo temp = grab.getUserInfo(Globals.getCurrentUserEmail());
+            //string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             Post post = new Post();
             post.code = model.Code;
             post.condition = model.Condition;
-            post.date = DateTime.Now.ToShortDateString();
+            post.coursename = model.CourseName;
+            post.date = DateTime.Now.ToString();
             post.department = model.Department;
             post.description = model.Description;
             post.edition = model.Edition;
             post.email = Globals.getCurrentUserEmail();
-            post.Phone = Globals.getCurrentUserPhone();
+            post.Phone = temp.phone;
             post.price = model.Price;
             post.Title = model.Title;
-            post.Uni = Globals.getCurrentUserUni();
-            
-            grab.insertPost(post);
+            post.Uni = temp.university;
+            post.author = model.Author;            
+
+            ViewBag.Success = grab.insertPost(post);           
 
             return View("Success");
+        }
+
+        public ActionResult Success()
+        {
+            return View();
         }
 
         private IEnumerable<string> GetAllUniversities()
