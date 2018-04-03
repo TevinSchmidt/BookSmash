@@ -34,6 +34,21 @@ namespace BookSmash.Controllers
 
         }
 
+        /// <summary>
+        /// Method to delete a specific post
+        /// </summary>
+        /// <param name="PM"></param>
+        /// <returns></returns>
+        public ActionResult DeletePost(PostModel PM)
+        {
+            grabFromDB DB = new grabFromDB();
+            if(PM.ID != null)
+            {
+                DB.deletePost(PM.ID);
+            }
+            return MyPosts("");
+        }
+
         [HttpPost]
         public ActionResult ReviewUser()
         {
