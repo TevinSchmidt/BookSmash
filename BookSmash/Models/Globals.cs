@@ -102,6 +102,17 @@ namespace BookSmash.Models
             return (string)HttpContext.Current.Session["userAdmin"];
         }
 
+        public static void setUserToModify(User user)
+        {
+            HttpContext.Current.Session.Remove("userToModify");
+            HttpContext.Current.Session.Add("userToModify", user);
+        }
+
+        public static User getUserToModify()
+        {
+            return (User)HttpContext.Current.Session["userToModify"];
+        }
+
     }
 
 

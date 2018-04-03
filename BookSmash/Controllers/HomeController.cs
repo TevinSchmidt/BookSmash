@@ -56,7 +56,7 @@ public class HomeController : Controller
 
         public ActionResult CreatePost()
         {
-           
+         
             var universities = GetAllUniversities();
             var model = new CreatePostModel();
             model.Universities = GetSelectListItems(universities);
@@ -72,6 +72,7 @@ public class HomeController : Controller
 
             if (ModelState.IsValid)
             {
+                DateTime date = DateTime.Now;
                 Session["CreatePostModel"] = model;
                 return RedirectToAction("Post");
             }

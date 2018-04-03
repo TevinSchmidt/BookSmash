@@ -1,0 +1,90 @@
+﻿
+@model BookSmash.Models.AdminUserResultModel
+
+@{
+    ViewBag.Title = "UserEdit";
+}
+
+<br />
+
+@using (Html.BeginForm("ModifyUser", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <p>
+        The following is info on the user that was searched.
+    </p>
+    <br />
+    <table>
+        <tr>
+            <td>Email:</td>
+            <td>@ViewBag.User.email</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>@ViewBag.User.pw</td>
+        </tr>
+        <tr>
+            <td>First Name:</td>
+            <td>@ViewBag.User.fname</td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td>@ViewBag.User.lname</td>
+        </tr>
+        <tr>
+            <td>Phone Number:</td>
+            <td>@ViewBag.User.phone</td>
+        </tr>
+        <tr>
+            <td>University Name:</td>
+            <td>@ViewBag.User.Uni</td>
+        </tr>
+    </table>
+
+    <br />
+    <p>
+        Leaving text boxes blank or entering the same data will preserve data.
+        Entering info into textboxes will alter data stored in the database.
+    </p>
+    <p style="color:red">@ViewBag.EmptyFields</p>
+    <br />
+    <table>
+        <tr>
+            <td>Email:</td>
+            <td>@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidEmail</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>@Html.TextBoxFor(model => model.Password, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidPassword</td>
+        </tr>
+        <tr>
+            <td>Confirm Password:</td>
+            <td>@Html.TextBoxFor(model => model.confirmPassword, new { @class = "form-control" })</td>
+        </tr>
+        <tr>
+            <td>First Name:</td>
+            <td>@Html.TextBoxFor(model => model.Fname, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidFname</td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td>@Html.TextBoxFor(model => model.Lname, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidLname</td>
+        </tr>
+        <tr>
+            <td>Phone Number:</td>
+            <td>@Html.TextBoxFor(model => model.Phone_Num, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidPhone</td>
+        </tr>
+        <tr>
+            <td>University Name:</td>
+            <td>@Html.DropDownListFor(model => model.University, Model.Universities, "-Please Select University-", new { @class = "form-control" })</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" class="btn btn-default" value="Update User" />
+    <br />
+    <p>@ViewBag.CreationMessage</p>
+    <br />
+}
