@@ -12,6 +12,22 @@
 
 <p>@ViewBag.ReturnValue</p>
 
+@if (ViewBag.ModifiedReturn != null)
+{
+    if (ViewBag.ModifiedReturn.Count == 0)
+    {
+        <p>The user was not updated.</p>
+    }
+    else
+    {
+        <p>The following were successfully updated.</p>
+        foreach (var item in ViewBag.ModifiedReturn)
+        {
+            <p>@item</p>
+        }
+    }
+}
+
 <br />
 
 @using (Html.BeginForm("AddUni", "Admin", FormMethod.Post, new { role = "form" }))

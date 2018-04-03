@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -253,6 +255,7 @@ namespace BookSmash.Controllers
                 user = DB.getUserListByEmail(m.Email)[0];
 
                 ViewBag.User = user;
+                Globals.setUserToModify(user);
 
                 AdminUserResultModel model = new AdminUserResultModel();
                 var universities = GetAllUniversities();
@@ -266,7 +269,148 @@ namespace BookSmash.Controllers
 
         public ActionResult ModifyUser(AdminUserResultModel m)
         {
-            ViewBag.ReturnValue = "Functionallity not implemented yet";
+            User toModify = Globals.getUserToModify();
+            grabFromDB DB = new grabFromDB();
+            List<string> modifiedReturn = new List<string>();
+
+            if(m.Email != null && toModify.email != m.Email)
+            {
+                if(m.Email.Length > 100)
+                {
+                    ViewBag.InvalidEmail = "Email too long. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                if(DB.getUserListByEmail(m.Email).Count == 1)
+                {
+                    ViewBag.InvalidEmail = "This email is already associated with an account. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                //Check for invalid email
+                try
+                {
+                    MailAddress mail = new MailAddress(m.Email);
+                }
+                catch (FormatException)
+                {
+                    ViewBag.InvalidEmail = "This is not a valid email address. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                DB.modifyUserEmail(m.Email, toModify.email);
+                toModify.email = m.Email;
+                modifiedReturn.Add("Email successfully changed.");
+            }
+
+            if(m.Password != null && toModify.pw != m.Password)
+            {
+                if (m.Password != m.confirmPassword)
+                {
+                    ViewBag.InvalidPassword = "Password does not match confirmation password. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                if (m.Password.Length > 100 || m.confirmPassword.Length > 100)
+                {
+                    ViewBag.InvalidPassword = "Password too long. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                DB.modifyUserPassword(m.Password, toModify.pw, toModify.email);
+                modifiedReturn.Add("Password successfully changed");
+            }
+
+            if(m.Fname != null && toModify.fname != m.Fname)
+            {
+                if(m.Fname.Length > 100)
+                {
+                    ViewBag.InvalidFname = "First name too long. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                DB.modifyUserFname(m.Fname, toModify.fname, toModify.email);
+                modifiedReturn.Add("First name successfully changed");
+            }
+
+
+            if(m.Lname != null && toModify.lname != m.Lname)
+            {
+                if(m.Lname.Length > 100)
+                {
+                    ViewBag.InvalidLname = "Last name too long. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                DB.modifyUserLname(m.Lname, toModify.lname, toModify.email);
+                modifiedReturn.Add("Last name successfully changed.");
+            }
+
+            if(m.Phone_Num != null && toModify.phone != m.Phone_Num)
+            {
+                if(m.Phone_Num.Length > 14)
+                {
+                    ViewBag.InvalidPhone = "Phone number too long. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                Regex rg = new Regex(@"^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$");
+                if (!rg.IsMatch(m.Phone_Num))
+                {
+                    ViewBag.InvalidPhone = "This is not a valid phone number. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                if (DB.getUserListByPhone(m.Phone_Num).Count == 1)
+                {
+                    ViewBag.InvalidPhone = "Phone number already associated with an account. Try again.";
+                    ViewBag.User = toModify;
+                    var universities = GetAllUniversities();
+                    m.Universities = GetSelectListItems(universities);
+                    return View("UserEdit", m);
+                }
+
+                DB.modifyUserPhone(m.Phone_Num, toModify.phone, toModify.email);
+                modifiedReturn.Add("Phone number successfully changed.");
+                
+            }
+
+            if(m.University != null && m.University != toModify.Uni)
+            {
+                DB.modifyUserUniversity(m.University, toModify.Uni, toModify.email);
+                modifiedReturn.Add("University successfully changed.");
+            }
+
+
+
+            ViewBag.ModifiedReturn = modifiedReturn;
             return View("AdminPage");
         }
         #endregion

@@ -642,10 +642,15 @@ namespace BookSmash.Models
            
         }
 
-        public void modifyUserEmail(string email)
+        /// <summary>
+        /// This function modifies a users email 
+        /// </summary>
+        /// <param name="newEmail"></param>
+        /// <param name="oldEmail"></param>
+        public void modifyUserEmail(string newEmail, string oldEmail)
         {
             LD = LinkDatabase.getInstance();
-            string query = @"UPDATE INTO " + LD.databaseName + @".USER SET Email  WHERE Email = '" + email + @"'; ";
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Email = '" + newEmail + @"' WHERE Email = '" + oldEmail + @"'; ";
             try
             {
                 LD.executeNonQueryGeneric(query);
@@ -656,6 +661,99 @@ namespace BookSmash.Models
             }
 
 
+        }
+
+        /// <summary>
+        /// This function modifies a users password
+        /// </summary>
+        /// <param name="newPassword"></param>
+        /// <param name="oldPassword"></param>
+        public void modifyUserPassword(string newPassword, string oldPassword, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Password = '" + newPassword + @"' WHERE Password = '" + oldPassword+ @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
+        /// This function changes a users Fname
+        /// </summary>
+        /// <param name="newFname"></param>
+        /// <param name="oldFname"></param>
+        /// <param name="userEmail"></param>
+        public void modifyUserFname(string newFname, string oldFname, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Fname = '" + newFname + @"' WHERE Fname = '" + oldFname + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
+        /// This function changes a users Lname
+        /// </summary>
+        /// <param name="newLname"></param>
+        /// <param name="oldLname"></param>
+        /// <param name="userEmail"></param>
+        public void modifyUserLname(string newLname, string oldLname, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Lname = '" + newLname + @"' WHERE Lname = '" + oldLname + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        /// <summary>
+        /// This function changes a users phone number
+        /// </summary>
+        /// <param name="newPhone"></param>
+        /// <param name="oldPhone"></param>
+        /// <param name="userEmail"></param>
+        public void modifyUserPhone(string newPhone, string oldPhone, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET Phone_Num = '" + newPhone + @"' WHERE Phone_Num = '" + oldPhone + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+        }
+
+        public void modifyUserUniversity(string newUni, string oldUni, string userEmail)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE " + LD.databaseName + @".USER SET UNI_NAME = '" + newUni + @"' WHERE UNI_NAME = '" + oldUni + @"'AND Email = '" + userEmail + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
         }
 
         /// <summary>

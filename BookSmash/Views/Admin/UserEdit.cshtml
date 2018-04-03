@@ -42,7 +42,7 @@
 
     <br />
     <p>
-        Leaving text boxes blank will preserve data.
+        Leaving text boxes blank or entering the same data will preserve data.
         Entering info into textboxes will alter data stored in the database.
     </p>
     <p style="color:red">@ViewBag.EmptyFields</p>
@@ -60,7 +60,7 @@
         </tr>
         <tr>
             <td>Confirm Password:</td>
-            <td>@Html.PasswordFor(model => model.confirmPassword, new { @class = "form-control" })</td>
+            <td>@Html.TextBoxFor(model => model.confirmPassword, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>First Name:</td>
