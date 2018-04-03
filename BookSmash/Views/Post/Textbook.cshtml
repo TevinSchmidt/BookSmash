@@ -15,7 +15,7 @@
 <p><strong>Location:</strong> @ViewBag.Post.Uni</p>
 <br />
 
-
+@Html.ActionLink("Add Post to Favourites", "Favourites/" + (string)@ViewBag.Post.ID, "Post")
 
 <br />
 <h3><strong>Reviews of Seller:</strong></h3>
@@ -44,7 +44,7 @@
 <h3><strong>Want to leave a Review?</strong></h3>
 @using (Html.BeginForm("ReviewUser", "Post", FormMethod.Post, new { role = "form" }))
 {
-    
+
     <input type="submit" class="btn btn-default" value="Create Review" />
 
 
