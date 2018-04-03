@@ -642,6 +642,22 @@ namespace BookSmash.Models
            
         }
 
+        public void modifyUserEmail(string email)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"UPDATE INTO " + LD.databaseName + @".USER SET Email  WHERE Email = '" + email + @"'; ";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+
+
+        }
+
         /// <summary>
         /// This retrieves an admin by its email address
         /// </summary>
