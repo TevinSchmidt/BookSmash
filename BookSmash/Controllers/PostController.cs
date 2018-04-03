@@ -34,15 +34,22 @@ namespace BookSmash.Controllers
 
         }
 
-        public ActionResult Favourites(string id)
+        public ActionResult Favourites()
         {
             grabFromDB grab = new grabFromDB();
-            string phone = grab.getUserPhone(Globals.getCurrentUserEmail());
-            grab.saveFavourite(phone, Globals.getCurrentUserEmail(), id);
+            
             List<Result> results = grab.getFavourites(Globals.getCurrentUserEmail());
             ViewBag.FavouriteList = results;
 
             return View("Favourites");
+        }
+        public ActionResult Save(string id)
+        {
+            grabFromDB grab = new grabFromDB();
+            string phone = grab.getUserPhone(Globals.getCurrentUserEmail());
+            grab.saveFavourite(phone, Globals.getCurrentUserEmail(), id);
+
+            return RedirectToAction("Favourites");
         }
 
         [HttpPost]

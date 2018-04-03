@@ -94,39 +94,7 @@ namespace BookSmash.Models
             
         }
 
-        /// <summary>
-        /// Method to get all Posts by Author
-        /// </summary>
-        /// <param name="Author"></param>
-        /// <returns></returns>
-        /**  public List<Post> getPostByAuthor(string Author)
-          {
-              string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".AUTHOR AS A WHERE P.Title = A.Title AND A.Name = '" + Author + "';";
-              return getPostCustom(query);
-          }
 
-          /// <summary>
-          /// 
-          /// </summary>
-          /// <param name="Course"></param>
-          /// <returns></returns>
-          public List<Post> getPostByCourse(string Course)
-          {
-              string query = @"SELECT* FROM " + LD.databaseName + ".POST AS P, " + LD.databaseName + ".USED_FOR AS U, " + LD.databaseName + ".COURSE AS C WHERE C.Course_Title LIKE '" + Course + "' AND C.CourseNum = U.CourseNum AND U.Title = P.Title;" ;
-              return getPostCustom(query);
-          }
-
-
-          /// <summary>
-          /// 
-          /// </summary>
-          /// <param name="Uni"></param>
-          /// <returns></returns>
-          public List<Post> getPostByUniversity(string Uni)
-          {
-              string query = @"SELECT* FROM " + LD.databaseName + ".POST WHERE UNI_NAME = '" + Uni + "';";
-              return getPostCustom(query);
-          }*/
 
         /// <summary>
         /// Method to get all Posts by title
@@ -184,18 +152,43 @@ namespace BookSmash.Models
             }
             return result;
         }
-
-        public void saveFavourite(string phone, string email, string id)
+        public bool favouriteExists(string phone, string email, string id)
         {
+            bool result = false;
             LD = LinkDatabase.getInstance();
-            string query = @"INSERT INTO " + LD.databaseName + @".FAVOURITES(phone_num, email, id)VALUES('" + phone +
-                @"', '" + email + @"', '" + id + @"');";
+            string query = @"SELECT * FROM " + LD.databaseName + @".FAVOURITES WHERE PHONE_NUM = '" + phone +
+                @"' AND EMAIL = '" + email + @"' AND ID = '" + id + @"';";
             try
             {
-                LD.executeNonQueryGeneric(query);
+                MySqlDataReader reader = LD.executeGenericSQL(query);
+                if (reader.Read())
+                {
+                    result = true;
+                }
             } catch (Exception e)
             {
-                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write(e.Message);
+            } finally
+            {
+                LD.doClose();
+            }
+            return result;
+        }
+        public void saveFavourite(string phone, string email, string id)
+        {
+            if (!favouriteExists(phone, email, id))
+            {
+                string query = @"INSERT INTO " + LD.databaseName + @".FAVOURITES(phone_num, email, id)VALUES('" + phone +
+                    @"', '" + email + @"', '" + id + @"');";
+                try
+                {
+                    LD = LinkDatabase.getInstance();
+                    LD.executeNonQueryGeneric(query);
+                }
+                catch (Exception e)
+                {
+                    sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
             }
         }
 
