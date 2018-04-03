@@ -223,7 +223,11 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                try
+                {
+                    sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                }
+                catch { }
             }
             LD.doClose();
             return output;
@@ -440,6 +444,25 @@ namespace BookSmash.Models
             }
             return search;
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool deletePost(string id)
+        {
+            LD = LinkDatabase.getInstance();
+            string query = @"DELETE FROM " + LD.databaseName + @".POST WHERE ID = '" + id + @"';";
+            try
+            {
+                LD.executeNonQueryGeneric(query);
+                return true;
+            }
+            catch (Exception e)
+            {
+                sw.Write("Failure in deletePost: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+            }
+            return false;
         }
 
   

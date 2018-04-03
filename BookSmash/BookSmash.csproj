@@ -171,6 +171,7 @@
     <Compile Include="Models\grabFromDB.cs" />
     <Compile Include="Models\LinkDatabase.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\UniversitiesModel.cs" />
