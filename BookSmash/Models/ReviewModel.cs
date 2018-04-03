@@ -29,5 +29,5 @@ namespace BookSmash.Models
         public IEnumerable<SelectListItem> ratings { get; set; }
     }
 
-    enum ratings { One, Two, Three, Four, Five}; 
+    public enum ratings { One, Two, Three, Four, Five}; 
 }

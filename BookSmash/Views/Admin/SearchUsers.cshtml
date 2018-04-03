@@ -1,0 +1,23 @@
+﻿
+@model  BookSmash.Models.AdminSearchUserModel
+
+@{
+    ViewBag.Title = "SearchUsers";
+}
+
+<h2>Search For Users</h2>
+
+<p>As an admin you can search for a user based on email. You can see their info so you can modify it.</p>
+
+@using (Html.BeginForm("PerformSearch", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <table>
+        <tr>
+            <td>User Email:</td>
+            <td>@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidEmail</td>
+        </tr>
+    </table>
+    <input type="submit" class="btn btn-default" value="Search User" />
+}
+

@@ -97,12 +97,26 @@ namespace BookSmash.Models
             new Table
             (
                 dbname,
+                "UNIVERSITY",
+                new Column[]
+                {
+                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("City", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Prov_State", "CHAR(2)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                    new Column("Country", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1)
+
+                }
+            ),
+            new Table
+            (
+                dbname,
                 "COURSE",
                 new Column[]
                 {
                     new Column("Course_Title", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                     new Column("CourseNum", "VARCHAR(15)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
-                    new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, false, null, 1, 1)
+                    new Column("Department", "CHAR(4)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
+                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1)
                    
                 }
 
@@ -116,20 +130,6 @@ namespace BookSmash.Models
                     new Column("Title", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "TEXTBOOK", 1, 1),
                     new Column("CourseNum", "VARCHAR(15)", new string[] {"NOT NULL"}, true, true, "COURSE", 1, 1),
                     new Column("Department", "CHAR(4)" ,new string[] {"NOT NULL"}, true, false, null, 1, 1)
-                }
-            ),
-
-          new Table
-            (
-                dbname,
-                "UNIVERSITY",
-                new Column[]
-                {
-                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, true, false, null, 1, 1),
-                    new Column("City", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("Prov_State", "CHAR(2)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
-                    new Column("Country", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1)
-
                 }
             ),
             new Table
@@ -179,7 +179,7 @@ namespace BookSmash.Models
                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
-                   new Column("Date", "DATETIME", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                   new Column("Date", "VARCHAR(50)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    //new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),
                    new Column("Book_Condition", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    new Column("Price", "DOUBLE", new string[] {"NOT NULL"}, false, false, null, 1, 1),

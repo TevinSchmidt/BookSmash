@@ -1,0 +1,35 @@
+﻿@model BookSmash.Models.AdminModel
+
+@{
+    ViewBag.Title = "AddAdmin";
+}
+
+@using (Html.BeginForm("AdminEntry", "Admin", FormMethod.Post, new { role = "form" }))
+{
+    <br />
+    <p>
+
+        As Admin you may enter a user to promote to Admin status. Please fill out the required form below:
+    </p>
+    <p style="color:red">@ViewBag.EmptyFielsAdnminEntry</p>
+    <br />
+    <table>
+        <tr>
+            <td>User Email:</td>
+            <td>@Html.TextBoxFor(model => model.UserEmail, new { @class = "form-control" })</td>
+            <td style="color:red">@ViewBag.InvalidEmail</td>
+        </tr>
+        <tr>
+            <td>Role:</td>
+            <td>@Html.TextBoxFor(model => model.Role, new { @class = "form-control" })</td>
+            <td>*(Admin, CEO, ect.)</td>
+            <td style="color:red">@ViewBag.InvalidRole</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" class="btn btn-default" value="Create Admin" />
+    <br />
+    <p>@ViewBag.AdminSubmitMessage</p>
+    <br />
+}
+
