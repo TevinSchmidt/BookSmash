@@ -179,7 +179,7 @@ namespace BookSmash.Models
                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "USER", 1, 1),
                    new Column("UNI_NAME", "VARCHAR(100)", new string[] {"NOT NULL"}, false, true, "UNIVERSITY", 1, 1),
-                   new Column("Date", "DATE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
+                   new Column("Date", "DATETIME", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    //new Column("BookType", "VARCHAR(100)", new string[] {}, false, false, null, 1, 1),
                    new Column("Book_Condition", "VARCHAR(100)", new string[] {"NOT NULL"}, false, false, null, 1, 1),
                    new Column("Price", "DOUBLE", new string[] {"NOT NULL"}, false, false, null, 1, 1),
