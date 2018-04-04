@@ -27,9 +27,11 @@ namespace BookSmash.Controllers
         [HttpPost]
         public ActionResult LogIn(LoginModel m)
         {
-            if(m.Email == "" || m.Password == "")
+            if(m.Email == null || m.Password == null)
             {
                 ViewBag.LogInError = "Username or password incorrect. Try again.";
+                return View("Index", m);
+
             }
 
 
@@ -40,7 +42,7 @@ namespace BookSmash.Controllers
             if(list.Count == 0)
             {
                 ViewBag.LogInError = "Username or password incorrect. Try again.";
-                return View("Index");
+                return View("Index", m);
             }
             else
             {
@@ -69,7 +71,6 @@ namespace BookSmash.Controllers
             AccountCreation model = new AccountCreation();
 
             var universities = GetAllUniversities();
-
             model.Universities = GetSelectListItems(universities);
 
             return View("AccountCreation", model);
@@ -80,9 +81,11 @@ namespace BookSmash.Controllers
         public ActionResult CreationSubmittion(AccountCreation m)
         {
             //check for blank entries
-            if (m.Email == "" || m.Password == "" || m.confirmPassword == "" || m.Fname == "" || m.Lname == "" || m.Phone_Num == "")
+            if (m.Email == null || m.Password == null || m.confirmPassword == null || m.Fname == null || m.Lname == null || m.Phone_Num == null)
             {
                 ViewBag.EmptyFields = "Must not leave any blank. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
@@ -90,36 +93,49 @@ namespace BookSmash.Controllers
             if (m.Phone_Num.Length > 14)
             {
                 ViewBag.InvalidPhone = "Phone number too long. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
             if (m.Email.Length > 100)
             {
                 ViewBag.InvalidEmail = "Email too long. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
             if (m.Fname.Length > 100)
             {
                 ViewBag.InvalidFname = "First name too long. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
             if (m.Lname.Length > 100)
             {
                 ViewBag.InvalidLname = "Last name too long. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
             if (m.Password.Length > 100)
             {
                 ViewBag.InvalidPassword = "Password too long. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
+                return View("AccountCreation", m);
             }
 
             //check for matching passwords
             if (!m.Password.Equals(m.confirmPassword))
             {
                 ViewBag.InvalidPassword = "Passwords did not match. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
@@ -131,6 +147,8 @@ namespace BookSmash.Controllers
             catch (FormatException)
             {
                 ViewBag.InvalidEmail = "This is not a valid email address. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
@@ -139,6 +157,8 @@ namespace BookSmash.Controllers
             if (!rg.IsMatch(m.Phone_Num))
             {
                 ViewBag.InvalidPhone = "This is not a valid phone number. Try again.";
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
@@ -149,14 +169,16 @@ namespace BookSmash.Controllers
             if (DB.getUserListByEmail(m.Email).Count != 0)
             {
                 ViewBag.InvalidEmail = "Email already used. Try a different one.";
-          
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 
             if (DB.getUserListByPhone(m.Phone_Num).Count != 0)
             {
                 ViewBag.InvalidPhone = "This phone number is already linked to an account. Please enter different one.";
-                
+                var universities = GetAllUniversities();
+                m.Universities = GetSelectListItems(universities);
                 return View("AccountCreation", m);
             }
 

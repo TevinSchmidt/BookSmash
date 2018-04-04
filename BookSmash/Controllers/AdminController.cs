@@ -35,7 +35,7 @@ namespace BookSmash.Controllers
         public ActionResult AdminEntry(AdminModel m)
         {
             //check for blank entries
-            if (m.UserEmail == "" || m.Role == "")
+            if (m.UserEmail == null || m.Role == null)
             {
                 ViewBag.EmptyFielsAdnminEntry = "Must not leave any Admin entry fields blank. Try again.";
                 return View("AddAdmin", m);
@@ -78,7 +78,7 @@ namespace BookSmash.Controllers
         [HttpPost]
         public ActionResult RemoveAdmin(AdminModel m)
         {
-            if (m.UserEmail == "")
+            if (m.UserEmail == null)
             {
                 ViewBag.EmptyFielsAdnminEntry = "Must not leave any Admin entry fields blank. Try again.";
                 return View("DeleteAdmin", m);
@@ -136,7 +136,7 @@ namespace BookSmash.Controllers
         public ActionResult UniEntry(UniModel m)
         {
             //check for blank entries
-            if (m.UNI_NAME == "" || m.City == "" || m.Prov_State == "" || m.Country == "")
+            if (m.UNI_NAME == null || m.City == null || m.Prov_State == null || m.Country == null)
             {
                 ViewBag.EmptyFields = "Must not leave any University entry fields blank. Try again.";
                 return View("AddUni", m);
@@ -186,7 +186,7 @@ namespace BookSmash.Controllers
         [HttpPost]
         public ActionResult RemoveUni(UniModel m)
         {
-            if (m.UNI_NAME == "")
+            if (m.UNI_NAME == null)
             {
                 ViewBag.EmptyFields = "Must not leave any University entry fields blank. Try again.";
                 return View("DeleteUni", m);
@@ -231,7 +231,7 @@ namespace BookSmash.Controllers
         [HttpPost]
         public ActionResult PerformSearch(AdminSearchUserModel m)
         {
-            if(m.Email == "")
+            if(m.Email == null)
             {
                 ViewBag.InvalidEmail = "Please do not leave blank. Try Again.";
                 return View("SearchUsers", m);

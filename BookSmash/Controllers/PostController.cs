@@ -102,7 +102,7 @@ namespace BookSmash.Controllers
 
 
             //check for empty fields
-            if (m.Email == "" || m.Phone_Num == "" || m.Reviewer_Email == "" || m.Description == "" || m.Rating == "")
+            if (m.Email == null || m.Phone_Num == null || m.Reviewer_Email == null || m.Description == null || m.Rating == null)
             {
                 ViewBag.EmptyFields = "Please fill out all feilds.";
                 return View("ReviewUser", m);
