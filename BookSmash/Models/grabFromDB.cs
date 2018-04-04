@@ -122,7 +122,7 @@ namespace BookSmash.Models
                 }
             } catch (Exception e)
             {
-                sw.Write(e.Message);
+                sw.Write("Failure in getFavourites: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally
             {
                 LD.doClose();
@@ -146,7 +146,7 @@ namespace BookSmash.Models
                 }
             } catch (Exception e)
             {
-                sw.Write("Failure in getPhone: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getUserPhone: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally
             {
                 LD.doClose();
@@ -168,7 +168,7 @@ namespace BookSmash.Models
                 }
             } catch (Exception e)
             {
-                sw.Write(e.Message);
+                sw.Write("Failure in favouriteExists: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally
             {
                 LD.doClose();
@@ -188,7 +188,7 @@ namespace BookSmash.Models
                 }
                 catch (Exception e)
                 {
-                    sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                    sw.Write("Failure in saveFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
                 }
             }
         }
@@ -259,7 +259,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getUniversitiesByName: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally {
                 LD.doClose();
             }
@@ -284,7 +284,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in insertUniversity: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -302,7 +302,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in removeUniversityByName: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -326,7 +326,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getPost: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getUserInfo: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
             return info;
@@ -358,7 +358,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getSearchTitles: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
             return search;
@@ -437,7 +437,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUniversities: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getUserPosts: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             finally
             {
@@ -626,7 +626,7 @@ namespace BookSmash.Models
                 }
             } catch (Exception e)
             {
-                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in checkCourse " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally
             {
                 LD.doClose();
@@ -649,7 +649,7 @@ namespace BookSmash.Models
                 }
             } catch (Exception e)
             {
-                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in checkUsedFor " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally
             {
                 LD.doClose();
@@ -673,7 +673,7 @@ namespace BookSmash.Models
                 }
             } catch (Exception e)
             {
-                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in checkTextbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             } finally
             {
                 LD.doClose();
@@ -699,7 +699,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertPost textbook " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in checkAuthor " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             finally
             {
@@ -800,7 +800,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getUserListByEmail: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
             return users;
@@ -833,7 +833,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getUserListByPhone: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
             return users;
@@ -859,7 +859,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in insertUser: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
 
            
@@ -880,7 +880,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in modifyUserEmail: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
 
 
@@ -901,7 +901,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in modifyUserPassword: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -921,7 +921,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in modifyUserFname: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -941,7 +941,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in modifyUserLname: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -961,7 +961,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in modifyUserPhone: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -975,7 +975,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in modifyUserUniversity: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -1008,7 +1008,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getAdminByEmail: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
             return users;
@@ -1034,7 +1034,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in insertAdmin: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
 
 
@@ -1054,7 +1054,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in removeAdminByEmail: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
         }
 
@@ -1074,7 +1074,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in insertFavourite: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in insertReview: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
 
 
@@ -1110,7 +1110,7 @@ namespace BookSmash.Models
             }
             catch (Exception e)
             {
-                sw.Write("Failure in getUsers: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                sw.Write("Failure in getReviewByEmail: " + e.Message + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
             }
             LD.doClose();
             return reviews;
