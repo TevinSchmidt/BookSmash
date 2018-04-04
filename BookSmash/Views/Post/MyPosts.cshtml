@@ -1,4 +1,4 @@
-﻿
+﻿@model BookSmash.Models.PostModel
 
 
 
@@ -13,8 +13,15 @@
         <p style="font-size:larger">My Posts:</p> <br />
         foreach (var item in ViewBag.Postlist)
         {
-            @Html.ActionLink((string)@item.title, "Textbook/" + (string)@item.ID, "Post")
+            <div>
+                @using (Html.BeginForm("DeletePost", "Post", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.TextBoxFor(model => model.ID, new { @class = "form-control", @Value = item.ID, @type = "hidden" })
+                    @Html.ActionLink((string)@item.title, "Textbook/" + (string)@item.ID, "Post")
+                    <input type="submit" value="Delete">
+                }
+            </div>
             <br />
-        }
+            }
     }
 }

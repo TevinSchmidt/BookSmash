@@ -194,9 +194,9 @@ namespace BookSmash.Models
                 "FAVOURITES",
                 new Column[]
                 {
-                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL", "UNIQUE"}, true, true, "USER", 1, 1),
-                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL", "UNIQUE"}, true, true, "USER", 1, 1),
-                    new Column("ID", "INTEGER", new string[] {"NOT NULL", "UNIQUE"}, true, true, "POST", 1, 1)
+                    new Column("Phone_Num", "VARCHAR(14)", new string[] {"NOT NULL"}, true, true, "USER", 1, 1),
+                    new Column("Email", "VARCHAR(100)", new string[] {"NOT NULL"}, true, true, "USER", 1, 1),
+                    new Column("ID", "INTEGER", new string[] {"NOT NULL"}, true, true, "POST", 1, 1)
                 }
 
             )

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Favourites";
+}
+
+<h2>My Favourites:</h2>
+
+@if (ViewBag.Favouritelist != null)
+{
+    if (ViewBag.Favouritelist.Count == 0)
+    {
+        <p>Your search did not retrun any results. Please try again.</p>
+    }
+    else
+    {
+        <p style="font-size:larger">Results:</p> <br />
+        foreach (var item in ViewBag.Favouritelist)
+        {
+            @Html.ActionLink((string)@item.title, "Textbook/" + (string)@item.ID, "Post")
+            <br />
+        }
+    }
+}
+
