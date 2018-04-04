@@ -5,6 +5,7 @@
 <h2>Search For Textbooks</h2>
 
 <div class="container">
+    
     @using (Html.BeginForm("FrontPage", "Home", FormMethod.Post, new { role = "form" })) {
             <div class="form-group">
                 <label for="title">Title:</label>
@@ -12,14 +13,17 @@
             </div>
             <div class="form-group">
                 <label for="department">Department:</label>
-                @Html.TextBoxFor(model => model.Department, new { @class = "form-control", @placeholder = "MATH"})
+                @Html.TextBoxFor(model => model.Department, new { @class = "form-control", @placeholder = "MATH" })
+                <p>*required</p>
             </div>
             <div class="form-group">
                 <label for="code">Code:</label>
                 @Html.TextBoxFor(model => model.Code, new { @class = "form-control", @placeholder = "275"})
+                <p>*required</p>
             </div>
             <div class="form-group">            
                 @Html.DropDownListFor(model => model.University, Model.Universities, "-Please Select University-", new { @class = "form-control" })
+                <p>*required</p>
             </div>
             <button type="submit" class="btn btn-default">Smash It!</button>
     }

@@ -51,7 +51,7 @@ namespace BookSmash.Controllers
             grab.saveFavourite(phone, Globals.getCurrentUserEmail(), id);
 
             return RedirectToAction("Favourites");
-
+        }
         /// <summary>
         /// Method to delete a specific post
         /// </summary>

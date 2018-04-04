@@ -10,13 +10,13 @@ namespace BookSmash.Models
         [Required]
         [Display(Name = "Title")]
         public string Title { get; set; }
-
+        [Required]
         [Display(Name ="Author")]
         public string Author { get; set; }
-
+        [Required]
         [Display(Name ="Edition")]
         public int Edition { get; set; }
-
+        [Required]
         [Display(Name ="Condition")]
         public string Condition { get; set; }
 
@@ -27,14 +27,14 @@ namespace BookSmash.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
-
+        [Required]
         [Display(Name ="Course Name")]
         public string CourseName { get; set; }
 
         [Required]
         [Display(Name = "University")]
         public string University { get; set; }
-
+        [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }
 

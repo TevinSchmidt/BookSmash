@@ -104,9 +104,10 @@ namespace BookSmash.Models
         public List<Result> getFavourites(string email)
         {
             LD = LinkDatabase.getInstance();
-            //string query = @"SELECT ID FROM " + LD.databaseName + ".FAVOURITES WHERE EMAIL = '" + email + "';";
-            string query = @"SELECT ID, TITLE FROM " + LD.databaseName + @".POST AS P NATURAL JOIN " + LD.databaseName +
+            string query = @"SELECT P.ID, P.TITLE FROM " + LD.databaseName + @".POST AS P, " + LD.databaseName +
                 @".FAVOURITES AS F WHERE F.EMAIL = '" + email + @"' AND F.ID = P.ID;";
+            //string query = @"SELECT ID, TITLE FROM " + LD.databaseName + @".POST AS P NATURAL JOIN " + LD.databaseName +
+                //@".FAVOURITES AS F WHERE F.EMAIL = '" + email + @"' AND F.ID = P.ID;";
             List<Result> Favs = new List<Result>();
             try
             {
@@ -200,7 +201,7 @@ namespace BookSmash.Models
         public List<UniData> getUniversities()
         {
             LD = LinkDatabase.getInstance();
-            string query = @"SELECT* FROM " + LD.databaseName + ".UNIVERSITY";
+            string query = @"SELECT * FROM " + LD.databaseName + ".UNIVERSITY;";
             List<UniData> output = new List<UniData>();
             try
             {
