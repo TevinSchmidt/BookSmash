@@ -22,7 +22,7 @@ namespace BookSmash.Models
         protected AbstractDatabase()
         {
             mutex = new Mutex(false);
-            connection = new MySqlConnection("SERVER=localhost;DATABASE=mysql;UID=" + UID + ";AUTO ENLIST=false;PASSWORD=" + Password);
+            connection = new MySqlConnection(Helpers.GetRDSConnectionString());
             createDB();
         }
 
@@ -37,7 +37,7 @@ namespace BookSmash.Models
 
             if (connection == null)
             {
-                connection = new MySqlConnection("SERVER=localhost;DATABASE=mysql;UID=" + UID + ";AUTO ENLIST=false;PASSWORD=" + Password);
+                connection = new MySqlConnection(Helpers.GetRDSConnectionString());
             }
 
             //connection.
@@ -56,7 +56,7 @@ namespace BookSmash.Models
                     {
                         Debug.consoleMsg("Database already exists.");
                         closeConnection();
-                        connection = new MySqlConnection("SERVER=localhost;DATABASE=" + databaseName + ";UID=" + UID + ";AUTO ENLIST=false;PASSWORD=" + Password);
+                        connection = new MySqlConnection(Helpers.GetRDSConnectionString());
                         return;
                     }
                     Debug.consoleMsg("Unable to create database"
@@ -108,7 +108,7 @@ namespace BookSmash.Models
                 Debug.consoleMsg("Successfully created admin");
 
                 closeConnection();
-                connection = new MySqlConnection("SERVER=localhost;DATABASE=" + databaseName + ";UID=" + UID + ";AUTO ENLIST=false;PASSWORD=" + Password);
+                connection = new MySqlConnection(Helpers.GetRDSConnectionString());
 
             }
         }
@@ -241,16 +241,22 @@ namespace BookSmash.Models
         /// </summary>
         protected MySqlConnection connection;
 
-        /// <summary>
-        /// This is the username used to login to the database by the connection
-        /// </summary>
+
+        //This is for local host
+        /*
         private const string UID = "root";
-
-        /// <summary>
-        /// This is the password used to login to the database by the connection
-        /// </summary>
         private const string Password = "Security4";
+        private const string Server = "localhost";
+        */
 
+        //This is for AWS
+        
+        private const string UID = "group15CPSC471";
+        private const string Password = "&EjK!S~sOkULt9c";
+        private const string Server = "aa1lj6v33mxwt3x.cwldmj0blklk.us-east-2.rds.amazonaws.com";
+        private const string Port = "3306";
+        
+        //Default entries
         private const string AdminPhone = "111-111-1111";
         public const string AdminEmail = "Admin@admin.admin";
         private const string AdminUni = "University of Calgary";
